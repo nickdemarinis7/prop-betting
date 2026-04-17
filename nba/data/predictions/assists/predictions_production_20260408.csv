@@ -1,0 +1,16 @@
+Type,Player,Team,Opp,Home,Proj,L10,Ratio,5+%,7+%,10+%,Min_Odds_5+,Min_Odds_7+,Min_Odds_10+,Units_5+,Units_7+,Units_10+,Ladder_Value,Tier,Quality,Conf,Matchup,Def_Factor,StdDev,Blowout,Red_Flags,Season
+TOP PLAY,Devin Booker,PHX,DAL,1,7.6,5.5,1.38,88,66,23,-737,-194.0,329.0,1.25,0.75,0.1,83,2,91,HIGH,SOFT,1.14,2.6,MEDIUM,Med blowout risk,6.0
+TOP PLAY,Dyson Daniels,ATL,CLE,0,5.8,4.6,1.26,70,39,7,-232,156.0,1354.0,1.25,0.5,0.25,77,1,93,HIGH,FAVORABLE,1.08,2.5,LOW,None,5.8
+TOP PLAY,Jalen Suggs,ORL,MIN,1,6.6,5.2,1.27,76,51,17,-319,-106.0,505.0,1.25,0.75,0.1,75,2,86,MEDIUM,AVERAGE,1.04,3.0,LOW,None,5.6
+TOP PLAY,CJ McCollum,ATL,CLE,0,5.6,4.6,1.22,70,35,4,-228,185.0,2285.0,1.0,0.25,0.0,74,2,93,HIGH,FAVORABLE,1.08,2.2,LOW,None,3.9
+TOP PLAY,De'Aaron Fox,SAS,POR,1,6.4,6.2,1.03,83,49,7,-484,104.0,1359.0,1.25,0.25,0.1,73,2,81,HIGH,FAVORABLE,1.06,2.1,MEDIUM,Med blowout risk,6.1
+TOP PLAY,Jamal Murray,DEN,MEM,1,9.2,7.3,1.26,96,83,45,-2133,-500.0,122.0,1.25,1.25,0.25,70,2,69,MEDIUM,SOFT,1.12,2.7,HIGH,High blowout risk,7.2
+TOP PLAY,James Harden,CLE,ATL,1,9.4,8.4,1.12,96,85,48,-2307,-550.0,107.0,0.75,0.75,0.1,68,3,82,HIGH,FAVORABLE,1.06,2.8,LOW,Cooling (-0.4),8.1
+TOP PLAY,Paolo Banchero,ORL,MIN,1,5.5,5.7,0.96,73,28,1,-264,262.0,,1.25,0.25,0.0,67,2,86,HIGH,AVERAGE,1.04,1.7,LOW,None,5.1
+TOP PLAY,Dennis Schröder,CLE,ATL,1,5.0,4.0,1.25,58,28,4,-138,262.0,2646.0,0.75,0.25,0.0,67,2,95,MEDIUM,FAVORABLE,1.06,2.5,LOW,None,4.9
+TOP PLAY,Deni Avdija,POR,SAS,0,7.2,6.6,1.09,79,58,24,-372,-137.0,313.0,0.5,0.1,0.1,62,3,80,MEDIUM,AVERAGE,1.05,3.3,MEDIUM,Med blowout risk,6.7
+FADE,Aaron Wiggins,OKC,LAC,0,2.7,0.9,3.0,16,2,0,517,5159.0,,0.1,0.0,0.0,0,3,16,LOW,AVERAGE,1.05,1.8,HIGH,High blowout risk,1.6
+FADE,Isaiah Joe,OKC,LAC,0,2.4,0.8,3.0,4,0,0,2203,,,0.1,0.0,0.0,0,3,18,LOW,AVERAGE,1.05,1.2,HIGH,Cooling (-0.6); High blowout risk,1.3
+FADE,Ronald Holland II,DET,MIL,1,3.0,0.9,3.33,6,0,0,1450,,,0.1,0.0,0.0,0,3,24,LOW,SOFT,1.11,1.0,HIGH,Cooling (-0.7); High blowout risk,1.2
+FADE,Javonte Green,DET,MIL,1,2.8,0.8,3.5,1,0,0,8850,,,0.1,0.0,0.0,0,3,24,LOW,SOFT,1.11,0.7,HIGH,Cooling (-0.2); High blowout risk,0.7
+FADE,Isaiah Hartenstein,OKC,LAC,0,4.7,4.3,1.09,53,28,6,-111,252.0,1501.0,0.1,0.1,0.1,25,3,27,LOW,AVERAGE,1.05,3.1,HIGH,Cooling (-0.4); High blowout risk,3.6

@@ -1,0 +1,16 @@
+Type,Player,Team,Opp,Home,Proj,L10,Ratio,15+%,20+%,25+%,Units_15+,Units_20+,Units_25+,Ladder_Value,Tier,Quality,Conf,Matchup,Def_Factor,Tmts_Out,StdDev,Blowout,Red_Flags,Season
+TOP PLAY,Devin Booker,PHX,GSW,1,35.9,28.4,1.26,100,98,93,0.75,0.75,0.75,72,3,87,MEDIUM,FAVORABLE,1.08,4,7.4,LOW,High variance (7.4),26.1
+TOP PLAY,Stephen Curry,GSW,PHX,0,29.1,22.8,1.28,97,88,70,0.75,0.75,0.5,72,3,91,MEDIUM,AVERAGE,1.0,4,7.7,LOW,High variance (7.7),26.6
+TOP PLAY,Jalen Green,PHX,GSW,1,26.9,20.6,1.31,91,79,59,0.75,0.5,0.1,72,3,87,MEDIUM,FAVORABLE,1.08,4,8.8,LOW,High variance (8.8),17.8
+TOP PLAY,Brandin Podziemski,GSW,PHX,0,21.4,17.7,1.21,83,58,29,0.75,0.1,0.1,65,3,66,LOW,AVERAGE,1.0,4,6.6,LOW,High variance (6.6),13.8
+TOP PLAY,Dillon Brooks,PHX,GSW,1,24.3,20.0,1.22,84,68,47,0.75,0.25,0.1,62,3,83,MEDIUM,FAVORABLE,1.08,4,9.4,LOW,Cooling (-0.3); High variance (9.4),20.2
+TOP PLAY,Collin Gillespie,PHX,GSW,1,15.2,10.6,1.43,51,25,9,0.1,0.1,0.1,62,3,87,MEDIUM,FAVORABLE,1.08,4,7.1,LOW,High variance (7.1),12.7
+TOP PLAY,Gui Santos,GSW,PHX,0,19.3,16.6,1.16,72,46,22,0.5,0.1,0.1,60,3,62,LOW,AVERAGE,1.0,4,7.4,LOW,Cooling (-0.3); High variance (7.4),9.2
+TOP PLAY,De'Anthony Melton,GSW,PHX,0,14.7,13.7,1.07,48,28,13,0.1,0.1,0.1,60,3,76,LOW,AVERAGE,1.0,4,9.0,LOW,High variance (9.0),12.3
+TOP PLAY,Coby White,CHA,ORL,0,24.7,17.7,1.4,95,79,48,0.75,0.5,0.1,55,3,79,LOW,AVERAGE,1.01,4,5.9,HIGH,High variance (5.9); High blowout risk,17.4
+TOP PLAY,Brandon Miller,CHA,ORL,0,28.2,19.0,1.48,99,91,70,0.75,0.75,0.5,52,3,84,MEDIUM,AVERAGE,1.01,4,6.0,HIGH,High variance (6.0); High blowout risk,20.2
+FADE,Jevon Carter,ORL,CHA,1,12.6,8.6,1.47,29,5,0,0.1,0.0,0.0,0,3,36,LOW,AVERAGE,1.04,3,4.4,HIGH,Cooling (-0.3); High variance (4.4); High blowout risk,6.4
+FADE,Wendell Carter Jr.,ORL,CHA,1,18.1,13.6,1.33,71,37,11,0.5,0.1,0.1,38,3,46,LOW,AVERAGE,1.04,3,5.7,HIGH,Cooling (-0.3); High variance (5.7); High blowout risk,11.8
+FADE,Goga Bitadze,ORL,CHA,1,10.5,4.2,2.5,12,1,0,0.1,0.0,0.0,0,3,51,LOW,AVERAGE,1.04,3,3.9,HIGH,High variance (3.9); High blowout risk,5.9
+FADE,Desmond Bane,ORL,CHA,1,28.7,18.6,1.54,97,89,69,0.75,0.75,0.25,46,3,55,LOW,AVERAGE,1.04,3,7.2,HIGH,High variance (7.2); High blowout risk,20.1
+FADE,Franz Wagner,ORL,CHA,1,27.4,18.3,1.5,95,83,62,0.75,0.75,0.25,46,3,55,LOW,AVERAGE,1.04,3,7.7,HIGH,High variance (7.7); High blowout risk,20.6

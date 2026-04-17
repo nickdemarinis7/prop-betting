@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-04-09T15:00:17.762180",
+  "metrics": {
+    "prediction_count": 15,
+    "top_plays": 10,
+    "avg_quality": 88.0,
+    "avg_ladder": 73.6,
+    "tier_distribution": {
+      "3": 10
+    },
+    "avg_std_dev": 6.34,
+    "usage_boost_plays": 7,
+    "prediction_age_hours": 0.14062356055555555,
+    "days_with_predictions": 0
+  },
+  "alerts": [
+    "\u26a0\ufe0f  No Tier 1 or Tier 2 plays",
+    "\u26a0\ufe0f  Only 0/7 days have predictions"
+  ]
+}

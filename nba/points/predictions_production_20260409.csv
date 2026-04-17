@@ -1,0 +1,16 @@
+Type,Player,Team,Opp,Home,Proj,L10,Ratio,15+%,20+%,25+%,Units_15+,Units_20+,Units_25+,Ladder_Value,Tier,Quality,Conf,Matchup,Def_Factor,Tmts_Out,StdDev,Blowout,Red_Flags,Season
+TOP PLAY,Alperen Sengun,HOU,PHI,1,33.6,21.1,1.59,99,96,86,0.75,0.75,0.75,77,3,87,MEDIUM,SOFT,1.11,5,8.0,LOW,High variance (8.0),20.5
+TOP PLAY,Aaron Nesmith,IND,BKN,0,22.7,17.5,1.3,82,63,39,0.75,0.25,0.1,77,3,100,MEDIUM,FAVORABLE,1.08,6,8.3,LOW,High variance (8.3),13.8
+TOP PLAY,Gary Payton II,GSW,LAL,1,20.9,14.4,1.45,94,60,14,0.75,0.1,0.1,75,3,68,LOW,FAVORABLE,1.1,10,3.8,LOW,High variance (3.8),7.5
+TOP PLAY,Brandon Ingram,TOR,MIA,1,26.9,19.7,1.37,94,81,60,0.75,0.75,0.1,73,3,89,MEDIUM,FAVORABLE,1.1,2,7.8,LOW,High variance (7.8),21.3
+TOP PLAY,RJ Barrett,TOR,MIA,1,26.6,20.8,1.28,99,90,63,0.75,0.75,0.25,73,3,89,MEDIUM,FAVORABLE,1.1,2,5.1,LOW,High variance (5.1),19.1
+TOP PLAY,Scottie Barnes,TOR,MIA,1,21.3,15.8,1.35,87,59,25,0.75,0.1,0.1,73,3,89,MEDIUM,FAVORABLE,1.1,2,5.5,LOW,High variance (5.5),18.2
+TOP PLAY,Kevin Durant,HOU,PHI,1,43.2,26.2,1.65,100,100,100,0.75,0.75,0.75,72,3,87,MEDIUM,SOFT,1.11,5,6.4,LOW,High variance (6.4),25.8
+TOP PLAY,Pascal Siakam,IND,BKN,0,36.8,23.4,1.57,100,100,97,0.75,0.75,0.75,72,3,85,MEDIUM,FAVORABLE,1.08,6,6.4,LOW,High variance (6.4),24.0
+TOP PLAY,Kristaps Porziņģis,GSW,LAL,1,34.1,20.8,1.64,99,96,87,0.75,0.75,0.75,72,3,99,MEDIUM,FAVORABLE,1.1,10,8.0,LOW,High variance (8.0),17.0
+TOP PLAY,Amen Thompson,HOU,PHI,1,31.6,18.9,1.67,100,100,94,0.75,0.75,0.75,72,3,87,MEDIUM,SOFT,1.11,5,4.1,LOW,High variance (4.1),18.0
+FADE,Quentin Grimes,PHI,HOU,0,12.7,19.2,0.66,40,21,9,0.1,0.1,0.1,8,3,37,LOW,AVERAGE,0.98,2,9.2,LOW,Cooling (-0.7); High variance (9.2),13.4
+FADE,Justin Edwards,PHI,HOU,0,8.8,12.5,0.7,23,9,2,0.1,0.0,0.0,7,3,37,LOW,AVERAGE,0.98,2,8.3,LOW,Cooling (-0.7); High variance (8.3),6.0
+FADE,Jake LaRavia,LAL,GSW,0,13.0,5.2,2.5,30,4,0,0.1,0.0,0.0,4,3,38,LOW,FAVORABLE,1.08,1,3.9,LOW,Cooling (-0.3); High variance (3.9),8.3
+FADE,Jaxson Hayes,LAL,GSW,0,11.9,8.5,1.4,32,12,3,0.1,0.0,0.0,21,3,43,LOW,FAVORABLE,1.08,1,6.7,LOW,Cooling (-0.3); High variance (6.7),7.5
+FADE,Isaac Okoro,CHI,WAS,0,18.6,9.1,2.04,82,37,6,0.75,0.1,0.1,38,3,55,LOW,SOFT,1.15,5,4.0,HIGH,High variance (4.0); High blowout risk,9.3

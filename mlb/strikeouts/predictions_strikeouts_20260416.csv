@@ -1,0 +1,17 @@
+pitcher,team,opponent,is_home,projection,season_k9,recent_k9,expected_ip,opponent_k_rate,is_day_game,is_short_rest,prob_3.5+,prob_4.5+,prob_5.5+,prob_6.5+,prob_7.5+,prob_8.5+,prob_9.5+,prob_10.5+
+Braxton Ashcraft,PIT,WSH,1,8.0,10.95,10.95,5.0,0.289,False,False,0.977,0.94,0.867,0.75,0.593,0.419,0.26,0.14
+Chase Burns,CIN,SF,1,6.8,8.96,8.96,5.0,0.306,False,False,0.889,0.803,0.685,0.543,0.397,0.263,0.157,0.084
+Kris Bubic,KC,DET,0,6.2,10.75,10.89,5.0,0.251,False,False,0.744,0.661,0.569,0.473,0.379,0.291,0.215,0.151
+Max Fried,NYY,LAA,1,6.1,7.09,6.53,6.4,0.276,False,False,0.96,0.861,0.662,0.401,0.179,0.056,0.012,0.002
+Jack Leiter,TEX,ATH,0,5.9,11.96,13.31,4.2,0.278,False,False,0.91,0.81,0.661,0.481,0.304,0.165,0.075,0.029
+Brandon Sproat,MIL,TOR,1,5.8,8.94,9.4,5.0,0.273,False,False,1.0,1.0,0.947,0.35,0.009,0.0,0.0,0.0
+Keider Montero,DET,KC,1,5.7,8.97,9.73,5.4,0.248,False,False,0.897,0.789,0.633,0.451,0.279,0.147,0.065,0.024
+Luis Castillo,SEA,SD,0,5.3,9.21,10.24,5.9,0.201,False,False,0.851,0.675,0.446,0.234,0.095,0.029,0.006,0.001
+Jacob Lopez,ATH,TEX,1,4.8,8.6,7.56,4.0,0.304,False,False,0.695,0.551,0.4,0.263,0.155,0.081,0.038,0.015
+Walker Buehler,SD,SEA,1,4.5,7.65,8.11,4.3,0.264,False,False,0.987,0.539,0.022,0.0,0.0,0.0,0.0,0.0
+Parker Messick,CLE,BAL,1,4.1,8.37,8.37,5.0,0.194,False,False,0.903,0.205,0.002,0.0,0.0,0.0,0.0,0.0
+Landen Roupp,SF,CIN,0,4.0,9.4,9.73,5.0,0.182,False,False,0.65,0.334,0.106,0.02,0.002,0.0,0.0,0.0
+Patrick Corbin,TOR,MIL,0,3.9,7.68,7.71,5.3,0.21,False,False,0.565,0.407,0.262,0.15,0.075,0.033,0.013,0.004
+Foster Griffin,WSH,PIT,0,3.8,8.47,8.47,5.0,0.195,False,False,0.551,0.378,0.227,0.117,0.052,0.019,0.006,0.002
+Shane Baz,BAL,CLE,0,3.7,7.98,7.65,5.4,0.194,False,False,0.693,0.053,0.0,0.0,0.0,0.0,0.0,0.0
+Steven Matz,TB,CWS,0,3.2,9.0,9.0,4.2,0.187,False,False,0.469,0.353,0.25,0.165,0.102,0.058,0.031,0.015
