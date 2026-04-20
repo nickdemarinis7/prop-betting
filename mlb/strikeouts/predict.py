@@ -192,7 +192,14 @@ for starter in starters:
         print(f"   Season K/9: {season_k9:.2f} | Recent K/9: {recent_k9:.2f} | Base: {base_k9:.2f}")
         
         # 2. GET PITCHER CONTEXT
-        is_day_game = 'AM' in starter.get('game_time', '') or '12:' in starter.get('game_time', '') or '1:' in starter.get('game_time', '')
+        # Parse ISO 8601 UTC game time (e.g. '2026-04-20T15:10:00Z')
+        # Day games are typically before 5 PM ET = 21:00 UTC
+        _game_time_str = starter.get('game_time', '')
+        try:
+            _game_dt = datetime.fromisoformat(_game_time_str.replace('Z', '+00:00'))
+            is_day_game = _game_dt.hour < 21  # Before 9 PM UTC ≈ before 5 PM ET
+        except (ValueError, AttributeError):
+            is_day_game = False
         
         context = context_analyzer.get_full_context(
             pitcher_id,
@@ -264,18 +271,22 @@ for starter in starters:
         league_avg_k_rate = 0.23
         # Shrink opponent K% toward league average to reduce noise from small samples
         shrunk_k_rate = (opponent_k_rate * 0.75) + (league_avg_k_rate * 0.25)
-        opponent_multiplier = min(shrunk_k_rate / league_avg_k_rate, 1.20)
+        opponent_multiplier = min(shrunk_k_rate / league_avg_k_rate, 1.12)
         
         print(f"   Opponent K%: {opponent_k_rate:.1%} (vs {pitcher_hand}HP) | Multiplier: {opponent_multiplier:.3f}")
         
         # 5. OTHER ADJUSTMENTS
-        home_multiplier = 1.05 if starter['is_home'] else 0.95
+        home_multiplier = 1.02 if starter['is_home'] else 0.98
         
         # Short rest penalty
         rest_multiplier = 0.90 if is_short_rest else 1.0
         
         # 6. FINAL PROJECTION
         final_projection = base_projection * opponent_multiplier * home_multiplier * rest_multiplier
+        
+        # Calibration offset: validation shows -0.71K systematic over-projection
+        final_projection -= 0.5
+        final_projection = max(final_projection, 0.5)
         
         print(f"   Final Projection: {final_projection:.2f} K")
         
@@ -328,10 +339,10 @@ for starter in starters:
                 if original > final_projection:
                     print(f"   ⚠️  Elite K Safety Cap - Limiting: {original:.1f} → {final_projection:.1f} K")
         
-        # Check 5: Global cap — no projection above 8.5 (even elite pitchers rarely avg above this)
-        if final_projection > 8.5:
+        # Check 5: Global cap — no projection above 8.0 (validation shows we over-project elites)
+        if final_projection > 8.0:
             original = final_projection
-            final_projection = 8.5
+            final_projection = 8.0
             print(f"   ⚠️  Global Cap: {original:.1f} → {final_projection:.1f} K")
             red_flags.append(f'Capped from {original:.1f}')
         
@@ -353,7 +364,7 @@ for starter in starters:
                 final_projection += ml_correction
                 final_projection = max(final_projection, 0.5)
                 # Re-apply global cap after ML correction
-                final_projection = min(final_projection, 8.5)
+                final_projection = min(final_projection, 8.0)
                 print(f"   🤖 ML Correction: {ml_correction:+.2f} K → {final_projection:.2f} K")
         
         # 10. CALCULATE PROBABILITIES (after all corrections)

@@ -6,6 +6,10 @@ Find the best value bets by comparing model projections to actual odds
 import pandas as pd
 import sys
 import os
+from dotenv import load_dotenv
+
+# Load .env from project root
+load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))
 
 # Add parent directories to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
