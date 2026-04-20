@@ -20,6 +20,12 @@ from mlb.shared.scrapers.mlb_lineups import MLBLineupScraper
 from mlb.shared.scrapers.batter_stats import BatterStatsScraper
 from scipy import stats as scipy_stats
 
+try:
+    from ml_corrector import StrikeoutMLCorrector
+    ML_AVAILABLE = True
+except ImportError:
+    ML_AVAILABLE = False
+
 
 print("=" * 80)
 print("⚾ MLB STRIKEOUT PREDICTIONS V2 - SIMPLIFIED MODEL")
@@ -33,6 +39,15 @@ context_analyzer = PitcherContextAnalyzer()
 lineup_scraper = RotoChampLineupScraper()
 mlb_lineup_scraper = MLBLineupScraper()
 batter_scraper = BatterStatsScraper()
+
+# Initialize ML corrector (loads saved model or trains from validation data)
+ml_corrector = None
+if ML_AVAILABLE:
+    ml_corrector = StrikeoutMLCorrector()
+    if not ml_corrector.load():
+        print("   ⚠️  No saved ML model found, attempting to train...")
+        if not ml_corrector.train():
+            ml_corrector = None
 
 # Get games for specified date (or today)
 import sys
@@ -247,8 +262,9 @@ for starter in starters:
                 )
         
         league_avg_k_rate = 0.23
-        # PHASE 1 FIX #1: Cap opponent multiplier at 1.3x to prevent over-projection
-        opponent_multiplier = min(opponent_k_rate / league_avg_k_rate, 1.3)
+        # Shrink opponent K% toward league average to reduce noise from small samples
+        shrunk_k_rate = (opponent_k_rate * 0.75) + (league_avg_k_rate * 0.25)
+        opponent_multiplier = min(shrunk_k_rate / league_avg_k_rate, 1.20)
         
         print(f"   Opponent K%: {opponent_k_rate:.1%} (vs {pitcher_hand}HP) | Multiplier: {opponent_multiplier:.3f}")
         
@@ -263,19 +279,18 @@ for starter in starters:
         
         print(f"   Final Projection: {final_projection:.2f} K")
         
-        # 7. CALCULATE PROBABILITIES
-        # Use normal distribution based on pitcher consistency
-        std_dev = recent_k.std() if len(recent_k) > 2 else 2.5
-        
-        probabilities = {}
-        for line in [3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5]:
-            prob = 1 - scipy_stats.norm.cdf(line, final_projection, std_dev)
-            probabilities[f'prob_{line}+'] = prob
-            
-            if prob > 0.10:
-                print(f"   {line}+ K: {prob:.1%}")
+        # 7. STD DEV (used for probabilities after all corrections)
+        std_dev = max(recent_k.std(), 2.0) if len(recent_k) > 2 else 3.0
         
         # 8. EARLY EXIT RISK CHECKS
+        red_flags = []
+        
+        # Track blowup rate (games with ≤2 K in recent starts)
+        blowup_games = (recent_k <= 2).sum()
+        blowup_rate = blowup_games / len(recent_k) if len(recent_k) > 0 else 0
+        if blowup_rate >= 0.3:
+            red_flags.append(f'Blowup risk ({blowup_games}/{len(recent_k)} starts ≤2K)')
+        
         if len(recent_games) >= 3:
             recent_er = recent_games.head(3)['ER'].sum()
             recent_ip_3 = recent_games.head(3)['IP'].sum()
@@ -287,31 +302,79 @@ for starter in starters:
                 if final_projection > max_k:
                     print(f"   ⚠️  Blowout Risk (Recent ERA: {recent_era:.2f}) - Capping at {max_k} K")
                     final_projection = min(final_projection, 5.5)
+                    red_flags.append(f'High ERA ({recent_era:.1f})')
             
             # Check 2: High volatility (inconsistent performances)
             if len(recent_k) >= 3:
                 k_std = recent_k.std()
                 if k_std > 3.0 and final_projection > 7.0:
-                    # High variance pitcher - reduce projection by 10%
                     original = final_projection
                     final_projection *= 0.90
                     print(f"   ⚠️  High Volatility (σ={k_std:.1f}) - Reducing: {original:.1f} → {final_projection:.1f} K")
+                    red_flags.append(f'High variance (σ={k_std:.1f})')
             
             # Check 3: Recent short outings (avg IP <5.0 in last 3)
             avg_recent_ip = recent_ip[:3].mean()
             if avg_recent_ip < 5.0 and final_projection > 6.0:
-                # Pitcher trending toward shorter outings
                 original = final_projection
                 final_projection *= 0.92
                 print(f"   ⚠️  Short Recent Outings (avg {avg_recent_ip:.1f} IP) - Reducing: {original:.1f} → {final_projection:.1f} K")
+                red_flags.append(f'Short outings (avg {avg_recent_ip:.1f} IP)')
             
-            # Check 4: Elite K pitcher safety cap (prevent extreme over-projections)
+            # Check 4: Elite K pitcher safety cap
             if base_k9 > 12.0 and final_projection > 9.0:
-                # Cap elite K pitchers at 9.0 K for safety
                 original = final_projection
                 final_projection = min(final_projection, 9.0)
                 if original > final_projection:
                     print(f"   ⚠️  Elite K Safety Cap - Limiting: {original:.1f} → {final_projection:.1f} K")
+        
+        # Check 5: Global cap — no projection above 8.5 (even elite pitchers rarely avg above this)
+        if final_projection > 8.5:
+            original = final_projection
+            final_projection = 8.5
+            print(f"   ⚠️  Global Cap: {original:.1f} → {final_projection:.1f} K")
+            red_flags.append(f'Capped from {original:.1f}')
+        
+        # 9. ML CORRECTION (if model available) — tighter cap of ±1.5
+        ml_correction = 0.0
+        if ml_corrector and ml_corrector.is_trained:
+            ml_correction = ml_corrector.predict_correction({
+                'season_k9': season_k9,
+                'recent_k9': recent_k9,
+                'expected_ip': expected_ip,
+                'opponent_k_rate': opponent_k_rate,
+                'is_home': starter['is_home'],
+                'is_day_game': is_day_game,
+                'is_short_rest': is_short_rest
+            })
+            ml_correction = float(np.clip(ml_correction, -1.5, 1.5))  # Tighter cap
+            if abs(ml_correction) > 0.1:
+                original = final_projection
+                final_projection += ml_correction
+                final_projection = max(final_projection, 0.5)
+                # Re-apply global cap after ML correction
+                final_projection = min(final_projection, 8.5)
+                print(f"   🤖 ML Correction: {ml_correction:+.2f} K → {final_projection:.2f} K")
+        
+        # 10. CALCULATE PROBABILITIES (after all corrections)
+        probabilities = {}
+        for line in [3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5]:
+            prob = 1 - scipy_stats.norm.cdf(line, final_projection, std_dev)
+            probabilities[f'prob_{line}+'] = prob
+            
+            if prob > 0.10:
+                print(f"   {line}+ K: {prob:.1%}")
+        
+        # 11. CONFIDENCE TIER
+        confidence = 'HIGH'
+        if len(red_flags) >= 2:
+            confidence = 'LOW'
+        elif len(red_flags) == 1 or blowup_rate >= 0.2:
+            confidence = 'MEDIUM'
+        elif std_dev > 2.8:
+            confidence = 'MEDIUM'
+        
+        print(f"   Confidence: {confidence} | Red Flags: {', '.join(red_flags) if red_flags else 'None'}")
         
         # Store prediction
         pred = {
@@ -324,8 +387,13 @@ for starter in starters:
             'recent_k9': round(recent_k9, 2),
             'expected_ip': round(expected_ip, 1),
             'opponent_k_rate': round(opponent_k_rate, 3),
+            'std_dev': round(std_dev, 2),
             'is_day_game': is_day_game,
             'is_short_rest': is_short_rest,
+            'ml_correction': round(ml_correction, 2),
+            'confidence': confidence,
+            'red_flags': '; '.join(red_flags) if red_flags else 'None',
+            'blowup_rate': round(blowup_rate, 2),
             **{k: round(v, 3) for k, v in probabilities.items()}
         }
         
@@ -356,6 +424,8 @@ if predictions:
     
     print("\n📊 TOP PROJECTIONS:")
     for _, row in df.head(10).iterrows():
-        print(f"   {row['pitcher']:25s} {row['projection']:.1f} K  ({row['team']} vs {row['opponent']})")
+        conf_icon = '🟢' if row['confidence'] == 'HIGH' else '🟡' if row['confidence'] == 'MEDIUM' else '🔴'
+        flags = f" ⚠️ {row['red_flags']}" if row['red_flags'] != 'None' else ''
+        print(f"   {conf_icon} {row['pitcher']:25s} {row['projection']:.1f} K  ({row['team']} vs {row['opponent']}){flags}")
 else:
     print("\n⚠️  No predictions generated")

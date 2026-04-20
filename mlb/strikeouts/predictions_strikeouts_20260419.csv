@@ -1,0 +1,28 @@
+pitcher,team,opponent,is_home,projection,season_k9,recent_k9,expected_ip,opponent_k_rate,std_dev,is_day_game,is_short_rest,ml_correction,confidence,red_flags,blowup_rate,prob_3.5+,prob_4.5+,prob_5.5+,prob_6.5+,prob_7.5+,prob_8.5+,prob_9.5+,prob_10.5+
+Ryan Weathers,NYY,KC,1,8.4,12.0,12.41,4.6,0.294,2.12,False,False,0.83,HIGH,None,0.0,0.989,0.965,0.911,0.809,0.656,0.473,0.295,0.156
+Garrett Crochet,BOS,DET,1,7.8,10.65,10.82,6.0,0.278,3.2,False,False,0.09,MEDIUM,High variance (σ=3.2),0.25,0.911,0.849,0.765,0.659,0.538,0.414,0.299,0.2
+Cole Ragans,KC,NYY,0,7.2,10.55,8.89,6.0,0.268,2.74,False,False,0.96,LOW,Blowup risk (2/4 starts ≤2K); Short outings (avg 3.4 IP),0.5,0.913,0.84,0.735,0.604,0.46,0.321,0.203,0.116
+Jacob Misiorowski,MIL,MIA,0,6.0,13.66,14.43,5.1,0.25,2.15,False,False,-1.5,HIGH,None,0.0,0.876,0.755,0.59,0.406,0.241,0.122,0.052,0.018
+Kevin Gausman,TOR,AZ,0,5.9,11.48,12.62,5.6,0.202,2.77,False,False,-0.44,HIGH,None,0.0,0.808,0.695,0.56,0.417,0.284,0.176,0.098,0.049
+Joey Cantillo,CLE,BAL,1,5.9,10.6,11.39,5.1,0.263,2.0,False,False,-0.71,MEDIUM,Short outings (avg 4.5 IP),0.0,0.886,0.76,0.581,0.384,0.213,0.098,0.036,0.011
+Andrew Painter,PHI,ATL,1,5.6,10.21,10.21,5.0,0.247,3.09,False,False,-0.22,LOW,Blowup risk (1/3 starts ≤2K); Short outings (avg 4.7 IP),0.33,0.749,0.636,0.509,0.382,0.266,0.172,0.102,0.055
+Roki Sasaki,LAD,COL,0,5.6,9.64,9.64,4.0,0.257,2.28,False,False,1.18,MEDIUM,None,0.25,0.822,0.686,0.518,0.347,0.203,0.102,0.044,0.016
+Ryne Nelson,AZ,TOR,1,5.6,8.27,9.14,4.6,0.276,2.0,False,False,0.22,HIGH,None,0.0,0.853,0.709,0.52,0.326,0.171,0.073,0.026,0.007
+Eury Pérez,MIA,MIL,1,5.5,9.52,9.35,5.0,0.252,2.15,False,False,-0.36,MEDIUM,None,0.2,0.829,0.687,0.509,0.33,0.183,0.085,0.033,0.011
+Michael King,SD,LAA,0,5.5,8.48,8.11,5.6,0.249,2.0,False,False,0.29,HIGH,None,0.0,0.844,0.695,0.504,0.312,0.161,0.068,0.023,0.006
+Mike Burrows,HOU,STL,1,5.4,8.74,8.82,5.1,0.257,2.0,False,False,-0.26,HIGH,None,0.0,0.831,0.677,0.484,0.295,0.149,0.062,0.021,0.006
+MacKenzie Gore,TEX,SEA,0,5.4,12.14,13.3,5.0,0.249,2.0,False,False,-1.5,HIGH,None,0.0,0.824,0.666,0.472,0.284,0.142,0.058,0.019,0.005
+Bryan Woo,SEA,TEX,1,5.3,7.91,7.2,6.5,0.269,2.74,False,False,-1.22,MEDIUM,None,0.25,0.745,0.615,0.471,0.331,0.211,0.121,0.063,0.029
+Bailey Ober,MIN,CIN,1,5.0,7.68,7.81,5.0,0.27,2.48,False,False,-0.14,MEDIUM,Blowup risk (2/5 starts ≤2K),0.4,0.722,0.573,0.414,0.267,0.153,0.077,0.034,0.013
+Jeffrey Springs,ATH,CWS,1,4.8,7.39,7.44,6.0,0.296,2.0,False,False,-1.5,MEDIUM,None,0.25,0.738,0.554,0.358,0.194,0.086,0.031,0.009,0.002
+Michael Lorenzen,COL,LAD,1,4.7,7.56,7.55,4.1,0.287,2.0,False,False,0.37,MEDIUM,Blowup risk (2/5 starts ≤2K),0.4,0.719,0.532,0.337,0.179,0.078,0.027,0.008,0.002
+Robbie Ray,SF,WSH,0,4.7,9.71,10.18,5.1,0.209,2.0,False,False,-0.24,HIGH,None,0.0,0.73,0.545,0.349,0.187,0.083,0.03,0.008,0.002
+Trevor Rogers,BAL,CLE,0,4.6,8.13,7.98,6.0,0.331,2.0,False,False,-1.5,HIGH,None,0.0,0.715,0.527,0.332,0.175,0.076,0.027,0.007,0.002
+Shane McClanahan,TB,PIT,0,4.3,9.0,9.36,4.2,0.203,2.0,False,False,0.68,HIGH,None,0.0,0.662,0.467,0.28,0.14,0.057,0.019,0.005,0.001
+PJ Poulin,WSH,SF,1,4.0,5.95,8.37,5.0,0.231,2.0,False,False,0.08,MEDIUM,Blowup risk (5/5 starts ≤2K),1.0,0.608,0.41,0.234,0.11,0.042,0.013,0.003,0.001
+Brady Singer,CIN,MIN,0,4.0,7.06,6.37,4.5,0.29,2.0,False,False,0.18,MEDIUM,Blowup risk (2/5 starts ≤2K),0.4,0.605,0.408,0.232,0.109,0.042,0.013,0.003,0.001
+Grant Holmes,ATL,PHI,0,3.9,7.94,7.22,5.5,0.221,2.0,False,False,-0.46,HIGH,None,0.0,0.571,0.374,0.206,0.093,0.034,0.01,0.002,0.0
+Mitch Keller,PIT,TB,1,3.7,6.43,5.9,6.0,0.304,2.0,False,False,-1.5,HIGH,None,0.0,0.544,0.348,0.187,0.082,0.029,0.008,0.002,0.0
+Framber Valdez,DET,BOS,0,3.6,6.04,4.88,6.0,0.271,2.0,False,False,-0.19,MEDIUM,Blowup risk (2/4 starts ≤2K),0.5,0.528,0.334,0.176,0.077,0.027,0.008,0.002,0.0
+Javier Assad,CHC,NYM,1,2.3,5.4,5.66,5.0,0.221,2.0,False,False,-0.83,HIGH,None,0.0,0.273,0.135,0.054,0.018,0.005,0.001,0.0,0.0
+Matthew Liberatore,STL,HOU,0,2.2,5.96,5.4,5.0,0.242,2.0,False,False,-0.95,MEDIUM,Blowup risk (3/5 starts ≤2K),0.6,0.256,0.124,0.049,0.016,0.004,0.001,0.0,0.0
