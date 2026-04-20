@@ -53,6 +53,13 @@ if games.empty:
 
 print(f"   ✓ {len(games)} games")
 
+# Detect playoff games (NBA regular season typically ends ~April 13)
+from datetime import datetime as _dt
+_today = _dt.now()
+is_playoff_today = 1 if (_today.month > 4 or (_today.month == 4 and _today.day > 13)) else 0
+if is_playoff_today:
+    print("   🏆 PLAYOFF MODE — tighter defense, higher variance expected")
+
 # Create team mappings
 all_teams = teams.get_teams()
 team_id_to_abbr = {team['id']: team['abbreviation'] for team in all_teams}
@@ -218,7 +225,10 @@ feature_cols = [
     
     # ADVANCED: Opponent advanced metrics (NEW)
     'opp_pace',           # Opponent's pace
-    'opp_turnovers_forced' # Opponent's defensive pressure
+    'opp_turnovers_forced', # Opponent's defensive pressure
+    
+    # Game type
+    'is_playoff',          # Playoff games have different dynamics
 ]
 
 for col in feature_cols:
@@ -384,6 +394,9 @@ for _, player in tonight_players.iterrows():
     # Estimate opponent turnovers forced (proxy for defensive pressure)
     features['opp_turnovers_forced'] = opp_defense.get('def_strength', 100.0) / 10.0
     
+    # Game type
+    features['is_playoff'] = is_playoff_today
+    
     # Base ML prediction
     feature_vector = [features.get(col, 0 if 'opp' not in col else 100.0 if 'strength' in col else 25.0) 
                      for col in feature_cols]
@@ -404,9 +417,9 @@ for _, player in tonight_players.iterrows():
     pace_boost = max(0.95, min(1.05, pace_boost))  # Safety cap
     final_prediction *= pace_boost
     
-    # 3. Sanity check - Don't project more than 2.5x recent average
+    # 3. Sanity check - Don't project more than 1.8x recent average
     l10_avg = features.get('ast_last_10', player['AST'])
-    max_reasonable = max(l10_avg * 2.5, 3.0)  # At least 3.0 for low-assist players
+    max_reasonable = max(l10_avg * 1.8, 3.0)  # At least 3.0 for low-assist players
     final_prediction = min(final_prediction, max_reasonable)
     
     opponent_name = team_id_to_abbr.get(opponent_team, 'UNK')

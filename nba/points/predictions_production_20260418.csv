@@ -1,0 +1,15 @@
+Type,Player,Team,Opp,Home,Proj,L10,Ratio,15+%,20+%,25+%,Units_15+,Units_20+,Units_25+,Ladder_Value,Tier,Quality,Conf,Matchup,Def_Factor,Tmts_Out,StdDev,Blowout,Red_Flags,Season
+TOP PLAY,Anthony Edwards,MIN,DEN,0,32.9,27.7,1.19,97,91,79,0.75,0.75,0.5,67,3,85,MEDIUM,FAVORABLE,1.1,1,9.8,LOW,High variance (9.8),28.8
+TOP PLAY,Kevin Durant,HOU,LAL,0,28.9,26.2,1.1,98,91,72,0.75,0.75,0.5,67,3,81,MEDIUM,FAVORABLE,1.1,0,6.6,LOW,High variance (6.6),26.0
+TOP PLAY,Alperen Sengun,HOU,LAL,0,24.5,21.1,1.16,87,71,47,0.75,0.5,0.1,67,3,87,MEDIUM,FAVORABLE,1.1,0,8.3,LOW,High variance (8.3),20.4
+TOP PLAY,Jabari Smith Jr.,HOU,LAL,0,20.6,17.0,1.21,85,55,21,0.75,0.1,0.1,67,3,81,MEDIUM,FAVORABLE,1.1,0,5.5,LOW,High variance (5.5),15.8
+TOP PLAY,Amen Thompson,HOU,LAL,0,19.0,18.9,1.01,74,44,17,0.5,0.1,0.1,67,3,87,MEDIUM,FAVORABLE,1.1,0,6.3,LOW,High variance (6.3),18.3
+TOP PLAY,Jalen Brunson,NYK,ATL,1,28.2,25.7,1.1,98,89,69,0.75,0.75,0.25,65,3,70,LOW,FAVORABLE,1.06,0,6.6,LOW,High variance (6.6),26.0
+TOP PLAY,OG Anunoby,NYK,ATL,1,21.6,16.8,1.29,80,58,34,0.5,0.1,0.1,65,3,70,LOW,FAVORABLE,1.06,0,8.0,LOW,High variance (8.0),16.7
+TOP PLAY,Jamal Murray,DEN,MIN,1,37.8,25.3,1.49,97,94,86,0.75,0.75,0.75,63,3,96,MEDIUM,AVERAGE,1.04,2,11.7,LOW,High variance (11.7),25.4
+TOP PLAY,RJ Barrett,TOR,CLE,0,29.0,20.8,1.39,100,96,78,0.75,0.75,0.5,62,3,100,MEDIUM,FAVORABLE,1.08,1,5.2,MEDIUM,High variance (5.2); Med blowout risk,19.3
+TOP PLAY,Karl-Anthony Towns,NYK,ATL,1,22.0,21.8,1.01,91,65,29,0.75,0.25,0.1,62,3,81,MEDIUM,FAVORABLE,1.06,0,5.3,LOW,High variance (5.3),20.1
+FADE,Nae'Qwan Tomlin,CLE,TOR,1,7.4,3.3,2.24,10,2,0,0.1,0.0,0.0,0,3,38,LOW,AVERAGE,0.98,2,6.0,MEDIUM,Cooling (-0.3); High variance (6.0); Med blowout risk,5.8
+FADE,Gabe Vincent,ATL,NYK,0,8.5,3.4,2.5,1,0,0,0.1,0.0,0.0,0,3,41,LOW,AVERAGE,1.0,0,2.9,LOW,Cooling (-0.5),4.4
+FADE,Dorian Finney-Smith,HOU,LAL,0,8.2,3.3,2.48,1,0,0,0.1,0.0,0.0,8,3,43,LOW,FAVORABLE,1.1,0,3.0,LOW,Cooling (-0.2),3.3
+FADE,Josh Okogie,HOU,LAL,0,5.8,2.3,2.52,0,0,0,0.0,0.0,0.0,0,3,43,LOW,FAVORABLE,1.1,0,3.3,LOW,Cooling (-1.0),4.5

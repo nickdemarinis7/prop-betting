@@ -46,6 +46,13 @@ print("🏀 NBA POINTS PREDICTION - PRODUCTION SYSTEM")
 print("   Focused. Reliable. Profitable.")
 print("=" * 80)
 
+# Detect playoff period
+from datetime import datetime
+_today = datetime.now()
+is_playoff = _today.month > 4 or (_today.month == 4 and _today.day >= 14)
+if is_playoff:
+    print("🏆 PLAYOFF MODE ACTIVE")
+
 # Initialize core components
 base_scraper = NBAApiScraper()
 gamelog_scraper = GameLogScraper()
@@ -569,10 +576,14 @@ for _, player in tonight_players.iterrows():
         rest_bonus = 1.025
         final_prediction *= rest_bonus
     
-    # 5. Sanity check - Don't project more than 2.5x recent average
+    # 5. Sanity check - Don't project more than 1.5x recent average
     l10_avg = features.get('pts_last_10', player['PTS'])
-    max_reasonable = max(l10_avg * 2.5, 3.0)  # At least 3.0 for low-point players
+    max_reasonable = max(l10_avg * 1.5, 8.0)  # At least 8.0 for low-point players
     final_prediction = min(final_prediction, max_reasonable)
+    
+    # 5b. Global cap - no player above 42 points (even elite scorers rarely avg above this)
+    if final_prediction > 42.0:
+        final_prediction = 42.0
     
     opponent_name = team_id_to_abbr.get(opponent_team, 'UNK')
     
@@ -595,12 +606,12 @@ for _, player in tonight_players.iterrows():
         confidence_score -= 1
     
     # 2. Consistency (low variance = reliable)
-    pts_std = features.get('pts_std', 999)
-    if pts_std < 2.0:
+    pts_std = min(features.get('pts_std', 999), 7.0)
+    if pts_std < 4.0:
         confidence_score += 2
-    elif pts_std < 2.8:
+    elif pts_std < 5.5:
         confidence_score += 1
-    elif pts_std > 3.5:
+    elif pts_std > 6.5:
         confidence_score -= 2
     
     # 3. Matchup quality (soft matchups are GOOD for confidence)
@@ -633,7 +644,7 @@ for _, player in tonight_players.iterrows():
         confidence = 'LOW'
     
     # Calculate ladder probabilities for points thresholds (10-40)
-    std_dev = features.get('pts_std', 5.0)
+    std_dev = min(features.get('pts_std', 5.0), 7.0)  # Cap std_dev at 7.0
     prob_10 = calculate_probability(final_prediction, std_dev, 10)
     prob_15 = calculate_probability(final_prediction, std_dev, 15)
     prob_20 = calculate_probability(final_prediction, std_dev, 20)
@@ -790,10 +801,10 @@ def calculate_play_quality(row):
         warnings.append("May sit early")
     
     # 9. CONSISTENCY BONUS
-    if row['consistency'] < 2.0:
+    if row['consistency'] < 4.0:
         score += 6
         reasons.append("Very consistent")
-    elif row['consistency'] < 2.8:
+    elif row['consistency'] < 5.5:
         score += 3
     
     # Combine reasons and warnings
@@ -873,24 +884,24 @@ def calculate_ladder_value(row):
     projection = row['final_projection']
     ratio = projection / l10_avg if l10_avg > 0 else 1.0
     
-    if 0.9 <= ratio <= 1.4:
+    if 0.9 <= ratio <= 1.2:
         score += 20  # Very reliable
-    elif 0.8 <= ratio <= 1.6:
+    elif 0.8 <= ratio <= 1.35:
         score += 15  # Reliable
-    elif 0.7 <= ratio <= 1.8:
+    elif 0.7 <= ratio <= 1.5:
         score += 10  # Acceptable
-    elif ratio > 2.5:
+    elif ratio > 1.5:
         score -= 10  # Too wild
     
     # 3. Consistency (15 points max)
-    std_dev = row['consistency']
-    if std_dev < 2.0:
+    std_dev = min(row['consistency'], 7.0)
+    if std_dev < 4.0:
         score += 15  # Very consistent
-    elif std_dev < 2.5:
+    elif std_dev < 5.0:
         score += 12  # Consistent
-    elif std_dev < 3.0:
+    elif std_dev < 6.0:
         score += 8   # Acceptable
-    elif std_dev > 4.0:
+    elif std_dev > 6.5:
         score -= 5   # Too volatile
     
     # 4. Matchup quality (15 points max)
@@ -944,13 +955,13 @@ def get_confidence_tier(row):
     """Determine confidence tier based on ladder value, momentum, and variance"""
     ladder_value = row['ladder_value']
     momentum = row.get('pts_momentum', 0)
-    std_dev = row['consistency']
+    std_dev = min(row['consistency'], 7.0)  # Use capped std_dev
     
-    # Tier 1: Safest bets
-    if ladder_value >= 75 and momentum >= 0 and std_dev < 2.5:
+    # Tier 1: Safest bets (relaxed thresholds)
+    if ladder_value >= 65 and momentum >= -0.05 and std_dev < 6.0:
         return 1
-    # Tier 3: Higher risk (negative momentum or very high variance)
-    elif momentum < -0.2 or std_dev > 3.5 or ladder_value < 65:
+    # Tier 3: Higher risk (strong negative signals)
+    elif momentum < -0.25 or std_dev > 7.0 or ladder_value < 45:
         return 3
     # Tier 2: Good value (everything else)
     else:
@@ -1110,7 +1121,7 @@ for tier_num in [1, 2, 3]:
         std_dev = row['consistency']
         if std_dev < 2.0:
             factors.append(f"Very consistent (σ: {std_dev:.1f})")
-        elif std_dev > 3.0:
+        elif std_dev > 6.5:
             factors.append(f"High variance (σ: {std_dev:.1f})")
             red_flags.append(f"High variance (σ: {std_dev:.1f}) - Unpredictable")
         
@@ -1232,7 +1243,7 @@ print("=" * 80)
 print()
 
 print("\n" + "=" * 80)
-print("🏆 TOP 20 PROJECTED ASSISTS")
+print("🏆 TOP 20 PROJECTED POINTS")
 print("=" * 80)
 print()
 
@@ -1470,11 +1481,11 @@ def get_tier_for_csv(row):
     """Determine confidence tier for CSV"""
     ladder_value = row.get('ladder_value', 0)
     momentum = row.get('pts_momentum', 0)
-    std_dev = row.get('consistency', 3.0)
+    std_dev = min(row.get('consistency', 5.0), 7.0)
     
-    if ladder_value >= 75 and momentum >= 0 and std_dev < 2.5:
+    if ladder_value >= 65 and momentum >= -0.05 and std_dev < 6.0:
         return 1
-    elif momentum < -0.2 or std_dev > 3.5 or ladder_value < 65:
+    elif momentum < -0.25 or std_dev > 7.0 or ladder_value < 45:
         return 3
     else:
         return 2
@@ -1491,9 +1502,9 @@ def generate_red_flags(row):
     if momentum < -0.2:
         flags.append(f"Cooling ({momentum:+.1f})")
     
-    # High variance
+    # High variance (NBA points std_devs are naturally higher)
     std_dev = row.get('consistency', 0)
-    if std_dev > 3.5:
+    if std_dev > 6.5:
         flags.append(f"High variance ({std_dev:.1f})")
     
     # Tough matchup

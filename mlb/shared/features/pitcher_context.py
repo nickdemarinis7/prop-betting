@@ -18,6 +18,22 @@ class PitcherContextAnalyzer:
     
     def __init__(self):
         self.stats_scraper = PitcherStatsScraper()
+        self.current_season = datetime.now().year
+    
+    def _get_game_logs_with_fallback(self, pitcher_id, season=None):
+        """Get game logs, trying current season first then falling back"""
+        if season is None:
+            season = self.current_season
+        
+        game_logs = self.stats_scraper.get_game_logs(pitcher_id, season=season)
+        
+        if game_logs.empty and season > 2024:
+            game_logs = self.stats_scraper.get_game_logs(pitcher_id, season=season - 1)
+        
+        if game_logs.empty and season - 1 > 2024:
+            game_logs = self.stats_scraper.get_game_logs(pitcher_id, season=season - 2)
+        
+        return game_logs
     
     def get_day_night_splits(self, pitcher_id):
         """
@@ -31,7 +47,7 @@ class PitcherContextAnalyzer:
         """
         try:
             # Get game logs
-            game_logs = self.stats_scraper.get_game_logs(pitcher_id, season=2024)
+            game_logs = self._get_game_logs_with_fallback(pitcher_id)
             
             if game_logs.empty:
                 return {'day_k9': None, 'night_k9': None}
@@ -83,7 +99,7 @@ class PitcherContextAnalyzer:
             float: Expected IP for next start
         """
         try:
-            game_logs = self.stats_scraper.get_game_logs(pitcher_id, season=2024)
+            game_logs = self._get_game_logs_with_fallback(pitcher_id)
             
             if game_logs.empty:
                 return 5.0  # Default
@@ -96,7 +112,7 @@ class PitcherContextAnalyzer:
                 return 5.0
             
             # Calculate average IP
-            avg_ip = recent_starts['IP'].mean()
+            avg_ip = recent_starts['IP'].median()
             
             # Cap at reasonable maximum
             expected_ip = min(avg_ip, 6.5)
@@ -124,7 +140,7 @@ class PitcherContextAnalyzer:
             elif isinstance(game_date, str):
                 game_date = datetime.strptime(game_date, '%Y-%m-%d')
             
-            game_logs = self.stats_scraper.get_game_logs(pitcher_id, season=2024)
+            game_logs = self._get_game_logs_with_fallback(pitcher_id)
             
             if game_logs.empty:
                 return {'days_rest': None, 'is_short_rest': False}
@@ -163,7 +179,7 @@ class PitcherContextAnalyzer:
             dict with workload metrics
         """
         try:
-            game_logs = self.stats_scraper.get_game_logs(pitcher_id, season=2024)
+            game_logs = self._get_game_logs_with_fallback(pitcher_id)
             
             if game_logs.empty:
                 return {'high_workload': False}

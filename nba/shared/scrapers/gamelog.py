@@ -59,8 +59,12 @@ class GameLogScraper:
             return pd.DataFrame()
     
     def get_recent_games(self, player_id, n_games=10):
-        """Get player's last N games"""
-        gamelog = self.get_player_game_logs(player_id, season=self.current_season)
+        """Get player's last N games (regular season + playoffs)"""
+        reg = self.get_player_game_logs(player_id, season=self.current_season, season_type='Regular Season')
+        playoffs = self.get_player_game_logs(player_id, season=self.current_season, season_type='Playoffs')
+        
+        # Combine both, preferring the most recent games regardless of type
+        gamelog = pd.concat([reg, playoffs], ignore_index=True) if not playoffs.empty else reg
         
         if gamelog.empty:
             return pd.DataFrame()
@@ -253,14 +257,24 @@ class GameLogScraper:
             if i % 50 == 0:
                 print(f"  Progress: {i}/{len(player_ids)} players")
             
-            # Get all games for this player
-            gamelog = self.get_player_game_logs(player_id, season=season)
+            # Get regular season + playoff games for this player
+            reg = self.get_player_game_logs(player_id, season=season, season_type='Regular Season')
+            playoffs = self.get_player_game_logs(player_id, season=season, season_type='Playoffs')
+            
+            # Tag source before combining
+            if not reg.empty:
+                reg['_is_playoff'] = 0
+            if not playoffs.empty:
+                playoffs['_is_playoff'] = 1
+            
+            gamelog = pd.concat([reg, playoffs], ignore_index=True) if not playoffs.empty else reg
             
             if gamelog.empty or len(gamelog) < min_games:
                 continue
             
             # Sort by date
-            gamelog = gamelog.sort_values('GAME_DATE', ascending=True)
+            gamelog['_date_parsed'] = pd.to_datetime(gamelog['GAME_DATE'])
+            gamelog = gamelog.sort_values('_date_parsed', ascending=True)
             
             # For each game (except first 10), use previous games as features
             for idx in range(10, len(gamelog)):
@@ -281,6 +295,7 @@ class GameLogScraper:
                 features['player_id'] = player_id
                 features['game_date'] = target_game['GAME_DATE']
                 features['is_home'] = 1 if 'vs.' in str(target_game.get('MATCHUP', '')) else 0
+                features['is_playoff'] = int(target_game.get('_is_playoff', 0))
                 features['target_assists'] = target_assists
                 
                 all_data.append(features)

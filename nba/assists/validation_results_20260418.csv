@@ -1,0 +1,14 @@
+Date,Player,Type,Projection,L10,Actual,Diff,Baseline_Diff,Hit_5+,Hit_7+,Hit_10+,Prob_5+,Prob_7+,Prob_10+,Ladder_Value,Is_Playoff,Game_Date,Units_5+,Units_7+,Units_10+,Min_Odds_5+,Min_Odds_7+,Min_Odds_10+
+20260418,Alperen Sengun,TOP PLAY,6.5,6.7,6,-0.5,-0.7,True,False,False,76,50,14,83,True,"Apr 18, 2026",1.25,0.75,0.1,-317,-100.0,593.0
+20260418,Amen Thompson,TOP PLAY,6.2,5.2,7,0.8,1.8,True,True,False,79,45,6,83,True,"Apr 18, 2026",1.5,0.75,0.25,-381,121.0,1465.0
+20260418,Jamal Murray,TOP PLAY,6.9,7.3,7,0.1,-0.3,True,True,False,80,55,17,78,True,"Apr 18, 2026",1.5,0.75,0.1,-412,-123.0,486.0
+20260418,Jalen Brunson,TOP PLAY,8.0,7.9,7,-1.0,-0.9,True,True,False,83,66,34,72,True,"Apr 18, 2026",0.75,0.25,0.1,-504,-195.0,196.0
+20260418,Anthony Edwards,TOP PLAY,5.2,4.1,7,1.8,2.9,True,True,False,70,19,0,70,True,"Apr 18, 2026",1.0,0.1,0.0,-228,416.0,
+20260418,LeBron James,TOP PLAY,8.6,7.1,13,4.4,5.9,True,True,True,88,73,39,62,True,"Apr 18, 2026",1.0,0.75,0.1,-753,-266.0,154.0
+20260418,CJ McCollum,TOP PLAY,5.2,4.6,1,-4.2,-3.6,False,False,False,62,26,2,61,True,"Apr 18, 2026",0.5,0.1,0.0,-164,279.0,4851.0
+20260418,Julius Randle,TOP PLAY,4.9,4.3,2,-2.9,-2.3,False,False,False,58,20,1,60,True,"Apr 18, 2026",0.1,0.1,0.0,-139,409.0,
+20260418,Donovan Mitchell,TOP PLAY,5.5,5.4,4,-1.5,-1.4,False,False,False,71,31,2,59,True,"Apr 18, 2026",0.5,0.1,0.0,-241,225.0,5225.0
+20260418,Mouhamed Gueye,FADE,3.0,0.9,1,-2.0,0.1,False,False,False,5,0,0,0,True,"Apr 18, 2026",0.1,0.0,0.0,1817,,
+20260418,Max Strus,FADE,2.7,1.7,0,-2.7,-1.7,False,False,False,10,0,0,15,True,"Apr 18, 2026",0.1,0.0,0.0,937,,
+20260418,Luke Kennard,FADE,3.2,1.3,3,-0.2,1.7,False,False,False,34,14,2,16,True,"Apr 18, 2026",0.1,0.0,0.0,196,624.0,5420.0
+20260418,Dean Wade,FADE,3.0,1.0,1,-2.0,0.0,False,False,False,12,0,0,0,True,"Apr 18, 2026",0.1,0.0,0.0,754,,

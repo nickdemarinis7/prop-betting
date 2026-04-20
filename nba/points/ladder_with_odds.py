@@ -175,7 +175,12 @@ def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
     
     for _, pred in predictions.iterrows():
         player = pred['Player']
-        
+        confidence = pred.get('Conf', 'HIGH')
+
+        # Skip LOW confidence players entirely
+        if confidence == 'LOW':
+            continue
+
         # Get odds for this player
         player_odds = odds_df[
             odds_df['player'].str.contains(player.split()[-1], case=False, na=False)
@@ -223,6 +228,10 @@ def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
             
             # Filter: edge >5% and odds better than min_odds
             if edge > 0.05 and best_odds > min_odds:
+                # Reduce unit sizing for MEDIUM confidence
+                conf_multiplier = 0.6 if confidence == 'MEDIUM' else 1.0
+                red_flags = pred.get('Red_Flags', 'None')
+
                 value_bets.append({
                     'player': pred['Player'],
                     'team': pred.get('Team', ''),
@@ -236,7 +245,9 @@ def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
                     'edge': edge,
                     'ev': ev,
                     'tier': pred.get('Tier', ''),
-                    'confidence': 'High' if edge > 0.15 else 'Medium'
+                    'confidence': confidence,
+                    'conf_multiplier': conf_multiplier,
+                    'red_flags': red_flags,
                 })
     
     if not value_bets:
@@ -255,11 +266,15 @@ def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
     print("than the sportsbook's implied probability.\n")
     
     for i, (_, bet) in enumerate(value_df.head(15).iterrows(), 1):
-        print(f"{i:2d}. {bet['player']:25s} OVER {bet['line']} Points")
-        print(f"    {bet['team']} vs {bet['opponent']} | Projection: {bet['projection']:.1f} PTS")
-        print(f"    📊 Our Probability: {bet['our_prob']:.1%}")
+        conf = bet.get('confidence', '')
+        conf_icon = '🟢' if conf == 'HIGH' else '🟡'
+        rf = bet.get('red_flags', 'None')
+        rf_str = f" | ⚠️ {rf}" if rf not in ('None', '') and pd.notna(rf) else ''
+        print(f"{i:2d}. {conf_icon} {bet['player']:25s} OVER {bet['line']} Points")
+        print(f"    {bet['team']} vs {bet['opponent']} | Proj: {bet['projection']:.1f} PTS{rf_str}")
+        print(f"    📊 Our Prob: {bet['our_prob']:.1%}")
         print(f"    📖 {bet['bookmaker']}: {bet['book_odds']:+d} (Implied: {bet['implied_prob']:.1%})")
-        print(f"    💰 EDGE: {bet['edge']:.1%} | EV: {bet['ev']:+.1%} | {bet['confidence']} Confidence")
+        print(f"    💰 EDGE: {bet['edge']:.1%} | EV: {bet['ev']:+.1%}")
         print()
     
     # Ladder opportunities
@@ -281,6 +296,8 @@ def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
             total_units = 0
             for _, bet in group.iterrows():
                 units = 1.0 if bet['edge'] > 0.15 else 0.5
+                units *= bet.get('conf_multiplier', 1.0)  # Reduce for MEDIUM
+                units = round(units, 2)
                 total_units += units
                 print(f"   • {units:.1f}u on OVER {bet['line']} @ {bet['book_odds']:+d} ({bet['bookmaker']})")
                 print(f"     Edge: {bet['edge']:.1%} | Our Prob: {bet['our_prob']:.1%}")
