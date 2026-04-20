@@ -8,6 +8,10 @@ import sys
 import os
 import requests
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load .env from project root
+load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))
 
 # Add parent directories to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))

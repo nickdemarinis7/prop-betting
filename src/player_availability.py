@@ -99,39 +99,41 @@ class PlayerAvailabilityTracker:
                         cols = row.find_all('td')
                         if len(cols) >= 3:
                             player_name = cols[0].text.strip()
-                            position = cols[1].text.strip()  # This is position, not injury type
-                            date_status = cols[2].text.strip()  # This is a date (return date)
+                            position = cols[1].text.strip()
+                            return_date = cols[2].text.strip()
                             
-                            # ESPN uses dates as status
-                            # If there's a date, player is injured
-                            # Parse the actual injury status
-                            injury_status = 'OUT'  # Default to OUT if there's a date
+                            # ESPN has 5 columns: NAME, POS, EST. RETURN DATE, STATUS, COMMENT
+                            espn_status = cols[3].text.strip() if len(cols) >= 4 else ''
+                            comment = cols[4].text.strip() if len(cols) >= 5 else ''
+                            comment_lower = comment.lower()
                             
-                            # Try to determine if it's today or future
-                            from datetime import datetime
-                            try:
-                                # Parse date like "Apr 6" or "Oct 1"
-                                current_year = datetime.now().year
-                                injury_date = datetime.strptime(f"{date_status} {current_year}", "%b %d %Y")
-                                today = datetime.now()
-                                
-                                if injury_date.date() <= today.date():
-                                    injury_status = 'OUT'  # Still out
-                                elif injury_date.date() == today.date():
-                                    injury_status = 'QUESTIONABLE'  # Might return today
-                                else:
-                                    injury_status = 'OUT'  # Out until future date
-                            except:
-                                # If we can't parse the date, assume OUT
+                            # Determine real injury status from comment keywords
+                            # Comment contains the most accurate/recent info
+                            if any(kw in comment_lower for kw in ["ruled out", "won't play", "will not play", "is out ", "has been ruled out", "sidelined"]):
                                 injury_status = 'OUT'
+                            elif 'doubtful' in comment_lower:
+                                injury_status = 'DOUBTFUL'
+                            elif 'questionable' in comment_lower:
+                                injury_status = 'QUESTIONABLE'
+                            elif 'probable' in comment_lower or 'expected to play' in comment_lower:
+                                injury_status = 'PROBABLE'
+                            elif espn_status.lower() == 'out':
+                                injury_status = 'OUT'
+                            elif espn_status.lower() == 'day-to-day':
+                                # Day-To-Day without further detail — treat as questionable
+                                injury_status = 'QUESTIONABLE'
+                            else:
+                                injury_status = 'QUESTIONABLE'
                             
                             injuries.append({
                                 'player_name': player_name,
                                 'team': team_name,
                                 'position': position,
-                                'return_date': date_status,
+                                'return_date': return_date,
                                 'status': injury_status,
-                                'injury': position,  # Keep for compatibility
+                                'espn_status': espn_status,
+                                'comment': comment,
+                                'injury': comment,
                                 'source': 'ESPN'
                             })
                     except:

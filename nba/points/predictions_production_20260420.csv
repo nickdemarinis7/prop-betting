@@ -1,0 +1,12 @@
+Type,Player,Team,Opp,Home,Proj,L10,Ratio,15+%,20+%,25+%,Units_15+,Units_20+,Units_25+,Ladder_Value,Tier,Quality,Conf,Matchup,Def_Factor,Tmts_Out,StdDev,Blowout,Red_Flags,Season
+TOP PLAY,RJ Barrett,TOR,CLE,0,21.0,20.8,1.01,80,55,29,1.25,0.75,0.25,78,1,100,HIGH,FAVORABLE,1.08,0,5.2,MEDIUM,Med blowout risk,19.3
+TOP PLAY,Scottie Barnes,TOR,CLE,0,16.2,15.8,1.03,56,32,13,0.75,0.25,0.1,72,1,95,HIGH,FAVORABLE,1.08,0,5.7,MEDIUM,Med blowout risk,18.1
+TOP PLAY,Karl-Anthony Towns,NYK,ATL,1,20.8,21.8,0.95,78,54,29,1.0,0.5,0.1,70,2,80,MEDIUM,FAVORABLE,1.06,1,5.3,LOW,Cooling (-0.2),20.1
+TOP PLAY,Anthony Edwards,MIN,DEN,0,27.6,27.7,1.0,90,78,60,1.25,1.0,0.75,67,2,85,MEDIUM,FAVORABLE,1.1,0,9.9,LOW,High variance (9.9),28.8
+TOP PLAY,Julius Randle,MIN,DEN,0,20.1,19.3,1.04,70,51,31,1.0,0.5,0.1,67,2,85,MEDIUM,FAVORABLE,1.1,0,7.0,LOW,High variance (7.0),21.1
+TOP PLAY,Jalen Brunson,NYK,ATL,1,25.6,25.7,1.0,87,73,53,1.25,1.0,0.5,65,2,70,LOW,FAVORABLE,1.06,1,6.6,LOW,High variance (6.6),26.0
+TOP PLAY,Rudy Gobert,MIN,DEN,0,12.5,12.8,0.98,38,17,6,0.5,0.25,0.25,65,1,95,HIGH,FAVORABLE,1.1,0,5.7,LOW,None,10.9
+TOP PLAY,Jamal Murray,DEN,MIN,1,23.9,25.3,0.94,82,66,46,1.25,0.75,0.25,62,2,85,MEDIUM,AVERAGE,1.04,0,11.7,LOW,High variance (11.7),25.4
+TOP PLAY,Nikola Jokić,DEN,MIN,1,23.9,24.0,1.0,82,65,45,1.25,0.75,0.25,62,2,91,MEDIUM,AVERAGE,1.04,0,8.2,LOW,High variance (8.2),27.7
+TOP PLAY,OG Anunoby,NYK,ATL,1,18.5,16.8,1.1,64,44,25,0.75,0.25,0.1,62,2,70,LOW,FAVORABLE,1.06,1,8.0,LOW,High variance (8.0),16.7
+FADE,Nae'Qwan Tomlin,CLE,TOR,1,5.3,3.3,1.61,13,4,1,0.1,0.0,0.0,0,3,38,LOW,AVERAGE,0.98,0,6.0,MEDIUM,Cooling (-0.6); Med blowout risk,5.8

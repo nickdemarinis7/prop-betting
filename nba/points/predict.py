@@ -413,14 +413,17 @@ for idx, row in feature_importance.head(10).iterrows():
 # Step 4: Generate predictions
 print("\n🎯 Generating Predictions...")
 
-# Create set of OUT/DOUBTFUL players for quick lookup
+# Create set of OUT/DOUBTFUL players for quick lookup (tonight's teams only)
 out_players = set()
 if not espn_injuries.empty:
-    out_list = espn_injuries[
-        espn_injuries['status'].str.contains('OUT|DOUBTFUL', case=False, na=False, regex=True)
-    ]['player_name'].tolist()
-    out_players = set(out_list)
-    print(f"   ⚠️  Filtering out {len(out_players)} injured/doubtful players")
+    playing_team_names = [team_id_to_name.get(tid, '') for tid in matchups.keys()]
+    tonight_out = espn_injuries[
+        (espn_injuries['status'].str.contains('OUT|DOUBTFUL', case=False, na=False, regex=True)) &
+        (espn_injuries['team'].isin(playing_team_names))
+    ]
+    out_players = set(tonight_out['player_name'].tolist())
+    if out_players:
+        print(f"   ⚠️  Filtering out {len(out_players)} injured/doubtful players")
 
 predictions = []
 filtered_count = 0
@@ -443,15 +446,24 @@ for _, player in tonight_players.iterrows():
     if recent_games.empty or len(recent_games) < 5:
         continue
     
-    # Check if player has played recently (within last 14 days)
-    # This filters out waived/inactive players
+    # Check if player has played recently
+    # In playoffs, games are every 2-3 days; use 7-day window
+    max_inactive_days = 7 if is_playoff else 14
     if 'GAME_DATE' in recent_games.columns:
         most_recent_game = pd.to_datetime(recent_games['GAME_DATE'].iloc[0])
         days_since_lpts_game = (pd.Timestamp.now() - most_recent_game).days
         
-        if days_since_lpts_game > 14:
+        if days_since_lpts_game > max_inactive_days:
             filtered_count += 1
             continue  # Skip inactive players
+    
+    # Filter DNPs: if player scored 0 in most recent game AND played < 5 min, skip
+    if 'PTS' in recent_games.columns and 'MIN' in recent_games.columns:
+        last_pts = recent_games['PTS'].iloc[0]
+        last_min = recent_games['MIN'].iloc[0]
+        if last_pts == 0 and last_min < 5:
+            filtered_count += 1
+            continue  # Likely DNP or injury exit
     
     # Filter OUT players (injuries)
     if out_player_names:
@@ -549,41 +561,46 @@ for _, player in tonight_players.iterrows():
     # Apply only proven adjustments with safety caps
     final_prediction = base_prediction
     
-    # 1. Opponent defense (proven impact) - Cap at ±15%
+    # 1. Opponent defense (proven impact) - Cap at ±10%
     defense_factor = opp_defense['def_strength'] / 100.0
-    defense_factor = max(0.85, min(1.15, defense_factor))  # Safety cap
+    defense_factor = max(0.90, min(1.10, defense_factor))  # Tighter safety cap
     final_prediction *= defense_factor
     
-    # 2. Pace (proven impact) - Cap at ±5%
+    # 2. Pace (proven impact) - Cap at ±3%
     game_pace = pace_analyzer.calculate_game_pace(player_team, opponent_team, season='2025-26')
     pace_boost = pace_analyzer.calculate_pace_boost(game_pace['predicted_pace'])
-    pace_boost = max(0.95, min(1.05, pace_boost))  # Safety cap
+    pace_boost = max(0.97, min(1.03, pace_boost))  # Tighter safety cap
     final_prediction *= pace_boost
     
-    # 3. USAGE BOOST (NEW) - Apply boost from injured teammates
-    # Cap at 1.5x (50% max increase) to prevent over-projection
+    # 3. USAGE BOOST - Apply boost from injured teammates
+    # Cap at 1.15x (15% max increase) - validation showed 1.5x was too aggressive
     usage_boost = features.get('usage_boost_multiplier', 1.0)
-    usage_boost = min(usage_boost, 1.5)  # Safety cap
+    usage_boost = min(usage_boost, 1.15)  # Much tighter cap
     final_prediction *= usage_boost
     
-    # 4. FATIGUE PENALTY (NEW) - Reduce projection for back-to-back games
+    # 4. FATIGUE PENALTY - Reduce projection for back-to-back games
     if features.get('is_back_to_back', 0) == 1:
-        # Players typically score 5-8% fewer points on B2B
         fatigue_penalty = 0.93  # 7% reduction
         final_prediction *= fatigue_penalty
-    elif features.get('days_rest', 1) >= 3:
-        # Well-rested players get slight boost (2-3%)
-        rest_bonus = 1.025
-        final_prediction *= rest_bonus
+    # Removed rest bonus - was contributing to over-projection
     
-    # 5. Sanity check - Don't project more than 1.5x recent average
+    # 5. PLAYOFF PENALTY — validation shows playoffs reduce scoring (~10%)
+    #    Tighter defense, slower pace, more deliberate offense
+    if is_playoff:
+        final_prediction *= 0.90
+    
+    # 6. Calibration dampener — blend prediction toward L10 to reduce over-projection
+    #    Validation shows -8.5 bias; this anchors heavily to recent reality
     l10_avg = features.get('pts_last_10', player['PTS'])
-    max_reasonable = max(l10_avg * 1.5, 8.0)  # At least 8.0 for low-point players
+    final_prediction = (final_prediction * 0.55) + (l10_avg * 0.45)
+    
+    # 7. Sanity check - Don't project more than 1.25x recent average
+    max_reasonable = max(l10_avg * 1.25, 8.0)  # At least 8.0 for low-point players
     final_prediction = min(final_prediction, max_reasonable)
     
-    # 5b. Global cap - no player above 42 points (even elite scorers rarely avg above this)
-    if final_prediction > 42.0:
-        final_prediction = 42.0
+    # 7b. Global cap - no player above 38 points
+    if final_prediction > 38.0:
+        final_prediction = 38.0
     
     opponent_name = team_id_to_abbr.get(opponent_team, 'UNK')
     
@@ -644,7 +661,8 @@ for _, player in tonight_players.iterrows():
         confidence = 'LOW'
     
     # Calculate ladder probabilities for points thresholds (10-40)
-    std_dev = min(features.get('pts_std', 5.0), 7.0)  # Cap std_dev at 7.0
+    # Inflate std_dev by 1.4x for calibration (validation showed over-confidence)
+    std_dev = min(features.get('pts_std', 5.0), 7.0) * 1.4
     prob_10 = calculate_probability(final_prediction, std_dev, 10)
     prob_15 = calculate_probability(final_prediction, std_dev, 15)
     prob_20 = calculate_probability(final_prediction, std_dev, 20)

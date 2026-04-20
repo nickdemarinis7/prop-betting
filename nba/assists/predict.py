@@ -292,12 +292,17 @@ print(f"   ✓ Model ready (MAE: {test_mae:.2f}, R²: {test_r2:.1%})")
 # Step 4: Generate predictions
 print("\n🎯 Generating Predictions...")
 
-# Create set of OUT players for quick lookup
+# Create set of OUT/DOUBTFUL players for quick lookup (tonight's teams only)
 out_players = set()
 if not espn_injuries.empty:
-    out_list = espn_injuries[espn_injuries['status'] == 'OUT']['player_name'].tolist()
-    out_players = set(out_list)
-    print(f"   ⚠️  Filtering out {len(out_players)} injured players")
+    playing_team_names = [team_id_to_name.get(tid, '') for tid in matchups.keys()]
+    tonight_out = espn_injuries[
+        (espn_injuries['status'].str.contains('OUT|DOUBTFUL', case=False, na=False, regex=True)) &
+        (espn_injuries['team'].isin(playing_team_names))
+    ]
+    out_players = set(tonight_out['player_name'].tolist())
+    if out_players:
+        print(f"   ⚠️  Filtering out {len(out_players)} injured/doubtful players")
 
 predictions = []
 filtered_count = 0
@@ -320,15 +325,24 @@ for _, player in tonight_players.iterrows():
     if recent_games.empty or len(recent_games) < 5:
         continue
     
-    # Check if player has played recently (within last 14 days)
-    # This filters out waived/inactive players
+    # Check if player has played recently
+    # In playoffs, games are every 2-3 days; use 7-day window
+    max_inactive_days = 7 if is_playoff_today else 14
     if 'GAME_DATE' in recent_games.columns:
         most_recent_game = pd.to_datetime(recent_games['GAME_DATE'].iloc[0])
         days_since_last_game = (pd.Timestamp.now() - most_recent_game).days
         
-        if days_since_last_game > 14:
+        if days_since_last_game > max_inactive_days:
             filtered_count += 1
             continue  # Skip inactive players
+    
+    # Filter DNPs: if player had 0 assists AND played < 5 min in last game, skip
+    if 'AST' in recent_games.columns and 'MIN' in recent_games.columns:
+        last_ast = recent_games['AST'].iloc[0]
+        last_min = recent_games['MIN'].iloc[0]
+        if last_ast == 0 and last_min < 5:
+            filtered_count += 1
+            continue  # Likely DNP or injury exit
     
     # Filter OUT players (injuries)
     if out_player_names:
@@ -406,20 +420,29 @@ for _, player in tonight_players.iterrows():
     # Apply only proven adjustments with safety caps
     final_prediction = base_prediction
     
-    # 1. Opponent defense (proven impact) - Cap at ±15%
+    # 1. Opponent defense (proven impact) - Cap at ±12%
     defense_factor = opp_defense['def_strength'] / 100.0
-    defense_factor = max(0.85, min(1.15, defense_factor))  # Safety cap
+    defense_factor = max(0.88, min(1.12, defense_factor))  # Tighter safety cap
     final_prediction *= defense_factor
     
-    # 2. Pace (proven impact) - Cap at ±5%
+    # 2. Pace (proven impact) - Cap at ±4%
     game_pace = pace_analyzer.calculate_game_pace(player_team, opponent_team, season='2025-26')
     pace_boost = pace_analyzer.calculate_pace_boost(game_pace['predicted_pace'])
-    pace_boost = max(0.95, min(1.05, pace_boost))  # Safety cap
+    pace_boost = max(0.96, min(1.04, pace_boost))  # Tighter safety cap
     final_prediction *= pace_boost
     
-    # 3. Sanity check - Don't project more than 1.8x recent average
+    # 3. PLAYOFF PENALTY — validation shows playoffs reduce assists ~12%
+    #    Tighter defense, slower pace, more half-court sets
+    if is_playoff_today:
+        final_prediction *= 0.88
+    
+    # 4. Calibration dampener — blend prediction toward L10 to reduce over-projection
+    #    Validation shows -1.32 bias; this anchors to recent reality
     l10_avg = features.get('ast_last_10', player['AST'])
-    max_reasonable = max(l10_avg * 1.8, 3.0)  # At least 3.0 for low-assist players
+    final_prediction = (final_prediction * 0.70) + (l10_avg * 0.30)
+    
+    # 5. Sanity check - Don't project more than 1.4x recent average
+    max_reasonable = max(l10_avg * 1.4, 3.0)  # At least 3.0 for low-assist players
     final_prediction = min(final_prediction, max_reasonable)
     
     opponent_name = team_id_to_abbr.get(opponent_team, 'UNK')
@@ -620,9 +643,11 @@ results_df['reasons'] = results_df.apply(lambda row: calculate_play_quality(row)
 from scipy import stats
 
 def calculate_hit_probability(projection, std_dev, threshold):
-    """Calculate probability of hitting threshold using normal distribution"""
+    """Calculate probability of hitting threshold using normal distribution.
+    Calibrated: inflated std_dev by 1.3x to correct over-confidence (validation showed 16pp gap)"""
     if std_dev > 0:
-        z_score = (threshold - 0.5 - projection) / std_dev
+        calibrated_std = std_dev * 1.3  # Widen distribution to fix over-confidence
+        z_score = (threshold - projection) / calibrated_std
         prob = 1 - stats.norm.cdf(z_score)
     else:
         prob = 1.0 if projection >= threshold else 0.0
