@@ -1,19 +1,20 @@
 pitcher,team,opponent,is_home,projection,season_k9,recent_k9,expected_ip,opponent_k_rate,std_dev,is_day_game,is_short_rest,ml_correction,confidence,red_flags,blowup_rate,prob_3.5+,prob_4.5+,prob_5.5+,prob_6.5+,prob_7.5+,prob_8.5+,prob_9.5+,prob_10.5+
-Kyle Bradish,BAL,KC,0,6.2,9.84,9.84,4.6,0.271,2.0,False,False,1.19,HIGH,None,0.0,0.913,0.804,0.64,0.443,0.26,0.127,0.05,0.016
-Reid Detmers,LAA,TOR,1,6.1,10.54,10.88,5.2,0.204,2.5,True,False,0.82,HIGH,None,0.0,0.849,0.737,0.593,0.434,0.286,0.167,0.086,0.039
+Spencer Arrighetti,HOU,CLE,0,6.5,10.98,10.98,6.0,0.236,3.0,False,False,-0.31,MEDIUM,Blowup risk (1/2 starts ≤2K),0.5,0.842,0.748,0.631,0.501,0.37,0.253,0.159,0.091
 Jack Flaherty,DET,BOS,0,5.8,9.7,9.64,4.1,0.264,2.0,True,False,1.5,MEDIUM,None,0.2,0.874,0.741,0.558,0.362,0.197,0.088,0.032,0.009
-Max Meyer,MIA,STL,1,5.4,9.42,9.38,5.0,0.263,2.0,False,False,-0.05,HIGH,None,0.0,0.829,0.674,0.48,0.291,0.147,0.061,0.02,0.005
-Dylan Cease,TOR,LAA,0,5.4,13.44,14.26,5.0,0.298,2.45,True,False,-1.5,MEDIUM,Short outings (avg 4.7 IP),0.0,0.777,0.639,0.479,0.322,0.192,0.101,0.046,0.018
+Reid Detmers,LAA,TOR,1,5.7,10.54,10.88,5.2,0.305,2.5,True,False,-0.36,MEDIUM,Short outings (avg 4.8 IP),0.0,0.806,0.679,0.526,0.369,0.231,0.128,0.062,0.026
+Kyle Bradish,BAL,KC,0,5.7,9.84,9.84,4.6,0.29,2.0,False,False,0.64,HIGH,None,0.0,0.861,0.72,0.533,0.338,0.179,0.078,0.028,0.008
+Max Meyer,MIA,STL,1,5.3,9.73,9.76,5.0,0.263,2.0,False,False,-0.32,HIGH,None,0.0,0.815,0.653,0.458,0.272,0.134,0.054,0.018,0.005
 Seth Lugo,KC,BAL,1,5.3,7.82,8.08,6.1,0.271,2.0,False,False,-0.37,HIGH,None,0.0,0.81,0.648,0.452,0.267,0.131,0.053,0.017,0.004
-Slade Cecconi,CLE,HOU,1,5.1,8.14,8.44,4.6,0.231,2.0,False,False,1.29,HIGH,None,0.0,0.79,0.621,0.424,0.244,0.117,0.045,0.014,0.004
-Emerson Hancock,SEA,ATH,1,4.9,8.71,9.7,6.0,0.28,2.0,True,False,-1.5,HIGH,None,0.0,0.763,0.586,0.389,0.217,0.1,0.037,0.011,0.003
-Bryce Elder,ATL,WSH,0,4.8,8.54,9.24,5.6,0.223,2.0,False,False,0.08,HIGH,None,0.0,0.735,0.551,0.355,0.192,0.085,0.031,0.009,0.002
+Emerson Hancock,SEA,ATH,1,4.9,8.71,9.7,6.0,0.293,2.0,True,False,-1.5,HIGH,None,0.0,0.763,0.586,0.389,0.217,0.1,0.037,0.011,0.003
+Slade Cecconi,CLE,HOU,1,4.7,7.91,8.11,4.1,0.231,2.0,False,False,1.5,MEDIUM,None,0.2,0.731,0.546,0.35,0.188,0.083,0.03,0.009,0.002
+Bryce Elder,ATL,WSH,0,4.5,8.3,9.16,5.6,0.223,2.87,False,False,-0.2,MEDIUM,None,0.2,0.63,0.494,0.358,0.238,0.144,0.079,0.039,0.018
 Aaron Nola,PHI,CHC,0,4.4,9.62,9.77,5.5,0.251,2.24,False,False,-1.3,HIGH,None,0.0,0.657,0.482,0.312,0.174,0.083,0.033,0.011,0.003
-Colin Rea,CHC,PHI,1,4.4,7.18,7.89,4.0,0.251,2.0,False,False,1.19,MEDIUM,None,0.25,0.665,0.47,0.283,0.141,0.058,0.019,0.005,0.001
-Jake Irvin,WSH,ATL,1,3.8,8.82,9.95,5.0,0.212,2.0,False,False,-0.69,HIGH,None,0.0,0.551,0.355,0.191,0.085,0.031,0.009,0.002,0.0
-J.T. Ginn,ATH,SEA,0,3.0,7.27,6.43,4.0,0.235,2.0,True,False,0.39,MEDIUM,Blowup risk (3/5 starts ≤2K),0.6,0.394,0.221,0.102,0.038,0.012,0.003,0.001,0.0
-Justin Wrobleski,LAD,COL,0,2.9,3.18,3.18,5.0,0.276,2.0,True,False,1.5,MEDIUM,Blowup risk (3/3 starts ≤2K),1.0,0.389,0.217,0.1,0.037,0.011,0.003,0.001,0.0
+Colin Rea,CHC,PHI,1,4.4,7.18,7.89,4.0,0.252,2.0,False,False,1.19,MEDIUM,None,0.25,0.666,0.472,0.284,0.142,0.058,0.019,0.005,0.001
+Dylan Cease,TOR,LAA,0,4.3,13.44,14.26,5.0,0.215,2.45,True,False,-1.5,MEDIUM,Short outings (avg 4.7 IP),0.0,0.624,0.463,0.308,0.182,0.094,0.042,0.016,0.006
+Michael McGreevy,STL,MIA,0,3.9,5.05,4.86,5.5,0.248,2.0,False,False,1.27,MEDIUM,Blowup risk (3/5 starts ≤2K),0.6,0.585,0.388,0.216,0.099,0.037,0.011,0.003,0.001
+Jake Irvin,WSH,ATL,1,3.9,8.79,9.9,5.0,0.212,2.0,False,False,-0.5,MEDIUM,None,0.2,0.585,0.387,0.216,0.099,0.037,0.011,0.003,0.001
 Jose Quintana,COL,LAD,1,2.9,4.19,3.7,3.6,0.298,3.0,True,False,1.5,MEDIUM,Blowup risk (2/2 starts ≤2K),1.0,0.414,0.291,0.189,0.112,0.061,0.03,0.013,0.005
-Rhett Lowder,CIN,TB,0,2.3,5.87,6.05,5.6,0.298,2.0,False,False,-1.27,MEDIUM,None,0.25,0.267,0.131,0.052,0.017,0.004,0.001,0.0,0.0
+J.T. Ginn,ATH,SEA,0,2.7,7.27,6.43,4.0,0.25,2.0,True,False,0.08,MEDIUM,Blowup risk (3/5 starts ≤2K),0.6,0.348,0.187,0.082,0.029,0.008,0.002,0.0,0.0
+Justin Wrobleski,LAD,COL,0,2.6,3.18,3.18,5.0,0.25,2.0,True,False,1.29,MEDIUM,Blowup risk (3/3 starts ≤2K),1.0,0.332,0.175,0.076,0.027,0.007,0.002,0.0,0.0
+Rhett Lowder,CIN,TB,0,2.3,5.87,6.05,5.6,0.298,2.0,False,False,-1.27,MEDIUM,Blowup risk (2/5 starts ≤2K),0.4,0.267,0.131,0.052,0.017,0.004,0.001,0.0,0.0
 Sonny Gray,BOS,DET,1,2.2,6.57,5.25,5.0,0.27,2.0,True,False,-0.96,MEDIUM,Blowup risk (3/5 starts ≤2K),0.6,0.259,0.126,0.05,0.016,0.004,0.001,0.0,0.0
-Michael McGreevy,STL,MIA,0,2.1,5.21,5.09,5.5,0.248,2.0,False,False,-0.69,MEDIUM,Blowup risk (2/4 starts ≤2K),0.5,0.24,0.114,0.044,0.014,0.003,0.001,0.0,0.0

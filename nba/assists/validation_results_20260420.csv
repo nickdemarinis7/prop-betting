@@ -1,0 +1,13 @@
+Date,Player,Type,Projection,L10,Actual,Diff,Baseline_Diff,Hit_5+,Hit_7+,Hit_10+,Prob_5+,Prob_7+,Prob_10+,Ladder_Value,Is_Playoff,Game_Date,Units_5+,Units_7+,Units_10+,Min_Odds_5+,Min_Odds_7+,Min_Odds_10+
+20260420,Jalen Brunson,TOP PLAY,7.7,7.9,7,-0.7,-0.9,True,True,False,73,56,30,67,True,"Apr 20, 2026",1.25,0.75,0.25,-266,-126.0,237.0
+20260420,Jamal Murray,TOP PLAY,6.5,7.3,7,0.5,-0.3,True,True,False,66,44,16,65,True,"Apr 20, 2026",1.0,0.5,0.1,-197,126.0,536.0
+20260420,Scottie Barnes,TOP PLAY,7.8,9.0,5,-2.8,-4.0,True,False,False,71,56,32,62,True,"Apr 20, 2026",0.5,0.1,0.1,-247,-127.0,208.0
+20260420,Anthony Edwards,TOP PLAY,4.2,4.1,2,-2.2,-2.1,False,False,False,35,9,0,62,True,"Apr 20, 2026",0.1,0.0,0.0,184,1003.0,
+20260420,James Harden,TOP PLAY,7.7,8.4,4,-3.7,-4.4,False,False,False,76,57,27,60,True,"Apr 20, 2026",0.5,0.1,0.1,-322,-135.0,267.0
+20260420,Karl-Anthony Towns,TOP PLAY,3.8,3.0,2,-1.8,-1.0,False,False,False,37,18,4,59,True,"Apr 20, 2026",0.1,0.1,0.0,173,461.0,2617.0
+20260420,Dyson Daniels,TOP PLAY,5.3,4.6,2,-3.3,-2.6,False,False,False,53,34,12,56,True,"Apr 20, 2026",0.25,0.1,0.1,-113,197.0,736.0
+20260420,Kyle Anderson,TOP PLAY,3.3,3.0,2,-1.3,-1.0,False,False,False,27,10,1,50,True,"Apr 20, 2026",0.1,0.0,0.0,263,903.0,9507.0
+20260420,Donte DiVincenzo,TOP PLAY,2.4,2.4,6,3.6,3.6,True,False,False,7,1,0,50,True,"Apr 20, 2026",0.1,0.0,0.0,1270,,
+20260420,Jaden McDaniels,TOP PLAY,2.3,2.1,3,0.7,0.9,False,False,False,5,0,0,50,True,"Apr 20, 2026",0.1,0.0,0.0,1906,,
+20260420,Dennis Schröder,FADE,3.1,4.0,4,0.9,0.0,False,False,False,26,9,1,10,True,"Apr 20, 2026",0.1,0.0,0.0,286,953.0,9395.0
+20260420,Keon Ellis,FADE,3.0,1.3,0,-3.0,-1.3,False,False,False,20,5,0,0,True,"Apr 20, 2026",0.1,0.0,0.0,395,2004.0,

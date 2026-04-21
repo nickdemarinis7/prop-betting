@@ -184,9 +184,15 @@ for starter in starters:
             base_k9 = (season_k9 * 0.6) + (recent_k9 * 0.4)
         
         # PHASE 1 FIX #2: Regress elite K/9 pitchers toward mean
+        # Softer regression when recent K/9 confirms elite level
         if base_k9 > 12.0:
             original_k9 = base_k9
-            base_k9 = (base_k9 * 0.7) + (11.0 * 0.3)
+            if recent_k9 > 11.0:
+                # Recent performance confirms elite — gentle regression
+                base_k9 = (base_k9 * 0.85) + (11.0 * 0.15)
+            else:
+                # Season inflated vs recent — stronger regression
+                base_k9 = (base_k9 * 0.7) + (11.0 * 0.3)
             print(f"   ⚠️  Elite K/9 regression: {original_k9:.2f} → {base_k9:.2f}")
         
         print(f"   Season K/9: {season_k9:.2f} | Recent K/9: {recent_k9:.2f} | Base: {base_k9:.2f}")
@@ -284,8 +290,11 @@ for starter in starters:
         # 6. FINAL PROJECTION
         final_projection = base_projection * opponent_multiplier * home_multiplier * rest_multiplier
         
-        # Calibration offset: validation shows -0.71K systematic over-projection
-        final_projection -= 0.5
+        # Calibration offset: tiered by pitcher quality
+        # HIGH-K pitchers (aces) were overcorrected by flat -0.5; use -0.3
+        # MEDIUM/LOW-K pitchers still need the full -0.5
+        calibration_offset = 0.3 if base_k9 > 8.0 else 0.5
+        final_projection -= calibration_offset
         final_projection = max(final_projection, 0.5)
         
         print(f"   Final Projection: {final_projection:.2f} K")
@@ -339,11 +348,18 @@ for starter in starters:
                 if original > final_projection:
                     print(f"   ⚠️  Elite K Safety Cap - Limiting: {original:.1f} → {final_projection:.1f} K")
         
-        # Check 5: Global cap — no projection above 8.0 (validation shows we over-project elites)
-        if final_projection > 8.0:
+        # Check 5: Dynamic global cap based on pitcher quality
+        # Aces (K/9 > 10) can project up to 10K, good arms up to 9K, others 8K
+        if base_k9 > 10.0:
+            global_cap = 10.0
+        elif base_k9 > 8.0:
+            global_cap = 9.0
+        else:
+            global_cap = 8.0
+        if final_projection > global_cap:
             original = final_projection
-            final_projection = 8.0
-            print(f"   ⚠️  Global Cap: {original:.1f} → {final_projection:.1f} K")
+            final_projection = global_cap
+            print(f"   ⚠️  Global Cap ({global_cap:.0f}K for K/9={base_k9:.1f}): {original:.1f} → {final_projection:.1f} K")
             red_flags.append(f'Capped from {original:.1f}')
         
         # 9. ML CORRECTION (if model available) — tighter cap of ±1.5
@@ -363,14 +379,16 @@ for starter in starters:
                 original = final_projection
                 final_projection += ml_correction
                 final_projection = max(final_projection, 0.5)
-                # Re-apply global cap after ML correction
-                final_projection = min(final_projection, 8.0)
+                # Re-apply dynamic global cap after ML correction
+                final_projection = min(final_projection, global_cap)
                 print(f"   🤖 ML Correction: {ml_correction:+.2f} K → {final_projection:.2f} K")
         
         # 10. CALCULATE PROBABILITIES (after all corrections)
+        # Inflate std_dev by 1.15x for calibration (validation shows ~7pp over-confidence at 5.5+ K)
+        prob_std_dev = std_dev * 1.15
         probabilities = {}
         for line in [3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5]:
-            prob = 1 - scipy_stats.norm.cdf(line, final_projection, std_dev)
+            prob = 1 - scipy_stats.norm.cdf(line, final_projection, prob_std_dev)
             probabilities[f'prob_{line}+'] = prob
             
             if prob > 0.10:

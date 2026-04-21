@@ -431,10 +431,10 @@ for _, player in tonight_players.iterrows():
     pace_boost = max(0.96, min(1.04, pace_boost))  # Tighter safety cap
     final_prediction *= pace_boost
     
-    # 3. PLAYOFF PENALTY — validation shows playoffs reduce assists ~12%
+    # 3. PLAYOFF PENALTY — validation shows playoffs reduce assists ~15%
     #    Tighter defense, slower pace, more half-court sets
     if is_playoff_today:
-        final_prediction *= 0.88
+        final_prediction *= 0.85
     
     # 4. Calibration dampener — blend prediction toward L10 to reduce over-projection
     #    Validation shows -1.32 bias; this anchors to recent reality
@@ -644,13 +644,16 @@ from scipy import stats
 
 def calculate_hit_probability(projection, std_dev, threshold):
     """Calculate probability of hitting threshold using normal distribution.
-    Calibrated: inflated std_dev by 1.3x to correct over-confidence (validation showed 16pp gap)"""
+    Calibrated: inflated std_dev by 1.5x to correct over-confidence (validation showed 14pp gap at 5+ AST)"""
     if std_dev > 0:
-        calibrated_std = std_dev * 1.3  # Widen distribution to fix over-confidence
+        calibrated_std = std_dev * 1.5  # Widen distribution to fix over-confidence
         z_score = (threshold - projection) / calibrated_std
         prob = 1 - stats.norm.cdf(z_score)
     else:
         prob = 1.0 if projection >= threshold else 0.0
+    # Hard cap 10+ AST at 25% — validation shows massive over-prediction at this tier (16% pred vs 3% actual)
+    if threshold >= 10:
+        prob = min(prob, 0.25)
     return prob
 
 # Add probability columns

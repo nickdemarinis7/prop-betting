@@ -1,0 +1,28 @@
+pitcher,team,opponent,is_home,projection,season_k9,recent_k9,expected_ip,opponent_k_rate,std_dev,is_day_game,is_short_rest,ml_correction,confidence,red_flags,blowup_rate,prob_3.5+,prob_4.5+,prob_5.5+,prob_6.5+,prob_7.5+,prob_8.5+,prob_9.5+,prob_10.5+
+Nolan McLean,NYM,MIN,1,8.5,10.86,10.86,5.6,0.273,2.0,False,False,1.05,HIGH,None,0.0,0.985,0.958,0.901,0.804,0.663,0.494,0.327,0.188
+Shota Imanaga,CHC,PHI,1,8.2,11.07,12.68,5.5,0.247,2.59,False,False,0.79,HIGH,None,0.0,0.943,0.893,0.818,0.716,0.592,0.459,0.33,0.219
+Kris Bubic,KC,BAL,1,7.5,10.08,10.54,5.5,0.273,3.2,False,False,0.62,MEDIUM,None,0.0,0.86,0.791,0.705,0.605,0.498,0.391,0.292,0.206
+Connelly Early,BOS,NYY,1,6.7,9.38,9.38,4.6,0.275,2.0,False,False,1.5,HIGH,None,0.0,0.916,0.828,0.695,0.53,0.36,0.214,0.11,0.048
+Jesús Luzardo,PHI,CHC,0,6.6,11.7,12.56,5.6,0.259,2.5,False,False,-1.01,HIGH,None,0.0,0.856,0.763,0.643,0.508,0.371,0.25,0.153,0.085
+Carmen Mlodzinski,PIT,TEX,0,5.7,8.7,9.28,4.6,0.254,2.12,True,False,1.09,MEDIUM,None,0.25,0.812,0.683,0.527,0.366,0.226,0.123,0.058,0.024
+Landen Roupp,SF,LAD,1,5.5,9.4,9.73,6.0,0.252,2.0,True,False,-1.11,HIGH,None,0.0,0.813,0.675,0.507,0.339,0.197,0.099,0.043,0.016
+Luis Castillo,SEA,ATH,1,5.5,8.34,8.79,4.2,0.25,2.0,True,False,1.5,HIGH,None,0.0,0.804,0.663,0.494,0.327,0.189,0.094,0.04,0.014
+Jacob Lopez,ATH,SEA,0,5.5,8.88,7.96,4.6,0.263,2.35,True,False,1.1,MEDIUM,None,0.25,0.768,0.641,0.496,0.352,0.226,0.131,0.068,0.031
+Kyle Harrison,MIL,DET,0,5.5,9.51,9.51,5.0,0.268,2.94,False,False,0.03,MEDIUM,Blowup risk (1/3 starts ≤2K),0.33,0.722,0.616,0.5,0.384,0.277,0.188,0.119,0.07
+Keider Montero,DET,MIL,1,5.3,8.02,8.39,6.0,0.258,2.0,False,False,-0.49,HIGH,None,0.0,0.781,0.633,0.463,0.299,0.168,0.081,0.033,0.012
+Foster Griffin,WSH,ATL,1,5.3,8.47,8.47,5.0,0.199,2.28,False,False,1.27,MEDIUM,None,0.25,0.758,0.624,0.474,0.328,0.204,0.113,0.056,0.024
+Parker Messick,CLE,HOU,1,5.1,8.93,8.93,6.1,0.234,2.0,False,False,-0.85,HIGH,None,0.0,0.757,0.603,0.431,0.272,0.148,0.07,0.028,0.009
+Reynaldo López,ATL,WSH,0,5.1,8.47,8.47,5.0,0.237,2.0,False,False,0.66,HIGH,None,0.0,0.753,0.598,0.426,0.268,0.146,0.068,0.027,0.009
+Chris Paddack,MIA,STL,1,5.1,7.85,8.8,4.2,0.236,2.0,False,False,1.42,HIGH,None,0.0,0.759,0.606,0.434,0.274,0.15,0.071,0.028,0.01
+Patrick Corbin,TOR,LAA,0,5.0,8.44,8.8,4.6,0.322,3.0,True,False,0.5,MEDIUM,None,0.0,0.67,0.56,0.444,0.334,0.236,0.156,0.097,0.056
+Chase Burns,CIN,TB,0,4.9,8.96,8.96,5.6,0.263,2.69,False,False,-0.85,MEDIUM,None,0.25,0.669,0.545,0.417,0.297,0.196,0.119,0.067,0.034
+Yoshinobu Yamamoto,LAD,SF,0,4.9,8.38,7.5,6.0,0.209,2.0,True,False,0.34,MEDIUM,None,0.25,0.733,0.574,0.402,0.247,0.132,0.06,0.023,0.008
+Randy Vásquez,SD,COL,0,4.8,9.01,10.61,5.6,0.281,2.05,True,False,-1.5,HIGH,None,0.0,0.708,0.549,0.382,0.234,0.125,0.058,0.023,0.008
+Shane Baz,BAL,KC,0,4.8,8.3,8.03,5.2,0.273,2.0,False,False,-0.02,HIGH,None,0.0,0.721,0.56,0.388,0.236,0.124,0.056,0.021,0.007
+Steven Matz,TB,CIN,1,4.4,8.96,8.96,5.0,0.212,2.38,False,False,-0.13,MEDIUM,None,0.25,0.629,0.485,0.344,0.222,0.129,0.067,0.031,0.013
+Luis Gil,NYY,BOS,0,3.9,6.84,7.0,4.5,0.275,3.0,False,False,0.56,MEDIUM,Blowup risk (1/2 starts ≤2K),0.5,0.541,0.425,0.316,0.221,0.145,0.089,0.051,0.027
+Jimmy Herget,COL,SD,1,3.7,6.55,11.74,5.0,0.28,2.0,True,False,-1.5,MEDIUM,Blowup risk (5/5 starts ≤2K),1.0,0.53,0.36,0.213,0.109,0.048,0.018,0.006,0.001
+Dustin May,STL,MIA,0,3.4,7.46,7.07,5.0,0.258,2.0,False,False,-0.41,HIGH,None,0.0,0.489,0.322,0.185,0.091,0.039,0.014,0.004,0.001
+Jack Kochanowicz,LAA,TOR,1,3.3,6.66,7.23,5.7,0.216,2.06,True,False,-0.47,MEDIUM,None,0.25,0.462,0.303,0.174,0.087,0.037,0.014,0.004,0.001
+Sean Burke,CWS,AZ,0,3.2,8.01,7.61,5.0,0.252,2.0,True,False,-0.88,MEDIUM,None,0.25,0.456,0.293,0.164,0.079,0.032,0.011,0.003,0.001
+Simeon Woods Richardson,MIN,NYM,0,1.8,6.03,4.9,5.0,0.298,2.0,False,False,-1.01,MEDIUM,Blowup risk (2/4 starts ≤2K),0.5,0.224,0.116,0.052,0.02,0.006,0.002,0.0,0.0
