@@ -4,11 +4,13 @@ Find the best value bets by comparing model projections to actual odds
 """
 
 import pandas as pd
+import numpy as np
 import sys
 import os
 import requests
 from datetime import datetime
 from dotenv import load_dotenv
+from scipy import stats as scipy_stats
 
 # Load .env from project root
 load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))
@@ -176,83 +178,114 @@ def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
     
     # Find value bets
     value_bets = []
+    near_misses = []
+    matched_players = 0
     
     for _, pred in predictions.iterrows():
         player = pred['Player']
+        projection = pred['Proj']
+        std_dev = pred.get('StdDev', 6.0)  # Use player's actual std_dev
+        calibrated_std = std_dev * 1.4  # Match the calibration in predict.py
         confidence = pred.get('Conf', 'HIGH')
 
         # Skip LOW confidence players entirely
         if confidence == 'LOW':
             continue
 
-        # Get odds for this player
+        # Get odds for this player — try last name match
+        last_name = player.split()[-1]
         player_odds = odds_df[
-            odds_df['player'].str.contains(player.split()[-1], case=False, na=False)
+            odds_df['player'].str.contains(last_name, case=False, na=False)
         ]
+        
+        # If multiple matches (common last name), try full name
+        if len(player_odds) > 20:
+            first_name = player.split()[0]
+            player_odds = player_odds[
+                player_odds['player'].str.contains(first_name, case=False, na=False)
+            ]
         
         if player_odds.empty:
             continue
         
-        # Check common point lines (14.5, 19.5, 24.5)
-        for line in [14.5, 19.5, 24.5]:
-            # Get our probability for this line
-            # Map to column names: 15+%, 20+%, 25+%
-            if line == 14.5:
-                prob_col = '15+%'
-            elif line == 19.5:
-                prob_col = '20+%'
-            elif line == 24.5:
-                prob_col = '25+%'
-            else:
-                continue
+        matched_players += 1
+        
+        # Get all unique lines the book offers for this player
+        available_lines = player_odds['line'].dropna().unique()
+        
+        for line in sorted(available_lines):
+            # Calculate our probability dynamically for ANY line
+            z_score = (line - projection) / calibrated_std if calibrated_std > 0 else 0
+            over_prob = 1 - scipy_stats.norm.cdf(z_score)
+            under_prob = 1 - over_prob
             
-            if prob_col not in pred or pd.isna(pred[prob_col]):
-                continue
+            # Reduce unit sizing for MEDIUM confidence
+            conf_multiplier = 0.6 if confidence == 'MEDIUM' else 1.0
+            red_flags = pred.get('Red_Flags', 'None')
             
-            our_prob = pred[prob_col] / 100  # Convert from percentage
+            # --- Check OVER side ---
+            if over_prob >= 0.10:
+                over_odds = player_odds[
+                    (player_odds['line'] == line) &
+                    (player_odds['over_under'] == 'Over')
+                ]
+                if not over_odds.empty:
+                    best_row = over_odds.loc[over_odds['odds'].idxmax()]
+                    best_odds = best_row['odds']
+                    implied = calculate_implied_probability(best_odds)
+                    edge = over_prob - implied
+                    ev = calculate_expected_value(over_prob, best_odds)
+                    
+                    bet_info = {
+                        'player': pred['Player'], 'team': pred.get('Team', ''),
+                        'opponent': pred.get('Opp', ''), 'projection': projection,
+                        'line': line, 'side': 'OVER', 'our_prob': over_prob,
+                        'book_odds': best_odds, 'bookmaker': best_row['bookmaker'],
+                        'implied_prob': implied, 'edge': edge, 'ev': ev,
+                        'tier': pred.get('Tier', ''), 'confidence': confidence,
+                        'conf_multiplier': conf_multiplier, 'red_flags': red_flags,
+                    }
+                    if edge > 0.03 and best_odds >= min_odds:
+                        value_bets.append(bet_info)
+                    elif edge > 0.00 and best_odds >= min_odds:
+                        near_misses.append(bet_info)
             
-            # Get best OVER odds for this line
-            line_odds = player_odds[
-                (player_odds['line'] == line) &
-                (player_odds['over_under'] == 'Over')
-            ]
-            
-            if line_odds.empty:
-                continue
-            
-            # Find best odds across bookmakers
-            best_odds_row = line_odds.loc[line_odds['odds'].idxmax()]
-            best_odds = best_odds_row['odds']
-            bookmaker = best_odds_row['bookmaker']
-            
-            # Calculate edge
-            implied_prob = calculate_implied_probability(best_odds)
-            ev = calculate_expected_value(our_prob, best_odds)
-            edge = our_prob - implied_prob
-            
-            # Filter: edge >5% and odds better than min_odds
-            if edge > 0.05 and best_odds > min_odds:
-                # Reduce unit sizing for MEDIUM confidence
-                conf_multiplier = 0.6 if confidence == 'MEDIUM' else 1.0
-                red_flags = pred.get('Red_Flags', 'None')
-
-                value_bets.append({
-                    'player': pred['Player'],
-                    'team': pred.get('Team', ''),
-                    'opponent': pred.get('Opp', ''),
-                    'projection': pred['Proj'],
-                    'line': line,
-                    'our_prob': our_prob,
-                    'book_odds': best_odds,
-                    'bookmaker': bookmaker,
-                    'implied_prob': implied_prob,
-                    'edge': edge,
-                    'ev': ev,
-                    'tier': pred.get('Tier', ''),
-                    'confidence': confidence,
-                    'conf_multiplier': conf_multiplier,
-                    'red_flags': red_flags,
-                })
+            # --- Check UNDER side ---
+            if under_prob >= 0.15:
+                under_odds_df = player_odds[
+                    (player_odds['line'] == line) &
+                    (player_odds['over_under'] == 'Under')
+                ]
+                if not under_odds_df.empty:
+                    best_row = under_odds_df.loc[under_odds_df['odds'].idxmax()]
+                    best_odds = best_row['odds']
+                    implied = calculate_implied_probability(best_odds)
+                    edge = under_prob - implied
+                    ev = calculate_expected_value(under_prob, best_odds)
+                    
+                    bet_info = {
+                        'player': pred['Player'], 'team': pred.get('Team', ''),
+                        'opponent': pred.get('Opp', ''), 'projection': projection,
+                        'line': line, 'side': 'UNDER', 'our_prob': under_prob,
+                        'book_odds': best_odds, 'bookmaker': best_row['bookmaker'],
+                        'implied_prob': implied, 'edge': edge, 'ev': ev,
+                        'tier': pred.get('Tier', ''), 'confidence': confidence,
+                        'conf_multiplier': conf_multiplier, 'red_flags': red_flags,
+                    }
+                    if edge > 0.03 and best_odds >= min_odds:
+                        value_bets.append(bet_info)
+                    elif edge > 0.00 and best_odds >= min_odds:
+                        near_misses.append(bet_info)
+    
+    print(f"\n🔍 Matched {matched_players}/{len(predictions)} players to sportsbook odds")
+    
+    if near_misses:
+        print(f"\n📋 Near misses ({len(near_misses)} bets with 0-3% edge):")
+        near_df = pd.DataFrame(near_misses).sort_values('edge', ascending=False)
+        for _, bet in near_df.head(10).iterrows():
+            side = bet.get('side', 'OVER')
+            side_label = 'O' if side == 'OVER' else 'U'
+            print(f"   {bet['player']:25s} {side_label}{bet['line']} | Our: {bet['our_prob']:.0%} vs Book: {bet['implied_prob']:.0%} | Edge: {bet['edge']:+.1%} @ {int(bet['book_odds']):+d} ({bet['bookmaker']})")
     
     if not value_bets:
         print("\n⚠️  No value bets found")
@@ -265,7 +298,7 @@ def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
     print("\n" + "=" * 80)
     print("🔥 TOP VALUE BETS (Sorted by Edge)")
     print("=" * 80)
-    print(f"\nFilters: Edge >5% | Odds better than {min_odds}")
+    print(f"\nFilters: Edge >3% | Odds better than {min_odds}")
     print("These are bets where our model gives significantly higher probability")
     print("than the sportsbook's implied probability.\n")
     
@@ -274,7 +307,9 @@ def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
         conf_icon = '🟢' if conf == 'HIGH' else '🟡'
         rf = bet.get('red_flags', 'None')
         rf_str = f" | ⚠️ {rf}" if rf not in ('None', '') and pd.notna(rf) else ''
-        print(f"{i:2d}. {conf_icon} {bet['player']:25s} OVER {bet['line']} Points")
+        side = bet.get('side', 'OVER')
+        side_icon = '📈' if side == 'OVER' else '📉'
+        print(f"{i:2d}. {side_icon} {conf_icon} {bet['player']:25s} {side} {bet['line']} Points")
         print(f"    {bet['team']} vs {bet['opponent']} | Proj: {bet['projection']:.1f} PTS{rf_str}")
         print(f"    📊 Our Prob: {bet['our_prob']:.1%}")
         print(f"    📖 {bet['bookmaker']}: {bet['book_odds']:+d} (Implied: {bet['implied_prob']:.1%})")
@@ -303,7 +338,8 @@ def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
                 units *= bet.get('conf_multiplier', 1.0)  # Reduce for MEDIUM
                 units = round(units, 2)
                 total_units += units
-                print(f"   • {units:.1f}u on OVER {bet['line']} @ {bet['book_odds']:+d} ({bet['bookmaker']})")
+                side = bet.get('side', 'OVER')
+                print(f"   • {units:.1f}u on {side} {bet['line']} @ {bet['book_odds']:+d} ({bet['bookmaker']})")
                 print(f"     Edge: {bet['edge']:.1%} | Our Prob: {bet['our_prob']:.1%}")
             
             print(f"   📊 Total Risk: {total_units:.1f} units")
@@ -351,4 +387,4 @@ if __name__ == "__main__":
         print(f"   Run predict.py first to generate predictions")
         sys.exit(1)
     
-    analyze_nba_points_value(predictions_file, api_key=api_key, min_odds=-200)
+    analyze_nba_points_value(predictions_file, api_key=api_key, min_odds=-300)

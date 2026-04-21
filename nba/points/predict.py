@@ -590,9 +590,9 @@ for _, player in tonight_players.iterrows():
         final_prediction *= 0.90
     
     # 6. Calibration dampener — blend prediction toward L10 to reduce over-projection
-    #    Validation shows -8.5 bias; this anchors heavily to recent reality
+    #    Eased from 55/45 to 60/40: Apr 20 showed slight under-projection (-2.16 excl outliers)
     l10_avg = features.get('pts_last_10', player['PTS'])
-    final_prediction = (final_prediction * 0.55) + (l10_avg * 0.45)
+    final_prediction = (final_prediction * 0.60) + (l10_avg * 0.40)
     
     # 7. Sanity check - Don't project more than 1.25x recent average
     max_reasonable = max(l10_avg * 1.25, 8.0)  # At least 8.0 for low-point players
