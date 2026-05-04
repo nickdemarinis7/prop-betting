@@ -1,0 +1,2 @@
+Date,Is_Playoff,Player,Team,Opponent,Projection,L10,Actual,Diff,Baseline_Diff,Confidence,Red_Flags,Recommended_Side,Book_Line,Book_Odds,Our_Prob,Book_Prob,Edge_PP,EV,Kelly_Units,Bookmaker,Hit_15+,Hit_20+,Hit_25+,Hit_30+,prob_15+,prob_20+,prob_25+
+20260419,True,Kenrich Williams,OKC,PHX,8.0,3.9,2,-6.0,-1.9,LOW,High blowout risk,,,,,,,,,,False,False,False,False,10,1,0

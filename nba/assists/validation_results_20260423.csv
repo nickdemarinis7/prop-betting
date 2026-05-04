@@ -1,0 +1,13 @@
+Date,Player,Type,Projection,L10,Actual,Diff,Baseline_Diff,Hit_5+,Hit_7+,Hit_10+,Prob_5+,Prob_7+,Prob_10+,Ladder_Value,Is_Playoff,Game_Date,Units_5+,Units_7+,Units_10+,Min_Odds_5+,Min_Odds_7+,Min_Odds_10+
+20260423,Scottie Barnes,TOP PLAY,8.2,9.0,11,2.8,2.0,True,True,True,72,58,25,67,True,"Apr 23, 2026",0.5,0.1,0.1,-257,-140.0,300.0
+20260423,Jamal Murray,TOP PLAY,6.6,7.3,4,-2.6,-3.3,False,False,False,65,46,20,65,True,"Apr 23, 2026",1.0,0.5,0.1,-186,119.0,411.0
+20260423,Dyson Daniels,TOP PLAY,5.2,4.6,6,0.8,1.4,True,False,False,52,34,13,64,True,"Apr 23, 2026",0.25,0.1,0.1,-107,194.0,641.0
+20260423,Anthony Edwards,TOP PLAY,4.4,4.1,3,-1.4,-1.1,False,False,False,40,15,1,62,True,"Apr 23, 2026",0.1,0.0,0.0,147,576.0,8132.0
+20260423,Jalen Brunson,TOP PLAY,7.7,7.9,4,-3.7,-3.9,False,False,False,70,55,25,57,True,"Apr 23, 2026",0.5,0.1,0.1,-236,-124.0,300.0
+20260423,Karl-Anthony Towns,TOP PLAY,3.3,3.0,4,0.7,1.0,False,False,False,33,17,4,55,True,"Apr 23, 2026",0.1,0.1,0.0,200,476.0,2162.0
+20260423,Josh Hart,TOP PLAY,3.1,3.3,6,2.9,2.7,True,False,False,22,5,0,54,True,"Apr 23, 2026",0.1,0.0,0.0,363,1728.0,
+20260423,Jose Alvarado,TOP PLAY,3.5,4.0,0,-3.5,-4.0,False,False,False,35,18,5,52,True,"Apr 23, 2026",0.1,0.1,0.0,185,444.0,2041.0
+20260423,Ayo Dosunmu,TOP PLAY,3.7,4.5,9,5.3,4.5,True,True,False,38,23,8,50,True,"Apr 23, 2026",0.1,0.1,0.1,160,334.0,1155.0
+20260423,Kyle Anderson,TOP PLAY,3.2,3.0,0,-3.2,-3.0,False,False,False,28,12,2,50,True,"Apr 23, 2026",0.1,0.0,0.0,253,765.0,5942.0
+20260423,Mouhamed Gueye,FADE,2.7,0.9,1,-1.7,0.1,False,False,False,5,0,0,0,True,"Apr 23, 2026",0.1,0.0,0.0,1923,,
+20260423,Keon Ellis,FADE,3.0,1.3,0,-3.0,-1.3,False,False,False,24,8,1,0,True,"Apr 23, 2026",0.1,0.0,0.0,325,1230.0,

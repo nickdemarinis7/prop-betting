@@ -1,0 +1,28 @@
+pitcher,team,opponent,is_home,projection,base_projection,season_k9,recent_k9,expected_ip,opponent_k_rate,opponent_multiplier,ml_correction,confidence,red_flags,blowup_rate,weight_2026,recent_era,book_implied,model_vs_book
+Joey Cantillo,CLE,TOR,0,6.4,6.2,10.6,11.39,5.1,0.249,1.061,0.0,HIGH,None,0.0,0.7,3.42,4.5 @ +100 (BetMGM),1.9
+Bailey Ober,MIN,TB,0,5.4,4.8,8.03,8.54,5.2,0.29,1.15,0.0,LOW,High blowup rate (2/5),0.4,0.7,4.27,3.5 @ +112 (MyBookie.ag),1.9
+Germán Márquez,SD,AZ,0,4.1,4.0,6.97,7.42,5.0,0.249,1.062,0.0,HIGH,None,0.25,0.7,3.96,2.5 @ +100 (FanDuel),1.6
+Jacob Misiorowski,MIL,PIT,1,8.8,7.9,13.66,14.43,5.1,0.256,1.084,0.0,HIGH,None,0.0,0.7,3.09,7.5 @ +100 (Bovada),1.3
+Kevin Gausman,TOR,CLE,1,6.8,7.2,10.49,11.21,6.0,0.207,0.926,0.0,HIGH,None,0.0,0.7,2.56,5.5 @ +100 (DraftKings),1.3
+Bryce Elder,ATL,PHI,1,5.8,5.8,8.36,9.13,6.0,0.227,0.992,0.0,HIGH,None,0.0,0.7,1.57,4.5 @ -107 (DraftKings),1.3
+Colin Rea,CHC,LAD,0,4.5,4.2,7.41,7.73,5.0,0.261,1.102,0.0,HIGH,None,0.2,0.7,3.09,3.5 @ +115 (Bovada),1.0
+Matthew Liberatore,STL,SEA,1,3.5,3.2,5.91,5.33,5.0,0.258,1.092,0.0,LOW,High blowup rate (3/5),0.6,0.7,3.67,4.5 @ +104 (DraftKings),-1.0
+Bryan Woo,SEA,STL,0,6.3,5.6,7.99,7.31,6.5,0.293,1.15,0.0,HIGH,None,0.2,0.7,2.25,5.5 @ +102 (FanDuel),0.8
+Jeffrey Springs,ATH,TEX,0,5.3,5.4,8.0,8.32,6.0,0.227,0.991,0.0,HIGH,None,0.2,0.7,3.39,4.5 @ -102 (MyBookie.ag),0.8
+Shane McClanahan,TB,MIN,1,3.7,4.2,9.0,9.36,4.2,0.189,0.865,0.0,MEDIUM,High ERA (5.2),0.0,1.0,5.2,4.5 @ +112 (MyBookie.ag),-0.8
+Jake Irvin,WSH,CWS,0,5.2,4.9,8.42,9.38,5.0,0.253,1.076,0.0,MEDIUM,High ERA (6.0),0.0,0.7,6.0,4.5 @ +108 (FanDuel),0.7
+Jack Flaherty,DET,CIN,0,4.9,4.4,9.7,9.64,4.1,0.27,1.129,0.0,HIGH,None,0.2,0.7,3.62,5.5 @ +100 (BetMGM),-0.6
+Trevor Rogers,BAL,BOS,1,6.0,5.4,8.13,7.98,6.0,0.258,1.093,0.0,HIGH,None,0.0,0.7,4.15,5.5 @ +102 (BetRivers),0.5
+MacKenzie Gore,TEX,ATH,1,6.9,6.6,11.62,12.45,5.0,0.235,1.017,0.0,HIGH,None,0.0,0.7,4.27,6.5 @ +100 (FanDuel),0.4
+Robbie Ray,SF,MIA,1,5.9,5.6,9.71,10.18,5.1,0.239,1.03,0.0,HIGH,None,0.0,0.7,2.96,5.5 @ +111 (MyBookie.ag),0.4
+Cole Ragans,KC,LAA,1,6.9,5.9,10.92,9.75,5.0,0.278,1.15,0.0,LOW,High blowup rate (2/5); High ERA (6.2),0.4,0.7,6.21,6.5 @ +100 (Bovada),0.4
+Noah Schultz,CWS,WSH,1,4.8,5.0,9.89,9.89,4.6,0.211,0.939,0.0,HIGH,None,0.0,1.0,3.96,4.5 @ +100 (Bovada),0.3
+Eury Pérez,MIA,SF,0,4.8,5.3,9.52,9.35,5.0,0.212,0.94,0.0,HIGH,None,0.2,0.7,4.15,4.5 @ +108 (FanDuel),0.3
+Garrett Crochet,BOS,BAL,0,7.2,7.0,11.23,11.59,5.5,0.247,1.055,0.0,MEDIUM,High ERA (8.1),0.2,0.7,8.11,7.5 @ +100 (MyBookie.ag),-0.3
+Mike Burrows,HOU,NYY,1,5.8,5.0,8.74,8.82,5.1,0.29,1.15,0.0,MEDIUM,High ERA (7.1),0.0,0.7,7.06,5.5 @ +100 (BetOnline.ag),0.3
+Roki Sasaki,LAD,CHC,1,4.2,4.1,8.9,8.9,4.1,0.236,1.018,0.0,MEDIUM,High ERA (6.3),0.25,1.0,6.28,4.5 @ -101 (MyBookie.ag),-0.3
+Zac Gallen,AZ,SD,1,3.2,3.1,5.96,5.0,5.0,0.235,1.015,0.0,LOW,High blowup rate (3/5),0.6,0.7,3.57,3.5 @ +115 (Bovada),-0.3
+Mitch Keller,PIT,MIL,0,4.3,4.1,6.43,5.9,6.0,0.246,1.051,0.0,HIGH,None,0.0,0.7,2.79,4.5 @ +100 (BetMGM),-0.2
+Brady Singer,CIN,DET,1,4.6,4.1,6.95,6.21,5.5,0.261,1.101,0.0,LOW,High blowup rate (2/5); High ERA (5.4),0.4,0.7,5.43,4.5 @ +101 (MyBookie.ag),0.1
+Kodai Senga,NYM,COL,1,7.2,6.5,10.71,12.07,5.2,0.258,1.092,0.0,MEDIUM,High ERA (9.3),0.0,0.7,9.33,N/A,0.0
+Jose Quintana,COL,NYM,0,1.5,1.6,3.77,2.93,4.1,0.226,0.988,0.0,LOW,High blowup rate (3/3); High ERA (6.6),1.0,0.7,6.59,N/A,0.0

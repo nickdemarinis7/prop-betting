@@ -1,0 +1,10 @@
+Date,Is_Playoff,Player,Team,Opponent,Projection,L10,Actual,Diff,Baseline_Diff,Confidence,Red_Flags,Recommended_Side,Book_Line,Book_Odds,Our_Prob,Book_Prob,Edge_PP,EV,Kelly_Units,Bookmaker,Hit_15+,Hit_20+,Hit_25+,Hit_30+
+20260427,True,Jaden McDaniels,MIN,DEN,13.254479227619171,13.0,13,-0.3,0.0,HIGH,None,UNDER,17.5,-125.0,0.674,0.556,11.8,0.213,0.67,BetMGM,False,False,False,False
+20260427,True,Bruce Brown,DEN,MIN,10.140609245654298,9.3,7,-3.1,-2.3,HIGH,None,OVER,6.5,-109.0,0.856,0.522,33.4,0.641,1.5,BetRivers,False,False,False,False
+20260427,True,Naz Reid,MIN,DEN,12.423936967144016,11.8,12,-0.4,0.2,MEDIUM,None,PASS,13.5,101.0,0.489,0.498,-0.8,-0.016,0.0,DraftKings,False,False,False,False
+20260427,True,Isaiah Stewart,DET,ORL,9.465487363121037,10.0,8,-1.5,-2.0,MEDIUM,None,OVER,5.5,-110.0,0.828,0.524,30.4,0.58,1.5,BetMGM,False,False,False,False
+20260427,True,Jamal Murray,DEN,MIN,24.517525443270877,25.3,24,-0.5,-1.3,MEDIUM,None,PASS,27.5,-120.0,0.566,0.545,2.0,0.037,0.11,FanDuel,True,True,False,False
+20260427,True,Duncan Robinson,DET,ORL,11.826395933517457,12.5,7,-4.8,-5.5,MEDIUM,None,OVER,11.5,118.0,0.617,0.459,15.8,0.344,0.73,BetRivers,False,False,False,False
+20260427,True,Nikola Jokić,DEN,MIN,22.783835924047857,24.0,27,4.2,3.0,MEDIUM,None,UNDER,31.5,-135.0,0.766,0.574,19.2,0.334,1.13,Bovada,True,True,True,False
+20260427,True,Jalen Duren,DET,ORL,23.67189761201172,25.0,12,-11.7,-13.0,LOW,None,OVER,16.5,105.0,0.85,0.488,36.2,0.742,1.5,Bovada,False,False,False,False
+20260427,True,Cade Cunningham,DET,ORL,21.23529108298645,20.1,25,3.8,4.9,LOW,None,UNDER,29.5,-130.0,0.756,0.565,19.0,0.337,1.09,Bovada,True,True,True,False

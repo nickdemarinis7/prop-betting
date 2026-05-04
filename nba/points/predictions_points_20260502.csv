@@ -1,0 +1,11 @@
+player_name,team,opponent,is_home,projection,pts_season_avg,pts_last10_avg,confidence,book_line,book_odds,bookmaker,recommended_side,our_prob,book_prob,edge_pp,ev,kelly_units,model_vs_book,play_quality
+Naz Reid,MIN,DEN,0,13.11542641318226,13.6,11.5,HIGH,12.5,110.0,Bovada,OVER,0.647,0.476,17.1,0.359,0.82,0.6,100
+De'Aaron Fox,SAS,POR,1,19.45326653100586,18.6,19.5,HIGH,18.5,110.0,Bovada,OVER,0.661,0.476,18.5,0.389,0.88,1.0,96
+Jayson Tatum,BOS,PHI,1,22.603879710674132,21.8,23.3,HIGH,23.5,110.0,Bovada,PASS,0.511,0.476,3.5,0.074,0.17,-0.9,94
+Cameron Johnson,DEN,MIN,1,15.033641139436341,12.2,15.6,MEDIUM,,,,,,,0.0,0.0,0.0,0.0,88
+Jalen Brunson,NYK,ATL,1,26.905975585635566,26.0,25.9,MEDIUM,,,,,,,0.0,0.0,0.0,0.0,85
+Julius Randle,MIN,DEN,0,20.58500149409676,21.1,20.8,MEDIUM,21.5,-104.0,BetRivers,PASS,0.539,0.51,2.9,0.058,0.15,-0.9,85
+Karl-Anthony Towns,NYK,ATL,1,21.157637178413495,20.1,19.1,MEDIUM,,,,,,,0.0,0.0,0.0,0.0,84
+Jalen Johnson,ATL,NYK,0,18.52164530295319,22.5,18.6,MEDIUM,,,,,,,0.0,0.0,0.0,0.0,82
+Tyrese Maxey,PHI,BOS,0,24.25884783279951,28.3,25.0,MEDIUM,24.5,-105.0,Bovada,OVER,0.571,0.512,5.9,0.116,0.3,-0.2,78
+Joel Embiid,PHI,BOS,0,27.38583001038502,26.9,27.4,MEDIUM,25.5,-110.0,Bovada,OVER,0.71,0.524,18.6,0.355,0.98,1.9,75

@@ -1,0 +1,15 @@
+Date,Player,Type,Projection,L10,Actual,Diff,Baseline_Diff,Hit_5+,Hit_7+,Hit_10+,Prob_5+,Prob_7+,Prob_10+,Ladder_Value,Is_Playoff,Game_Date,Units_5+,Units_7+,Units_10+,Min_Odds_5+,Min_Odds_7+,Min_Odds_10+
+20260422,Shai Gilgeous-Alexander,TOP PLAY,5.4,5.9,9,3.6,3.1,True,True,False,54,36,15,52,True,"Apr 22, 2026",0.1,0.1,0.1,-115,178.0,565.0
+20260422,Jalen Williams,TOP PLAY,5.2,5.7,4,-1.2,-1.7,False,False,False,52,33,12,52,True,"Apr 22, 2026",0.1,0.1,0.1,-108,205.0,764.0
+20260422,Paolo Banchero,TOP PLAY,4.7,5.7,8,3.3,2.3,True,True,False,46,22,4,51,True,"Apr 22, 2026",0.1,0.1,0.0,117,352.0,2490.0
+20260422,Cade Cunningham,TOP PLAY,7.6,10.2,11,3.4,0.8,True,True,True,67,54,25,49,True,"Apr 22, 2026",0.25,0.1,0.1,-205,-118.0,300.0
+20260422,Ausar Thompson,TOP PLAY,2.9,3.0,1,-1.9,-2.0,False,False,False,28,12,2,45,True,"Apr 22, 2026",0.1,0.0,0.0,259,706.0,4360.0
+20260422,Daniss Jenkins,TOP PLAY,5.2,6.9,2,-3.2,-4.9,False,False,False,52,34,14,42,True,"Apr 22, 2026",0.1,0.1,0.1,-108,190.0,617.0
+20260422,Desmond Bane,TOP PLAY,3.0,3.9,2,-1.0,-1.9,False,False,False,25,8,1,38,True,"Apr 22, 2026",0.1,0.0,0.0,305,1104.0,
+20260422,Duncan Robinson,TOP PLAY,2.5,2.8,3,0.5,0.2,False,False,False,5,0,0,37,True,"Apr 22, 2026",0.1,0.0,0.0,1740,,
+20260422,Wendell Carter Jr.,TOP PLAY,2.1,1.6,0,-2.1,-1.6,False,False,False,8,1,0,37,True,"Apr 22, 2026",0.1,0.0,0.0,1100,,
+20260422,Tristan da Silva,TOP PLAY,1.9,1.5,0,-1.9,-1.5,False,False,False,13,3,0,37,True,"Apr 22, 2026",0.1,0.0,0.0,686,3127.0,
+20260422,Isaiah Hartenstein,FADE,3.5,4.3,2,-1.5,-2.3,False,False,False,34,17,4,17,True,"Apr 22, 2026",0.1,0.1,0.0,190,475.0,2380.0
+20260422,Ajay Mitchell,FADE,2.8,3.5,5,2.2,1.5,True,False,False,22,7,1,9,True,"Apr 22, 2026",0.1,0.0,0.0,346,1234.0,
+20260422,Luguentz Dort,FADE,2.2,0.8,0,-2.2,-0.8,False,False,False,1,0,0,0,True,"Apr 22, 2026",0.1,0.0,0.0,9716,,
+20260422,Alex Caruso,FADE,2.1,2.2,1,-1.1,-1.2,False,False,False,7,1,0,10,True,"Apr 22, 2026",0.1,0.0,0.0,1262,,

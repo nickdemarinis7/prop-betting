@@ -1,0 +1,28 @@
+pitcher,team,opponent,is_home,projection,season_k9,recent_k9,expected_ip,opponent_k_rate,ml_correction,confidence,red_flags,blowup_rate
+Kodai Senga,NYM,COL,1,6.9,10.71,12.07,5.2,0.258,0.71,MEDIUM,Short outings (avg 4.4 IP),0.0
+Kevin Gausman,TOR,CLE,1,6.3,10.49,11.21,6.0,0.258,-1.16,MEDIUM,None,0.0
+Jacob Misiorowski,MIL,PIT,1,6.2,13.66,14.43,5.1,0.256,-1.5,HIGH,None,0.0
+Noah Schultz,CWS,WSH,1,5.8,9.89,9.89,4.6,0.211,1.5,MEDIUM,None,0.0
+Jack Flaherty,DET,CIN,0,5.8,9.7,9.64,4.1,0.27,1.5,MEDIUM,None,0.2
+Cole Ragans,KC,LAA,1,5.6,10.92,9.75,5.0,0.278,-0.02,LOW,Blowup risk (2/5 starts ≤2K); Short outings (avg 3.4 IP),0.4
+MacKenzie Gore,TEX,ATH,1,5.5,11.62,12.45,5.0,0.235,-0.88,HIGH,None,0.0
+Roki Sasaki,LAD,CHC,1,5.2,8.9,8.9,4.1,0.236,1.5,MEDIUM,None,0.25
+Garrett Crochet,BOS,BAL,0,5.2,11.23,11.59,5.5,0.247,-1.5,MEDIUM,None,0.2
+Jeffrey Springs,ATH,TEX,0,5.0,8.0,8.32,6.0,0.227,0.27,MEDIUM,None,0.2
+Bryce Elder,ATL,PHI,1,5.0,8.36,9.13,6.0,0.227,-0.31,HIGH,None,0.0
+Robbie Ray,SF,MIA,1,4.9,9.71,10.18,5.1,0.239,-0.47,HIGH,None,0.0
+Bailey Ober,MIN,TB,0,4.8,8.03,8.54,5.2,0.188,1.28,MEDIUM,Blowup risk (2/5 starts ≤2K),0.4
+Trevor Rogers,BAL,BOS,1,4.8,8.13,7.98,6.0,0.258,-0.72,HIGH,None,0.0
+Eury Pérez,MIA,SF,0,4.8,9.52,9.35,5.0,0.212,0.46,MEDIUM,None,0.2
+Jake Irvin,WSH,CWS,0,4.6,8.42,9.38,5.0,0.253,-0.1,HIGH,None,0.0
+Joey Cantillo,CLE,TOR,0,4.6,10.6,11.39,5.1,0.181,-0.06,HIGH,None,0.0
+Bryan Woo,SEA,STL,0,4.6,7.99,7.31,6.5,0.25,-0.75,MEDIUM,None,0.2
+Shane McClanahan,TB,MIN,1,4.5,9.0,9.36,4.2,0.305,0.2,HIGH,None,0.0
+Mike Burrows,HOU,NYY,1,4.3,8.74,8.82,5.1,0.29,-0.89,HIGH,None,0.0
+Colin Rea,CHC,LAD,0,3.9,7.41,7.73,5.0,0.261,-0.1,MEDIUM,None,0.2
+Germán Márquez,SD,AZ,0,3.4,6.97,7.42,5.0,0.249,-0.25,MEDIUM,None,0.25
+Mitch Keller,PIT,MIL,0,3.0,6.43,5.9,6.0,0.246,-0.79,HIGH,None,0.0
+Brady Singer,CIN,DET,1,2.8,6.95,6.21,5.5,0.261,-1.25,MEDIUM,Blowup risk (2/5 starts ≤2K),0.4
+Jose Quintana,COL,NYM,0,2.5,3.77,2.93,4.1,0.226,1.5,MEDIUM,Blowup risk (3/3 starts ≤2K),1.0
+Matthew Liberatore,STL,SEA,1,2.2,5.91,5.33,5.0,0.266,-0.87,MEDIUM,Blowup risk (3/5 starts ≤2K),0.6
+Zac Gallen,AZ,SD,1,1.6,5.96,5.0,5.0,0.235,-1.12,MEDIUM,Blowup risk (3/5 starts ≤2K),0.6

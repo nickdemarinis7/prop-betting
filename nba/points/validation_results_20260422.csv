@@ -1,0 +1,16 @@
+Date,Player,Type,Projection,L10,Actual,Diff,Baseline_Diff,Hit_15+,Hit_20+,Hit_25+,Hit_30+,Prob_15+,Prob_20+,Prob_25+,Ladder_Value,Tier,Conf,Red_Flags,Is_Playoff,Game_Date,Units_15+,Units_20+,Units_25+,Min_Odds_15+,Min_Odds_20+,Min_Odds_25+
+20260422,Jalen Duren,TOP PLAY,23.2,25.0,11,-12.2,-14.0,False,False,False,False,80,63,43,60,2,LOW,High variance (7.0),True,"Apr 22, 2026",1.0,0.75,0.25,0,0,0
+20260422,Cade Cunningham,TOP PLAY,20.5,20.1,27,6.5,6.9,True,True,True,False,71,52,32,60,2,LOW,High variance (10.6),True,"Apr 22, 2026",1.0,0.5,0.1,0,0,0
+20260422,Paolo Banchero,TOP PLAY,22.5,24.6,18,-4.5,-6.6,True,False,False,False,78,60,40,52,2,MEDIUM,High variance (8.4),True,"Apr 22, 2026",1.0,0.75,0.25,0,0,0
+20260422,Desmond Bane,TOP PLAY,17.8,18.6,12,-5.8,-6.6,False,False,False,False,61,41,23,52,2,LOW,High variance (7.2),True,"Apr 22, 2026",0.75,0.25,0.1,0,0,0
+20260422,Jalen Suggs,TOP PLAY,13.5,14.0,19,5.5,5.0,True,False,False,False,42,19,6,52,2,MEDIUM,,True,"Apr 22, 2026",0.5,0.1,0.1,0,0,0
+20260422,Wendell Carter Jr.,TOP PLAY,12.3,13.6,3,-9.3,-10.6,False,False,False,False,37,17,6,50,2,LOW,,True,"Apr 22, 2026",0.25,0.1,0.1,0,0,0
+20260422,Franz Wagner,TOP PLAY,17.0,17.2,12,-5.0,-5.2,False,False,False,False,58,38,21,49,2,LOW,High variance (7.7),True,"Apr 22, 2026",0.5,0.1,0.1,0,0,0
+20260422,Tobias Harris,TOP PLAY,13.2,14.6,16,2.8,1.4,True,False,False,False,42,21,8,49,2,MEDIUM,,True,"Apr 22, 2026",0.5,0.1,0.1,0,0,0
+20260422,Isaiah Stewart,TOP PLAY,9.9,10.5,10,0.1,-0.5,False,False,False,False,22,6,1,43,3,MEDIUM,,True,"Apr 22, 2026",0.1,0.0,0.0,0,0,0
+20260422,Chet Holmgren,TOP PLAY,15.6,16.8,19,3.4,2.2,True,False,False,False,53,30,13,42,3,LOW,Cooling (-0.2); High blowout risk,True,"Apr 22, 2026",0.1,0.1,0.1,0,0,0
+20260422,Chet Holmgren,FADE,15.6,16.8,19,3.4,2.2,True,False,False,False,53,30,13,42,3,LOW,Cooling (-0.2); High blowout risk,True,"Apr 22, 2026",0.1,0.1,0.1,0,0,0
+20260422,Jared McCain,FADE,8.1,9.4,0,-8.1,-9.4,False,False,False,False,23,10,3,1,3,LOW,Cooling (-0.2); High variance (6.6); High blowout risk,True,"Apr 22, 2026",0.1,0.0,0.0,0,0,0
+20260422,Shai Gilgeous-Alexander,FADE,27.5,31.2,37,9.5,5.8,True,True,True,True,90,78,60,40,3,LOW,High variance (7.7); High blowout risk,True,"Apr 22, 2026",0.75,0.5,0.25,0,0,0
+20260422,Jalen Williams,FADE,15.0,16.0,19,4.0,3.0,True,False,False,False,50,28,12,40,3,LOW,High blowout risk,True,"Apr 22, 2026",0.1,0.1,0.1,0,0,0
+20260422,Isaiah Joe,FADE,8.5,8.7,6,-2.5,-2.7,False,False,False,False,23,10,3,21,3,LOW,High blowout risk,True,"Apr 22, 2026",0.1,0.0,0.0,0,0,0

@@ -8,8 +8,13 @@ Free tier: 500 requests/month
 
 import requests
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timezone
 import os
+import time
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class OddsAPIScraper:
@@ -30,6 +35,24 @@ class OddsAPIScraper:
         
         self.base_url = "https://api.the-odds-api.com/v4"
         self.session = requests.Session()
+
+    @staticmethod
+    def _is_pregame(event):
+        """Return True if the event has not yet started.
+
+        The Odds API provides 'commence_time' as an ISO-8601 UTC timestamp.
+        We consider a game "pre-game" if its commence time is in the future.
+        This prevents fetching live/in-game odds that would be stale or
+        inflated compared to the pre-game lines we would actually bet at.
+        """
+        commence = event.get('commence_time')
+        if not commence:
+            return True  # no timestamp → assume pre-game
+        try:
+            ct = datetime.fromisoformat(commence.replace('Z', '+00:00'))
+            return ct > datetime.now(timezone.utc)
+        except (ValueError, TypeError):
+            return True
     
     def get_mlb_games(self):
         """
@@ -143,12 +166,18 @@ class OddsAPIScraper:
                 print("   ⚠️  No upcoming MLB games found")
                 return pd.DataFrame()
             
-            print(f"   📅 Found {len(events)} MLB games")
+            # Filter to pre-game events only to avoid fetching live odds
+            pregame = [e for e in events if self._is_pregame(e)]
+            skipped = len(events) - len(pregame)
+            if skipped:
+                print(f"   📅 Found {len(events)} MLB games ({skipped} in-progress/completed, skipped)")
+            else:
+                print(f"   📅 Found {len(events)} MLB games")
             
             # Step 2: Get strikeout odds for each event
             all_odds = []
             
-            for i, event in enumerate(events[:10], 1):  # Limit to first 10 games to save API calls
+            for i, event in enumerate(pregame, 1):
                 event_id = event['id']
                 
                 # Get odds for this specific event with pitcher_strikeouts market
@@ -181,6 +210,9 @@ class OddsAPIScraper:
                 except Exception as e:
                     print(f"   ⚠️  Game {i}: {str(e)[:50]}")
                     continue
+                
+                # Small delay to avoid rate limiting
+                time.sleep(0.5)
             
             if all_odds:
                 combined = pd.concat(all_odds, ignore_index=True)
@@ -268,6 +300,305 @@ class OddsAPIScraper:
             'line': best['line']
         }
     
+    def get_all_home_run_odds(self):
+        """
+        Get batter home run odds for all today's MLB games
+        
+        Returns:
+            DataFrame with all home run odds (batter to hit at least one HR)
+        """
+        if not self.api_key:
+            print("   ⚠️  No API key - home run odds unavailable")
+            return pd.DataFrame()
+        
+        try:
+            # Step 1: Get all events (games)
+            events_url = f"{self.base_url}/sports/baseball_mlb/events"
+            params = {'apiKey': self.api_key}
+            
+            events_response = self.session.get(events_url, params=params, timeout=10)
+            events_response.raise_for_status()
+            events = events_response.json()
+            
+            if not events:
+                print("   ⚠️  No upcoming MLB games found")
+                return pd.DataFrame()
+            
+            # Filter to pre-game events only to avoid fetching live odds
+            pregame = [e for e in events if self._is_pregame(e)]
+            skipped = len(events) - len(pregame)
+            if skipped:
+                print(f"   📅 Found {len(events)} MLB games ({skipped} in-progress/completed, skipped)")
+            else:
+                print(f"   📅 Found {len(events)} MLB games")
+            
+            # Step 2: Get home run odds for each event
+            all_odds = []
+            
+            for i, event in enumerate(pregame, 1):
+                event_id = event['id']
+                
+                # Get odds for this specific event with home run market
+                odds_url = f"{self.base_url}/sports/baseball_mlb/events/{event_id}/odds"
+                params = {
+                    'apiKey': self.api_key,
+                    'regions': 'us',
+                    'markets': 'batter_home_runs',
+                    'oddsFormat': 'american'
+                }
+                
+                try:
+                    odds_response = self.session.get(odds_url, params=params, timeout=10)
+                    odds_response.raise_for_status()
+                    
+                    odds_data = odds_response.json()
+                    
+                    # Parse odds for this game
+                    game_odds = self._parse_home_run_odds(odds_data)
+                    if not game_odds.empty:
+                        all_odds.append(game_odds)
+                        print(f"   ✅ Game {i}: Found {len(game_odds)} home run odds")
+                    
+                except Exception as e:
+                    print(f"   ⚠️  Game {i}: {str(e)[:50]}")
+                    continue
+                
+                # Small delay to avoid rate limiting
+                time.sleep(0.5)
+            
+            if all_odds:
+                combined = pd.concat(all_odds, ignore_index=True)
+                print(f"   ✅ Total: {len(combined)} home run odds from {len(all_odds)} games")
+                return combined
+            else:
+                print("   ⚠️  No home run odds available")
+                return pd.DataFrame()
+                
+        except Exception as e:
+            print(f"   ❌ Error fetching home run odds: {e}")
+            return pd.DataFrame()
+    
+    def _parse_home_run_odds(self, game_data):
+        """Parse home run odds from API response"""
+        odds_list = []
+        
+        if not game_data or 'bookmakers' not in game_data:
+            return pd.DataFrame()
+        
+        for bookmaker in game_data['bookmakers']:
+            book_name = bookmaker['title']
+            
+            for market in bookmaker.get('markets', []):
+                if market['key'] != 'batter_home_runs':
+                    continue
+                
+                for outcome in market.get('outcomes', []):
+                    batter_name = outcome.get('description', '')
+                    odds = outcome.get('price')
+                    over_under = outcome.get('name', '')  # 'Over' or 'Under'
+                    
+                    # Only include "Yes" (Over) bets for HR
+                    if over_under == 'Over':
+                        odds_list.append({
+                            'batter': batter_name,
+                            'bookmaker': book_name,
+                            'odds': odds,
+                            'over_under': over_under
+                        })
+        
+        return pd.DataFrame(odds_list)
+
+    def get_all_nba_points_odds(self):
+        """
+        Get NBA player points odds for all today's NBA games
+        
+        Returns:
+            DataFrame with all player points odds
+        """
+        if not self.api_key:
+            print("   ⚠️  No API key - NBA points odds unavailable")
+            return pd.DataFrame()
+        
+        try:
+            # Step 1: Get all NBA events (games)
+            events_url = f"{self.base_url}/sports/basketball_nba/events"
+            params = {'apiKey': self.api_key}
+            
+            events_response = self.session.get(events_url, params=params, timeout=10)
+            events_response.raise_for_status()
+            events = events_response.json()
+            
+            if not events:
+                print("   ⚠️  No upcoming NBA games found")
+                return pd.DataFrame()
+            
+            # Filter to pre-game events only to avoid fetching live odds
+            pregame = [e for e in events if self._is_pregame(e)]
+            skipped = len(events) - len(pregame)
+            if skipped:
+                print(f"   📅 Found {len(events)} NBA games ({skipped} in-progress/completed, skipped)")
+            else:
+                print(f"   📅 Found {len(events)} NBA games")
+            
+            # Step 2: Get points odds for each event
+            all_odds = []
+            
+            for i, event in enumerate(pregame, 1):
+                event_id = event['id']
+                
+                # Get odds for this specific event with player points market
+                odds_url = f"{self.base_url}/sports/basketball_nba/events/{event_id}/odds"
+                params = {
+                    'apiKey': self.api_key,
+                    'regions': 'us',
+                    'markets': 'player_points',  # NBA player points market
+                    'oddsFormat': 'american'
+                }
+                
+                try:
+                    odds_response = self.session.get(odds_url, params=params, timeout=10)
+                    odds_response.raise_for_status()
+                    
+                    odds_data = odds_response.json()
+                    
+                    # Parse odds for this game
+                    game_odds = self._parse_nba_points_odds(odds_data)
+                    if not game_odds.empty:
+                        all_odds.append(game_odds)
+                        print(f"   ✅ Game {i}: Found {len(game_odds)} player points odds")
+                    
+                except Exception as e:
+                    print(f"   ⚠️  Game {i}: {str(e)[:50]}")
+                    continue
+                
+                # Small delay to avoid rate limiting
+                time.sleep(0.5)
+            
+            if all_odds:
+                combined = pd.concat(all_odds, ignore_index=True)
+                print(f"   ✅ Total: {len(combined)} player points odds from {len(all_odds)} games")
+                return combined
+            else:
+                print("   ⚠️  No player points odds available")
+                return pd.DataFrame()
+                
+        except Exception as e:
+            print(f"   ❌ Error fetching NBA points odds: {e}")
+            return pd.DataFrame()
+    
+    def _parse_nba_points_odds(self, game_data):
+        """Parse NBA player points odds from API response"""
+        odds_list = []
+        
+        if not game_data or 'bookmakers' not in game_data:
+            return pd.DataFrame()
+        
+        for bookmaker in game_data['bookmakers']:
+            book_name = bookmaker['title']
+            
+            for market in bookmaker.get('markets', []):
+                if market['key'] != 'player_points':
+                    continue
+                
+                for outcome in market.get('outcomes', []):
+                    player_name = outcome.get('description', '')
+                    odds = outcome.get('price')
+                    over_under = outcome.get('name', '')  # 'Over' or 'Under'
+                    line = outcome.get('point', 0)  # The points line
+                    
+                    odds_list.append({
+                        'player': player_name,
+                        'bookmaker': book_name,
+                        'odds': odds,
+                        'line': line,
+                        'over_under': over_under
+                    })
+        
+        return pd.DataFrame(odds_list)
+
+    def get_all_nba_assists_odds(self):
+        """
+        Get NBA player assists odds for all today's NBA games.
+
+        Returns DataFrame with same columns as get_all_nba_points_odds:
+        player, bookmaker, odds, line, over_under
+        """
+        if not self.api_key:
+            print("   ⚠️  No API key - NBA assists odds unavailable")
+            return pd.DataFrame()
+
+        try:
+            events_url = f"{self.base_url}/sports/basketball_nba/events"
+            events_response = self.session.get(
+                events_url, params={'apiKey': self.api_key}, timeout=10
+            )
+            events_response.raise_for_status()
+            events = events_response.json()
+
+            if not events:
+                print("   ⚠️  No upcoming NBA games found")
+                return pd.DataFrame()
+
+            # Filter to pre-game events only to avoid fetching live odds
+            pregame = [e for e in events if self._is_pregame(e)]
+            skipped = len(events) - len(pregame)
+            if skipped:
+                print(f"   📅 Found {len(events)} NBA games ({skipped} in-progress/completed, skipped)")
+            else:
+                print(f"   📅 Found {len(events)} NBA games")
+
+            all_odds = []
+            for i, event in enumerate(pregame, 1):
+                event_id = event['id']
+                odds_url = f"{self.base_url}/sports/basketball_nba/events/{event_id}/odds"
+                params = {
+                    'apiKey': self.api_key,
+                    'regions': 'us',
+                    'markets': 'player_assists',
+                    'oddsFormat': 'american',
+                }
+
+                try:
+                    odds_response = self.session.get(odds_url, params=params, timeout=10)
+                    odds_response.raise_for_status()
+                    odds_data = odds_response.json()
+
+                    # Reuse the same parser shape — assists outcomes look identical
+                    # to points outcomes (description=player, name=Over/Under).
+                    rows = []
+                    for bookmaker in odds_data.get('bookmakers', []):
+                        for market in bookmaker.get('markets', []):
+                            if market['key'] != 'player_assists':
+                                continue
+                            for outcome in market.get('outcomes', []):
+                                rows.append({
+                                    'player': outcome.get('description', ''),
+                                    'bookmaker': bookmaker['title'],
+                                    'odds': outcome.get('price'),
+                                    'line': outcome.get('point', 0),
+                                    'over_under': outcome.get('name', ''),
+                                })
+                    if rows:
+                        all_odds.append(pd.DataFrame(rows))
+                        print(f"   ✅ Game {i}: Found {len(rows)} player assists odds")
+
+                except Exception as e:
+                    print(f"   ⚠️  Game {i}: {str(e)[:50]}")
+                    continue
+
+                time.sleep(0.5)
+
+            if all_odds:
+                combined = pd.concat(all_odds, ignore_index=True)
+                print(f"   ✅ Total: {len(combined)} assists odds from {len(all_odds)} games")
+                return combined
+            print("   ⚠️  No player assists odds available")
+            return pd.DataFrame()
+
+        except Exception as e:
+            print(f"   ❌ Error fetching NBA assists odds: {e}")
+            return pd.DataFrame()
+
     def _get_sample_odds(self):
         """Sample odds data for testing without API key"""
         return pd.DataFrame([

@@ -1,0 +1,105 @@
+player_name,team,opponent,is_home,bats,projection,hr,pa,iso,raw_hr_per_pa,hr_per_pa,recent_hr_rate,pitcher_name,pitcher_hand,pitcher_hr9_raw,pitcher_hr9,park_factor,hand_factor,confidence,red_flags,book_implied,model_vs_book,book_odds,book_prob,edge_pp,ev,kelly_units,bookmaker,recommended_side
+Ildemaro Vargas,AZ,MIL,0,R,0.206,6,91,0.326,0.0659,0.0435,0.062,Brandon Woodruff,R,1.28,1.24,1.1,0.97,MEDIUM,Small sample (91 PA),Yes @ +550 (BetRivers),0.052,550.0,0.154,5.2,0.339,0.15,BetRivers,YES
+Jeremiah Jackson,BAL,HOU,1,R,0.151,5,96,0.185,0.0521,0.0363,0.0329,Peter Lambert,R,1.2,1.2,1.13,0.97,MEDIUM,Small sample (96 PA),Yes @ +650 (BetRivers),0.018,650.0,0.133,1.8,0.133,0.05,BetRivers,PASS
+Brooks Lee,MIN,TOR,1,R,0.111,21,631,0.147,0.0354,0.0324,0.0375,Kevin Gausman,R,0.77,0.97,1.02,0.97,HIGH,None,Yes @ +900 (BetOnline.ag),0.011,900.0,0.1,1.1,0.11,0.03,BetOnline.ag,PASS
+Spencer Steer,CIN,COL,1,R,0.183,26,674,0.184,0.0397,0.037,0.0423,Michael Lorenzen,R,1.28,1.24,1.2,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),0.016,500.0,0.167,1.6,0.098,0.05,BetOnline.ag,PASS
+JJ Wetherholt,STL,PIT,0,R,0.112,6,138,0.203,0.0435,0.0359,0.047,Paul Skenes,R,0.62,0.92,0.93,0.97,HIGH,None,Yes @ +850 (BetRivers),0.007,850.0,0.105,0.7,0.064,0.02,BetRivers,PASS
+Yainer Diaz,HOU,BAL,0,R,0.151,20,567,0.161,0.0353,0.0332,0.0394,Chris Bassitt,R,1.28,1.23,1.13,0.97,HIGH,None,Yes @ +600 (BetOnline.ag),0.008,600.0,0.143,0.8,0.057,0.02,BetOnline.ag,PASS
+Nolan Arenado,AZ,MIL,0,R,0.171,5,102,0.179,0.049,0.0356,0.0506,Brandon Woodruff,R,1.28,1.24,1.1,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),0.004,500.0,0.167,0.4,0.026,0.01,BetOnline.ag,PASS
+Brandon Marsh,PHI,SF,1,R,0.128,4,100,0.17,0.04,0.033,0.04,Logan Webb,R,0.49,0.81,1.15,0.97,HIGH,None,Yes @ +700 (BetOnline.ag),0.003,700.0,0.125,0.3,0.024,0.01,BetOnline.ag,PASS
+Jeff McNeil,ATH,KC,1,R,0.102,1,104,0.1,0.0096,0.0234,0.0248,Noah Cameron,R,1.72,1.44,0.91,0.97,MEDIUM,None,Yes @ +900 (BetOnline.ag),0.002,900.0,0.1,0.2,0.02,0.01,BetOnline.ag,PASS
+Lawrence Butler,ATH,KC,1,R,0.133,24,730,0.158,0.0325,0.0318,0.0308,Noah Cameron,R,1.72,1.44,0.91,0.97,HIGH,None,N/A,0.0,,,0.0,0.0,0.0,,
+Luis Rengifo,MIL,AZ,1,R,0.055,9,631,0.095,0.0125,0.0179,0.0124,Michael Soroka,R,0.66,0.94,1.1,0.97,MEDIUM,No HR in last 10 games,N/A,0.0,,,0.0,0.0,0.0,,
+Jac Caglianone,KC,ATH,0,R,0.108,2,98,0.15,0.0204,0.0277,0.0355,Jeffrey Springs,R,1.28,1.24,0.91,0.97,MEDIUM,Small sample (98 PA),N/A,0.0,,,0.0,0.0,0.0,,
+Spencer Horwitz,PIT,STL,1,R,0.098,3,98,0.136,0.0306,0.0297,0.0374,Hunter Dobbins,R,0.89,0.99,0.93,0.97,MEDIUM,Small sample (98 PA),Yes @ +900 (BetOnline.ag),-0.002,900.0,0.1,-0.2,-0.02,0.0,BetOnline.ag,PASS
+Nathaniel Lowe,CIN,COL,1,R,0.189,18,609,0.153,0.0296,0.03,0.0563,Michael Lorenzen,R,1.28,1.24,1.2,0.97,HIGH,None,Yes @ +400 (BetOnline.ag),-0.011,400.0,0.2,-1.1,-0.055,0.0,BetOnline.ag,PASS
+Hunter Goodman,COL,CIN,0,R,0.262,40,695,0.264,0.0604,0.0525,0.0739,Andrew Abbott,R,1.28,1.24,1.2,0.97,HIGH,None,Yes @ +250 (BetOnline.ag),-0.024,250.0,0.286,-2.4,-0.083,0.0,BetOnline.ag,PASS
+Juan Soto,NYM,WSH,1,R,0.26,43,715,0.262,0.0601,0.0524,0.0602,Miles Mikolas,R,2.73,1.86,0.99,0.97,HIGH,None,Yes @ +250 (BetOnline.ag),-0.026,250.0,0.286,-2.6,-0.09,0.0,BetOnline.ag,PASS
+Konnor Griffin,PIT,STL,1,R,0.091,2,96,0.115,0.0208,0.0268,0.0355,Hunter Dobbins,R,0.89,0.99,0.93,0.97,MEDIUM,Small sample (96 PA),Yes @ +900 (BetOnline.ag),-0.009,900.0,0.1,-0.9,-0.09,0.0,BetOnline.ag,PASS
+Kyle Schwarber,PHI,SF,1,R,0.221,65,854,0.321,0.0752,0.0647,0.0649,Logan Webb,R,0.49,0.81,1.15,0.97,HIGH,None,Yes @ +300 (BetOnline.ag),-0.029,300.0,0.25,-2.9,-0.116,0.0,BetOnline.ag,PASS
+Elly De La Cruz,CIN,COL,1,R,0.22,32,833,0.208,0.0434,0.0408,0.0583,Michael Lorenzen,R,1.28,1.24,1.2,0.97,HIGH,None,Yes @ +300 (BetOnline.ag),-0.03,300.0,0.25,-3.0,-0.12,0.0,BetOnline.ag,PASS
+Christian Walker,HOU,BAL,0,R,0.193,34,762,0.21,0.0464,0.0422,0.0527,Chris Bassitt,R,1.28,1.23,1.13,0.97,HIGH,None,Yes @ +350 (BetOnline.ag),-0.029,350.0,0.222,-2.9,-0.131,0.0,BetOnline.ag,PASS
+Troy Johnston,COL,CIN,0,R,0.108,2,102,0.142,0.0196,0.0272,0.0176,Andrew Abbott,R,1.28,1.24,1.2,0.97,MEDIUM,No HR in last 10 games,Yes @ +700 (BetOnline.ag),-0.017,700.0,0.125,-1.7,-0.136,0.0,BetOnline.ag,PASS
+Casey Schmitt,SF,PHI,0,R,0.143,4,92,0.238,0.0435,0.0358,0.0486,Cristopher Sánchez,R,0.81,1.0,1.15,0.97,MEDIUM,Small sample (92 PA),Yes @ +500 (BetOnline.ag),-0.024,500.0,0.167,-2.4,-0.142,0.0,BetOnline.ag,PASS
+Drake Baldwin,ATL,DET,1,R,0.122,7,142,0.197,0.0493,0.0375,0.0397,Framber Valdez,R,0.53,0.84,1.02,0.97,HIGH,None,Yes @ +600 (BetOnline.ag),-0.021,600.0,0.143,-2.1,-0.146,0.0,BetOnline.ag,PASS
+Bryce Harper,PHI,SF,1,R,0.155,33,703,0.23,0.0472,0.0438,0.0448,Logan Webb,R,0.49,0.81,1.15,0.97,HIGH,None,Yes @ +450 (BetOnline.ag),-0.027,450.0,0.182,-2.7,-0.147,0.0,BetOnline.ag,PASS
+Sal Stewart,CIN,COL,1,R,0.212,9,130,0.298,0.0692,0.0464,0.0453,Michael Lorenzen,R,1.28,1.24,1.2,0.97,HIGH,None,Yes @ +300 (BetOnline.ag),-0.038,300.0,0.25,-3.8,-0.152,0.0,BetOnline.ag,PASS
+Matt Olson,ATL,DET,1,R,0.161,38,863,0.245,0.0469,0.0451,0.0615,Framber Valdez,R,0.53,0.84,1.02,0.97,HIGH,None,Yes @ +425 (BetRivers),-0.029,425.0,0.19,-2.9,-0.155,0.0,BetRivers,PASS
+Ryan O'Hearn,PIT,STL,1,R,0.105,22,666,0.164,0.0343,0.033,0.0383,Hunter Dobbins,R,0.89,0.99,0.93,0.97,HIGH,None,Yes @ +700 (BetOnline.ag),-0.02,700.0,0.125,-2.0,-0.16,0.0,BetOnline.ag,PASS
+Trea Turner,PHI,SF,1,R,0.092,18,769,0.143,0.0234,0.0262,0.0243,Logan Webb,R,0.49,0.81,1.15,0.97,HIGH,None,Yes @ +800 (BetRivers),-0.019,800.0,0.111,-1.9,-0.172,0.0,BetRivers,PASS
+Jose Altuve,HOU,BAL,0,R,0.137,29,779,0.168,0.0354,0.034,0.0293,Chris Bassitt,R,1.28,1.23,1.13,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),-0.03,500.0,0.167,-3.0,-0.178,0.0,BetOnline.ag,PASS
+Sal Frelick,MIL,AZ,1,R,0.082,14,698,0.111,0.02,0.0225,0.0253,Michael Soroka,R,0.66,0.94,1.1,0.97,HIGH,None,Yes @ +900 (BetOnline.ag),-0.018,900.0,0.1,-1.8,-0.18,0.0,BetOnline.ag,PASS
+Rafael Devers,SF,PHI,0,R,0.116,37,849,0.192,0.0402,0.0381,0.0246,Cristopher Sánchez,R,0.81,1.0,1.15,0.97,MEDIUM,No HR in last 10 games,Yes @ +600 (BetOnline.ag),-0.027,600.0,0.143,-2.7,-0.188,0.0,BetOnline.ag,PASS
+Spencer Torkelson,DET,ATL,0,R,0.162,36,764,0.217,0.0466,0.0428,0.0727,Bryce Elder,R,0.49,0.81,1.02,0.97,HIGH,None,Yes @ +400 (BetOnline.ag),-0.038,400.0,0.2,-3.8,-0.19,0.0,BetOnline.ag,PASS
+Bryson Stott,PHI,SF,1,R,0.081,13,560,0.134,0.0232,0.0258,0.0174,Logan Webb,R,0.49,0.81,1.15,0.97,MEDIUM,No HR in last 10 games,Yes @ +900 (BetOnline.ag),-0.019,900.0,0.1,-1.9,-0.19,0.0,BetOnline.ag,PASS
+Carson Benge,NYM,WSH,1,R,0.135,2,93,0.093,0.0215,0.0263,0.0283,Miles Mikolas,R,2.73,1.86,0.99,0.97,MEDIUM,Small sample (93 PA),Yes @ +500 (BetOnline.ag),-0.032,500.0,0.167,-3.2,-0.19,0.0,BetOnline.ag,PASS
+Jacob Young,WSH,NYM,0,R,0.081,2,104,0.114,0.0192,0.0262,0.0169,Freddy Peralta,R,1.12,1.16,0.99,0.97,MEDIUM,No HR in last 10 games,Yes @ +900 (BetOnline.ag),-0.019,900.0,0.1,-1.9,-0.19,0.0,BetOnline.ag,PASS
+Jordan Walker,STL,PIT,0,R,0.101,8,125,0.253,0.064,0.043,0.0269,Paul Skenes,R,0.62,0.92,0.93,0.97,MEDIUM,No HR in last 10 games,Yes @ +700 (BetOnline.ag),-0.024,700.0,0.125,-2.4,-0.192,0.0,BetOnline.ag,PASS
+Byron Buxton,MIN,TOR,1,R,0.179,42,672,0.268,0.0611,0.0529,0.0638,Kevin Gausman,R,0.77,0.97,1.02,0.97,HIGH,None,Yes @ +350 (BetOnline.ag),-0.043,350.0,0.222,-4.3,-0.195,0.0,BetOnline.ag,PASS
+Taylor Ward,BAL,HOU,1,R,0.16,37,799,0.216,0.0406,0.0399,0.0327,Peter Lambert,R,1.2,1.2,1.13,0.97,HIGH,None,Yes @ +400 (BetOnline.ag),-0.04,400.0,0.2,-4.0,-0.2,0.0,BetOnline.ag,PASS
+Jung Hoo Lee,SF,PHI,0,R,0.08,10,730,0.145,0.0142,0.0218,0.0229,Cristopher Sánchez,R,0.81,1.0,1.15,0.97,HIGH,None,Yes @ +900 (BetOnline.ag),-0.02,900.0,0.1,-2.0,-0.2,0.0,BetOnline.ag,PASS
+Bo Bichette,NYM,WSH,1,R,0.133,20,760,0.147,0.0247,0.0272,0.026,Miles Mikolas,R,2.73,1.86,0.99,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),-0.034,500.0,0.167,-3.4,-0.202,0.0,BetOnline.ag,PASS
+Gunnar Henderson,BAL,HOU,1,R,0.177,26,787,0.198,0.0379,0.0372,0.0479,Peter Lambert,R,1.2,1.2,1.13,0.97,HIGH,None,Yes @ +350 (BetOnline.ag),-0.045,350.0,0.222,-4.5,-0.204,0.0,BetOnline.ag,PASS
+Shea Langeliers,ATH,KC,1,R,0.204,39,655,0.255,0.0597,0.0514,0.0472,Noah Cameron,R,1.72,1.44,0.91,0.97,HIGH,None,Yes @ +280 (BetRivers),-0.059,280.0,0.263,-5.9,-0.225,0.0,BetRivers,PASS
+Isaac Paredes,HOU,BAL,0,R,0.153,3,103,0.145,0.0291,0.0296,0.0458,Chris Bassitt,R,1.28,1.23,1.13,0.97,HIGH,None,Yes @ +400 (BetOnline.ag),-0.047,400.0,0.2,-4.7,-0.235,0.0,BetOnline.ag,PASS
+Heliot Ramos,SF,PHI,0,R,0.127,24,802,0.145,0.0297,0.0295,0.0457,Cristopher Sánchez,R,0.81,1.0,1.15,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),-0.04,500.0,0.167,-4.0,-0.238,0.0,BetOnline.ag,PASS
+TJ Rumfield,COL,CIN,0,R,0.127,3,123,0.154,0.0244,0.0286,0.0267,Andrew Abbott,R,1.28,1.24,1.2,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),-0.04,500.0,0.167,-4.0,-0.238,0.0,BetOnline.ag,PASS
+Alec Burleson,STL,PIT,0,R,0.095,22,676,0.171,0.0323,0.0325,0.037,Paul Skenes,R,0.62,0.92,0.93,0.97,HIGH,None,Yes @ +700 (BetOnline.ag),-0.03,700.0,0.125,-3.0,-0.24,0.0,BetOnline.ag,PASS
+Pete Alonso,BAL,HOU,1,R,0.189,42,836,0.228,0.0478,0.0443,0.0448,Peter Lambert,R,1.2,1.2,1.13,0.97,HIGH,None,Yes @ +300 (BetOnline.ag),-0.061,300.0,0.25,-6.1,-0.244,0.0,BetOnline.ag,PASS
+Corbin Carroll,AZ,MIL,0,R,0.189,35,755,0.28,0.0449,0.0461,0.0467,Brandon Woodruff,R,1.28,1.24,1.1,0.97,HIGH,None,Yes @ +300 (BetOnline.ag),-0.061,300.0,0.25,-6.1,-0.244,0.0,BetOnline.ag,PASS
+Kazuma Okamoto,TOR,MIN,0,R,0.126,5,119,0.159,0.042,0.0335,0.0484,Bailey Ober,R,0.84,1.02,1.02,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),-0.041,500.0,0.167,-4.1,-0.244,0.0,BetOnline.ag,PASS
+Mauricio Dubón,ATL,DET,1,R,0.075,2,113,0.151,0.0177,0.0269,0.0177,Framber Valdez,R,0.53,0.84,1.02,0.97,MEDIUM,No HR in last 10 games,Yes @ +900 (BetOnline.ag),-0.025,900.0,0.1,-2.5,-0.25,0.0,BetOnline.ag,PASS
+Adolis García,PHI,SF,1,R,0.111,22,663,0.163,0.0321,0.0319,0.0298,Logan Webb,R,0.49,0.81,1.15,0.97,HIGH,None,Yes @ +575 (BetRivers),-0.037,575.0,0.148,-3.7,-0.251,0.0,BetRivers,PASS
+Lourdes Gurriel Jr.,AZ,MIL,0,R,0.123,19,546,0.17,0.0348,0.0335,0.0231,Brandon Woodruff,R,1.28,1.24,1.1,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),-0.044,500.0,0.167,-4.4,-0.262,0.0,BetOnline.ag,PASS
+Iván Herrera,STL,PIT,0,R,0.092,4,138,0.181,0.029,0.0309,0.036,Paul Skenes,R,0.62,0.92,0.93,0.97,HIGH,None,Yes @ +700 (BetOnline.ag),-0.033,700.0,0.125,-3.3,-0.264,0.0,BetOnline.ag,PASS
+Daylen Lile,WSH,NYM,0,R,0.105,3,136,0.129,0.0221,0.0269,0.0335,Freddy Peralta,R,1.12,1.16,0.99,0.97,HIGH,None,Yes @ +600 (BetRivers),-0.038,600.0,0.143,-3.8,-0.265,0.0,BetRivers,PASS
+Matt McLain,CIN,COL,1,R,0.132,17,707,0.119,0.0227,0.0243,0.0324,Michael Lorenzen,R,1.28,1.24,1.2,0.97,HIGH,None,Yes @ +450 (BetOnline.ag),-0.05,450.0,0.182,-5.0,-0.274,0.0,BetOnline.ag,PASS
+Kyle Karros,COL,CIN,0,R,0.103,1,108,0.068,0.0093,0.022,0.0229,Andrew Abbott,R,1.28,1.24,1.2,0.97,MEDIUM,None,Yes @ +600 (BetOnline.ag),-0.04,600.0,0.143,-4.0,-0.279,0.0,BetOnline.ag,PASS
+Yordan Alvarez,HOU,BAL,0,R,0.24,11,134,0.381,0.0821,0.0535,0.0667,Chris Bassitt,R,1.28,1.23,1.13,0.97,HIGH,None,Yes @ +200 (BetOnline.ag),-0.093,200.0,0.333,-9.3,-0.28,0.0,BetOnline.ag,PASS
+Carter Jensen,KC,ATH,0,R,0.142,6,99,0.233,0.0606,0.0399,0.0431,Jeffrey Springs,R,1.28,1.24,0.91,0.97,MEDIUM,Small sample (99 PA),Yes @ +400 (BetRivers),-0.058,400.0,0.2,-5.8,-0.29,0.0,BetRivers,PASS
+Ozzie Albies,ATL,DET,1,R,0.117,23,799,0.151,0.0322,0.0312,0.0456,Framber Valdez,R,0.53,0.84,1.02,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),-0.05,500.0,0.167,-5.0,-0.298,0.0,BetOnline.ag,PASS
+Geraldo Perdomo,AZ,MIL,0,R,0.1,21,827,0.165,0.0236,0.0277,0.0176,Brandon Woodruff,R,1.28,1.24,1.1,0.97,MEDIUM,No HR in last 10 games,Yes @ +600 (BetOnline.ag),-0.043,600.0,0.143,-4.3,-0.3,0.0,BetOnline.ag,PASS
+Brent Rooker,ATH,KC,1,R,0.174,30,699,0.217,0.0429,0.0408,0.0432,Noah Cameron,R,1.72,1.44,0.91,0.97,HIGH,None,Yes @ +300 (BetOnline.ag),-0.076,300.0,0.25,-7.6,-0.304,0.0,BetOnline.ag,PASS
+Brice Turang,MIL,AZ,1,R,0.101,22,783,0.167,0.0287,0.0305,0.0274,Michael Soroka,R,0.66,0.94,1.1,0.97,HIGH,None,Yes @ +575 (BetRivers),-0.047,575.0,0.148,-4.7,-0.318,0.0,BetRivers,PASS
+Nick Kurtz,ATH,KC,1,R,0.17,5,135,0.184,0.037,0.0333,0.052,Noah Cameron,R,1.72,1.44,0.91,0.97,HIGH,None,Yes @ +300 (BetOnline.ag),-0.08,300.0,0.25,-8.0,-0.32,0.0,BetOnline.ag,PASS
+Brett Baty,NYM,WSH,1,R,0.123,1,96,0.102,0.0104,0.0239,0.0259,Miles Mikolas,R,2.73,1.86,0.99,0.97,MEDIUM,Small sample (96 PA),Yes @ +450 (BetOnline.ag),-0.059,450.0,0.182,-5.9,-0.324,0.0,BetOnline.ag,PASS
+Willy Adames,SF,PHI,0,R,0.112,33,806,0.188,0.0389,0.0371,0.0232,Cristopher Sánchez,R,0.81,1.0,1.15,0.97,MEDIUM,No HR in last 10 games,Yes @ +500 (BetOnline.ag),-0.055,500.0,0.167,-5.5,-0.328,0.0,BetOnline.ag,PASS
+Trevor Larnach,MIN,TOR,1,R,0.084,17,567,0.154,0.03,0.0302,0.0194,Kevin Gausman,R,0.77,0.97,1.02,0.97,MEDIUM,No HR in last 10 games,Yes @ +700 (BetOnline.ag),-0.041,700.0,0.125,-4.1,-0.328,0.0,BetOnline.ag,PASS
+Jordan Beck,COL,CIN,0,R,0.134,16,588,0.158,0.0272,0.0292,0.0301,Andrew Abbott,R,1.28,1.24,1.2,0.97,HIGH,None,Yes @ +400 (BetOnline.ag),-0.066,400.0,0.2,-6.6,-0.33,0.0,BetOnline.ag,PASS
+TJ Friedl,CIN,COL,1,R,0.102,15,803,0.104,0.0174,0.0205,0.0221,Michael Lorenzen,R,1.28,1.24,1.2,0.97,HIGH,None,Yes @ +550 (BetRivers),-0.052,550.0,0.154,-5.2,-0.337,0.0,BetRivers,PASS
+Ernie Clement,TOR,MIN,0,R,0.066,10,714,0.124,0.0131,0.0199,0.0209,Bailey Ober,R,0.84,1.02,1.02,0.97,HIGH,None,Yes @ +900 (BetOnline.ag),-0.034,900.0,0.1,-3.4,-0.34,0.0,BetOnline.ag,PASS
+Ketel Marte,AZ,MIL,0,R,0.163,33,678,0.211,0.0475,0.0426,0.035,Brandon Woodruff,R,1.28,1.24,1.1,0.97,HIGH,None,Yes @ +300 (BetOnline.ag),-0.087,300.0,0.25,-8.7,-0.348,0.0,BetOnline.ag,PASS
+Josh Bell,MIN,TOR,1,R,0.093,25,656,0.165,0.0359,0.0338,0.0213,Kevin Gausman,R,0.77,0.97,1.02,0.97,MEDIUM,No HR in last 10 games,Yes @ +600 (BetOnline.ag),-0.05,600.0,0.143,-5.0,-0.349,0.0,BetOnline.ag,PASS
+Riley Greene,DET,ATL,0,R,0.143,40,783,0.22,0.0483,0.0439,0.0533,Bryce Elder,R,0.49,0.81,1.02,0.97,HIGH,None,Yes @ +350 (BetOnline.ag),-0.079,350.0,0.222,-7.9,-0.357,0.0,BetOnline.ag,PASS
+Oneil Cruz,PIT,STL,1,R,0.143,29,676,0.206,0.047,0.0421,0.0582,Hunter Dobbins,R,0.89,0.99,0.93,0.97,HIGH,None,Yes @ +350 (BetOnline.ag),-0.079,350.0,0.222,-7.9,-0.357,0.0,BetOnline.ag,PASS
+James Wood,WSH,NYM,0,R,0.173,41,840,0.247,0.0515,0.0475,0.0538,Freddy Peralta,R,1.12,1.16,0.99,0.97,HIGH,None,Yes @ +270 (BetRivers),-0.097,270.0,0.27,-9.7,-0.36,0.0,BetRivers,PASS
+CJ Abrams,WSH,NYM,0,R,0.123,26,762,0.194,0.0371,0.0365,0.0325,Freddy Peralta,R,1.12,1.16,0.99,0.97,HIGH,None,Yes @ +420 (BetRivers),-0.069,420.0,0.192,-6.9,-0.36,0.0,BetRivers,PASS
+Salvador Perez,KC,ATH,0,R,0.142,35,763,0.195,0.0452,0.0406,0.0421,Jeffrey Springs,R,1.28,1.24,0.91,0.97,HIGH,None,Yes @ +350 (BetOnline.ag),-0.08,350.0,0.222,-8.0,-0.361,0.0,BetOnline.ag,PASS
+Marcus Semien,NYM,WSH,1,R,0.104,16,651,0.116,0.0221,0.024,0.0158,Miles Mikolas,R,2.73,1.86,0.99,0.97,MEDIUM,No HR in last 10 games,Yes @ +500 (BetOnline.ag),-0.063,500.0,0.167,-6.3,-0.376,0.0,BetOnline.ag,PASS
+Brandon Lowe,PIT,STL,1,R,0.124,38,669,0.237,0.0573,0.0491,0.0309,Hunter Dobbins,R,0.89,0.99,0.93,0.97,MEDIUM,No HR in last 10 games,Yes @ +400 (BetOnline.ag),-0.076,400.0,0.2,-7.6,-0.38,0.0,BetOnline.ag,PASS
+Carlos Correa,HOU,BAL,0,R,0.103,15,701,0.127,0.0208,0.0239,0.0235,Chris Bassitt,R,1.28,1.23,1.13,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),-0.064,500.0,0.167,-6.4,-0.382,0.0,BetOnline.ag,PASS
+Jacob Wilson,ATH,KC,1,R,0.103,15,649,0.124,0.0219,0.0244,0.0236,Noah Cameron,R,1.72,1.44,0.91,0.97,HIGH,None,Yes @ +500 (BetOnline.ag),-0.064,500.0,0.167,-6.4,-0.382,0.0,BetOnline.ag,PASS
+Justin Crawford,PHI,SF,1,R,0.067,0,91,0.085,0.0,0.0212,0.0142,Logan Webb,R,0.49,0.81,1.15,0.97,LOW,Small sample (91 PA); No HR in last 10 games,Yes @ +800 (BetRivers),-0.044,800.0,0.111,-4.4,-0.397,0.0,BetRivers,PASS
+Nolan Gorman,STL,PIT,0,R,0.085,4,112,0.143,0.0357,0.0312,0.0291,Paul Skenes,R,0.62,0.92,0.93,0.97,HIGH,None,Yes @ +600 (BetOnline.ag),-0.058,600.0,0.143,-5.8,-0.405,0.0,BetOnline.ag,PASS
+Luis García Jr.,WSH,NYM,0,R,0.085,17,626,0.145,0.0248,0.0271,0.0187,Freddy Peralta,R,1.12,1.16,0.99,0.97,MEDIUM,No HR in last 10 games,Yes @ +600 (BetOnline.ag),-0.058,600.0,0.143,-5.8,-0.405,0.0,BetOnline.ag,PASS
+Brenton Doyle,COL,CIN,0,R,0.118,15,538,0.143,0.0279,0.0286,0.0214,Andrew Abbott,R,1.28,1.24,1.2,0.97,MEDIUM,No HR in last 10 games,Yes @ +400 (BetOnline.ag),-0.082,400.0,0.2,-8.2,-0.41,0.0,BetOnline.ag,PASS
+Luke Keaschall,MIN,TOR,1,R,0.058,1,127,0.06,0.0079,0.0206,0.013,Kevin Gausman,R,0.77,0.97,1.02,0.97,MEDIUM,No HR in last 10 games,Yes @ +900 (BetOnline.ag),-0.042,900.0,0.1,-4.2,-0.42,0.0,BetOnline.ag,PASS
+Gleyber Torres,DET,ATL,0,R,0.072,18,760,0.114,0.0224,0.0238,0.023,Bryce Elder,R,0.49,0.81,1.02,0.97,HIGH,None,Yes @ +700 (BetOnline.ag),-0.053,700.0,0.125,-5.3,-0.424,0.0,BetOnline.ag,PASS
+Masyn Winn,STL,PIT,0,R,0.057,10,645,0.109,0.0146,0.0199,0.0209,Paul Skenes,R,0.62,0.92,0.93,0.97,HIGH,None,Yes @ +900 (BetOnline.ag),-0.043,900.0,0.1,-4.3,-0.43,0.0,BetOnline.ag,PASS
+Matt Chapman,SF,PHI,0,R,0.094,22,657,0.165,0.0295,0.0308,0.0195,Cristopher Sánchez,R,0.81,1.0,1.15,0.97,MEDIUM,No HR in last 10 games,Yes @ +500 (BetOnline.ag),-0.073,500.0,0.167,-7.3,-0.436,0.0,BetOnline.ag,PASS
+Nasim Nuñez,WSH,NYM,0,R,0.056,0,107,0.011,0.0,0.0179,0.0118,Freddy Peralta,R,1.12,1.16,0.99,0.97,MEDIUM,No HR in last 10 games,Yes @ +900 (BetOnline.ag),-0.044,900.0,0.1,-4.4,-0.44,0.0,BetOnline.ag,PASS
+Maikel Garcia,KC,ATH,0,R,0.08,18,787,0.154,0.022,0.0263,0.0168,Jeffrey Springs,R,1.28,1.24,0.91,0.97,MEDIUM,No HR in last 10 games,Yes @ +575 (BetRivers),-0.068,575.0,0.148,-6.8,-0.46,0.0,BetRivers,PASS
+Daulton Varsho,TOR,MIN,0,R,0.084,3,105,0.149,0.0286,0.0296,0.0204,Bailey Ober,R,0.84,1.02,1.02,0.97,MEDIUM,No HR in last 10 games,Yes @ +500 (BetOnline.ag),-0.083,500.0,0.167,-8.3,-0.496,0.0,BetOnline.ag,PASS
+Nick Gonzales,PIT,STL,1,R,0.05,0,108,0.049,0.0,0.0191,0.0122,Hunter Dobbins,R,0.89,0.99,0.93,0.97,MEDIUM,No HR in last 10 games,Yes @ +900 (BetOnline.ag),-0.05,900.0,0.1,-5.0,-0.5,0.0,BetOnline.ag,PASS
+Ezequiel Tovar,COL,CIN,0,R,0.091,1,119,0.097,0.0084,0.0224,0.0153,Andrew Abbott,R,1.28,1.24,1.2,0.97,MEDIUM,No HR in last 10 games,Yes @ +450 (BetOnline.ag),-0.091,450.0,0.182,-9.1,-0.5,0.0,BetOnline.ag,PASS
+Bryan Reynolds,PIT,STL,1,R,0.069,19,791,0.146,0.0237,0.0265,0.0167,Hunter Dobbins,R,0.89,0.99,0.93,0.97,MEDIUM,No HR in last 10 games,Yes @ +600 (BetOnline.ag),-0.074,600.0,0.143,-7.4,-0.517,0.0,BetOnline.ag,PASS
+Jake Bauers,MIL,AZ,1,R,0.107,5,104,0.209,0.0481,0.0364,0.0231,Michael Soroka,R,0.66,0.94,1.1,0.97,MEDIUM,No HR in last 10 games,Yes @ +350 (BetOnline.ag),-0.115,350.0,0.222,-11.5,-0.518,0.0,BetOnline.ag,PASS
+Luis Arraez,SF,PHI,0,R,0.048,8,793,0.091,0.0088,0.0153,0.0097,Cristopher Sánchez,R,0.81,1.0,1.15,0.97,MEDIUM,No HR in last 10 games,Yes @ +900 (BetOnline.ag),-0.052,900.0,0.1,-5.2,-0.52,0.0,BetOnline.ag,PASS
+Matt Wallner,MIN,TOR,1,R,0.08,3,109,0.116,0.0275,0.0282,0.0189,Kevin Gausman,R,0.77,0.97,1.02,0.97,MEDIUM,No HR in last 10 games,Yes @ +500 (BetOnline.ag),-0.087,500.0,0.167,-8.7,-0.52,0.0,BetOnline.ag,PASS
+Vladimir Guerrero Jr.,TOR,MIN,0,R,0.095,25,806,0.16,0.029,0.0301,0.0284,Bailey Ober,R,0.84,1.02,1.02,0.97,HIGH,None,Yes @ +400 (BetOnline.ag),-0.105,400.0,0.2,-10.5,-0.525,0.0,BetOnline.ag,PASS
+Bobby Witt Jr.,KC,ATH,0,R,0.117,25,821,0.189,0.0283,0.0317,0.0359,Jeffrey Springs,R,1.28,1.24,0.91,0.97,HIGH,None,Yes @ +300 (BetOnline.ag),-0.133,300.0,0.25,-13.3,-0.532,0.0,BetOnline.ag,PASS
+Garrett Mitchell,MIL,AZ,1,R,0.076,1,94,0.135,0.0106,0.0251,0.0169,Michael Soroka,R,0.66,0.94,1.1,0.97,LOW,Small sample (94 PA); No HR in last 10 games,Yes @ +500 (BetOnline.ag),-0.091,500.0,0.167,-9.1,-0.544,0.0,BetOnline.ag,PASS
+Kevin McGonigle,DET,ATL,0,R,0.081,2,131,0.185,0.0153,0.0272,0.0251,Bryce Elder,R,0.49,0.81,1.02,0.97,MEDIUM,None,Yes @ +450 (BetOnline.ag),-0.101,450.0,0.182,-10.1,-0.554,0.0,BetOnline.ag,PASS
+Ronald Acuña Jr.,ATL,DET,1,R,0.078,2,140,0.13,0.0143,0.0247,0.0238,Framber Valdez,R,0.53,0.84,1.02,0.97,MEDIUM,None,Yes @ +450 (BetOnline.ag),-0.104,450.0,0.182,-10.4,-0.571,0.0,BetOnline.ag,PASS
+William Contreras,MIL,AZ,1,R,0.076,19,778,0.132,0.0234,0.0255,0.0165,Michael Soroka,R,0.66,0.94,1.1,0.97,MEDIUM,No HR in last 10 games,Yes @ +450 (BetOnline.ag),-0.106,450.0,0.182,-10.6,-0.582,0.0,BetOnline.ag,PASS
+Austin Riley,ATL,DET,1,R,0.075,3,131,0.128,0.0229,0.0272,0.0174,Framber Valdez,R,0.53,0.84,1.02,0.97,MEDIUM,No HR in last 10 games,Yes @ +450 (BetOnline.ag),-0.107,450.0,0.182,-10.7,-0.588,0.0,BetOnline.ag,PASS

@@ -1,0 +1,4 @@
+Date,Is_Playoff,Player,Team,Opponent,Projection,L10,Actual,Diff,Baseline_Diff,Confidence,Red_Flags,Recommended_Side,Book_Line,Book_Odds,Our_Prob,Book_Prob,Edge_PP,EV,Kelly_Units,Bookmaker,Hit_3+,Hit_5+,Hit_7+,Hit_10+,prob_5+,prob_7+,prob_10+
+20260409,False,Kevin Durant,HOU,PHI,30.0,0,5,-25.0,5.0,MEDIUM,,,,,,,,,,,True,True,False,False,100,98,84
+20260409,False,Brandin Podziemski,GSW,LAL,18.6,0,1,-17.6,1.0,MEDIUM,,,,,,,,,,,False,False,False,False,76,39,10
+20260409,False,Micah Potter,IND,BKN,18.0,0,2,-16.0,2.0,LOW,,,,,,,,,,,False,False,False,False,73,35,8

@@ -18,9 +18,16 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))
 # Add parent directories to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 
+# Use shared OddsAPIScraper rather than a local duplicate.
+from mlb.shared.scrapers.odds_api import (
+    OddsAPIScraper,
+    calculate_implied_probability,
+    calculate_expected_value,
+)
 
-class NBAOddsAPI:
-    """Fetch NBA player props odds from The Odds API"""
+
+class _DeprecatedNBAOddsAPI:
+    """Deprecated: kept for back-compat only. Use OddsAPIScraper."""
     
     def __init__(self, api_key=None):
         self.api_key = api_key or os.getenv('ODDS_API_KEY')
@@ -126,23 +133,8 @@ class NBAOddsAPI:
         return pd.DataFrame(odds_list)
 
 
-def calculate_implied_probability(american_odds):
-    """Convert American odds to implied probability"""
-    if american_odds < 0:
-        return abs(american_odds) / (abs(american_odds) + 100)
-    else:
-        return 100 / (american_odds + 100)
-
-
-def calculate_expected_value(our_prob, american_odds):
-    """Calculate expected value of a bet"""
-    if american_odds < 0:
-        decimal_odds = 1 + (100 / abs(american_odds))
-    else:
-        decimal_odds = 1 + (american_odds / 100)
-    
-    ev = our_prob * decimal_odds - 1
-    return ev
+# calculate_implied_probability and calculate_expected_value are imported from
+# mlb.shared.scrapers.odds_api at the top of this file.
 
 
 def analyze_nba_assists_value(predictions_file, api_key=None, min_odds=-200):
@@ -168,8 +160,8 @@ def analyze_nba_assists_value(predictions_file, api_key=None, min_odds=-200):
     
     # Get sportsbook odds
     print("\n📡 Fetching sportsbook odds...")
-    odds_api = NBAOddsAPI(api_key=api_key)
-    odds_df = odds_api.get_all_assists_odds()
+    odds_api = OddsAPIScraper(api_key=api_key)
+    odds_df = odds_api.get_all_nba_assists_odds()
     
     if odds_df.empty:
         print("\n⚠️  No sportsbook odds available")

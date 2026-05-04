@@ -1,0 +1,11 @@
+player_name,team,opponent,is_home,projection,pts_season_avg,pts_last10_avg,confidence,book_line,book_odds,bookmaker,recommended_side,our_prob,book_prob,edge_pp,ev,kelly_units,model_vs_book,play_quality
+Ayo Dosunmu,MIN,DEN,1,19.635787477798463,14.8,19.8,MEDIUM,19.5,102.0,BetRivers,OVER,0.599,0.495,10.4,0.21,0.51,0.1,97
+De'Aaron Fox,SAS,POR,0,18.872530078967287,18.6,19.5,HIGH,,,,,,,0.0,0.0,0.0,0.0,96
+Jayson Tatum,BOS,PHI,0,24.733947031847226,21.8,24.1,HIGH,25.5,105.0,Bovada,PASS,0.521,0.488,3.3,0.068,0.16,-0.8,94
+Jalen Brunson,NYK,ATL,0,26.554533207313913,26.0,25.4,MEDIUM,28.5,108.0,BetRivers,PASS,0.466,0.481,-1.4,-0.03,0.0,-1.9,91
+Jaden McDaniels,MIN,DEN,1,14.903693155498505,14.8,16.9,HIGH,18.5,-113.0,DraftKings,UNDER,0.642,0.531,11.1,0.209,0.59,-3.6,91
+Karl-Anthony Towns,NYK,ATL,0,21.403745874234662,20.1,20.1,MEDIUM,19.5,-103.0,DraftKings,OVER,0.73,0.507,22.2,0.438,1.13,1.9,88
+Naz Reid,MIN,DEN,1,12.25380513715744,13.6,11.9,MEDIUM,13.5,110.0,Bovada,PASS,0.474,0.476,-0.3,-0.006,0.0,-1.2,88
+Jalen Johnson,ATL,NYK,1,19.288184033017274,22.5,18.3,MEDIUM,20.5,100.0,BetRivers,PASS,0.49,0.5,-1.0,-0.021,0.0,-1.2,82
+Tyrese Maxey,PHI,BOS,1,24.010854606077366,28.3,24.3,MEDIUM,25.5,-122.0,BetOnline.ag,PASS,0.531,0.55,-1.8,-0.033,0.0,-1.5,78
+Joel Embiid,PHI,BOS,1,26.597398965177653,26.9,28.8,MEDIUM,28.5,-130.0,Bovada,PASS,0.541,0.565,-2.4,-0.043,0.0,-1.9,75

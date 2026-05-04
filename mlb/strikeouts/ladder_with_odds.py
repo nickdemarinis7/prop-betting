@@ -179,58 +179,157 @@ def analyze_value_bets(predictions_file, api_key=None):
         print()
 
     # ------------------------------------------------------------------
-    # Ladder recommendations (grouped by pitcher, exposure-capped)
+    # Ladder recommendations (user's preferred style)
     # ------------------------------------------------------------------
     print("=" * 80)
     print("🎯 RECOMMENDED LADDER STRATEGIES")
     print("=" * 80)
+    print("\nStrategy: Either 1 pitcher with 2+ rungs, or 2-3 pitchers with matching rungs")
+    print("Max exposure: 1 unit per pitcher\n")
 
-    pitcher_groups = value_df.groupby('pitcher')
-
-    ladder_count = 0
-    for pitcher, group in sorted(pitcher_groups, key=lambda x: x[1]['ev'].sum(), reverse=True):
-        if ladder_count >= 5:
-            break
-
-        # Need at least 1 bet (single or multi-line)
-        if group.empty:
-            continue
-
-        pitcher_pred = predictions[predictions['pitcher'] == pitcher].iloc[0]
-
-        # Cap total units per pitcher
-        bets = group.sort_values('ev', ascending=False).copy()
-        cumulative_units = 0.0
-        selected = []
-        for _, bet in bets.iterrows():
-            if cumulative_units + bet['kelly_units'] > MAX_LADDER_UNITS:
-                remaining = MAX_LADDER_UNITS - cumulative_units
-                if remaining >= 0.25:
-                    bet_copy = bet.copy()
-                    bet_copy['kelly_units'] = round(remaining, 2)
-                    selected.append(bet_copy)
-                break
-            selected.append(bet)
-            cumulative_units += bet['kelly_units']
-
-        if not selected:
-            continue
-
-        ladder_count += 1
-        total_units = sum(b['kelly_units'] for b in selected)
-        has_suspicious = any(b['suspicious'] for b in selected)
-
-        print(f"\n{ladder_count}. {pitcher}" + (" ⚠️  REVIEW EDGES" if has_suspicious else ""))
-        print(f"   Projection: {pitcher_pred['projection']:.1f} K's | Total Exposure: {total_units:.2f}u")
-
-        for bet in selected:
-            flag = " ⚠️" if bet['suspicious'] else ""
-            print(f"   • {bet['kelly_units']:.2f}u on {bet['side']} {bet['line']} @ {bet['book_odds']:+d} ({bet['bookmaker']}){flag}")
-            print(f"     EV: {bet['ev']:+.1%} | Edge: {bet['edge']:.1%} | Our Prob: {bet['our_prob']:.1%}")
-        print()
-
-    if ladder_count == 0:
-        print("\n⚠️  No ladder opportunities found")
+    pitcher_groups = {pitcher: group for pitcher, group in value_df.groupby('pitcher')}
+    
+    # Find pitchers with 2+ good value bets (single-pitcher ladder)
+    single_pitcher_ladders = []
+    for pitcher, group in pitcher_groups.items():
+        if len(group) >= 2:
+            # Keep original Kelly units, then cap total to 1.0u
+            total_ev = group['ev'].sum()
+            bets = group.sort_values('ev', ascending=False).head(3).copy()
+            
+            # Calculate total Kelly units
+            total_kelly = bets['kelly_units'].sum()
+            
+            # Scale down if exceeds 1.0u
+            if total_kelly > 1.0:
+                scale_factor = 1.0 / total_kelly
+                bets['kelly_units'] = (bets['kelly_units'] * scale_factor).round(2)
+            
+            single_pitcher_ladders.append({
+                'pitcher': pitcher,
+                'bets': bets,
+                'total_ev': total_ev,
+                'type': 'single'
+            })
+    
+    # Find groups of 2-3 pitchers with matching rung counts
+    multi_pitcher_groups = []
+    pitcher_rung_counts = {p: len(g) for p, g in pitcher_groups.items()}
+    
+    # Group by rung count
+    for rung_count in [2, 3, 4, 5]:
+        pitchers_with_rungs = [p for p, rc in pitcher_rung_counts.items() if rc >= rung_count]
+        if len(pitchers_with_rungs) >= 2:
+            # Sort by total EV
+            sorted_pitchers = sorted(pitchers_with_rungs, 
+                                    key=lambda p: pitcher_groups[p]['ev'].sum(), 
+                                    reverse=True)
+            
+            # Generate multiple combinations
+            # 2-pitcher groups
+            for i in range(len(sorted_pitchers)):
+                for j in range(i + 1, len(sorted_pitchers)):
+                    group = [sorted_pitchers[i], sorted_pitchers[j]]
+                    group_bets = []
+                    total_ev = 0
+                    all_bets = []
+                    for p in group:
+                        g = pitcher_groups[p].sort_values('ev', ascending=False).head(rung_count).copy()
+                        all_bets.extend(g.to_dict('records'))
+                        group_bets.append({'pitcher': p, 'bets': g})
+                        total_ev += g['ev'].sum()
+                    
+                    # Calculate total Kelly units across all bets
+                    total_kelly = sum(b['kelly_units'] for b in all_bets)
+                    
+                    # Scale down if exceeds 1.0u
+                    if total_kelly > 1.0:
+                        scale_factor = 1.0 / total_kelly
+                        for pb in group_bets:
+                            pb['bets']['kelly_units'] = (pb['bets']['kelly_units'] * scale_factor).round(2)
+                    
+                    multi_pitcher_groups.append({
+                        'pitchers': group,
+                        'bets': group_bets,
+                        'rung_count': rung_count,
+                        'total_ev': total_ev,
+                        'type': 'multi'
+                    })
+            
+            # 3-pitcher groups (if enough pitchers)
+            if len(sorted_pitchers) >= 3:
+                for i in range(len(sorted_pitchers)):
+                    for j in range(i + 1, len(sorted_pitchers)):
+                        for k in range(j + 1, len(sorted_pitchers)):
+                            group = [sorted_pitchers[i], sorted_pitchers[j], sorted_pitchers[k]]
+                            group_bets = []
+                            total_ev = 0
+                            all_bets = []
+                            for p in group:
+                                g = pitcher_groups[p].sort_values('ev', ascending=False).head(rung_count).copy()
+                                all_bets.extend(g.to_dict('records'))
+                                group_bets.append({'pitcher': p, 'bets': g})
+                                total_ev += g['ev'].sum()
+                            
+                            # Calculate total Kelly units across all bets
+                            total_kelly = sum(b['kelly_units'] for b in all_bets)
+                            
+                            # Scale down if exceeds 1.0u
+                            if total_kelly > 1.0:
+                                scale_factor = 1.0 / total_kelly
+                                for pb in group_bets:
+                                    pb['bets']['kelly_units'] = (pb['bets']['kelly_units'] * scale_factor).round(2)
+                            
+                            multi_pitcher_groups.append({
+                                'pitchers': group,
+                                'bets': group_bets,
+                                'rung_count': rung_count,
+                                'total_ev': total_ev,
+                                'type': 'multi'
+                            })
+    
+    # Display top 10 single-pitcher ladders (if exist)
+    if single_pitcher_ladders:
+        print("🎯 OPTION 1: Single Pitcher Ladders (Top 10)")
+        print("=" * 80)
+        
+        sorted_singles = sorted(single_pitcher_ladders, key=lambda x: x['total_ev'], reverse=True)[:10]
+        for i, ladder in enumerate(sorted_singles, 1):
+            pitcher_pred = predictions[predictions['pitcher'] == ladder['pitcher']].iloc[0]
+            print(f"\n{i}. {ladder['pitcher']}")
+            print(f"   Projection: {pitcher_pred['projection']:.1f} K's | Total EV: {ladder['total_ev']:+.1%}")
+            print(f"   Total Exposure: 1.0u ({len(ladder['bets'])} rungs)\n")
+            
+            for _, bet in ladder['bets'].iterrows():
+                side_icon = "📈" if bet['side'] == 'OVER' else "📉"
+                print(f"   • {bet['kelly_units']:.2f}u {side_icon} {bet['side']} {bet['line']} @ {bet['book_odds']:+d} ({bet['bookmaker']})")
+                print(f"     EV: {bet['ev']:+.1%} | Edge: {bet['edge']:.1%} | Our Prob: {bet['our_prob']:.1%}")
+            print()
+    
+    # Display top 3 multi-pitcher groups (if exist)
+    if multi_pitcher_groups:
+        print("\n🎯 OPTION 2: Multi-Pitcher Ladders (Top 3)")
+        print("=" * 80)
+        
+        sorted_multis = sorted(multi_pitcher_groups, key=lambda x: x['total_ev'], reverse=True)[:3]
+        for i, ladder in enumerate(sorted_multis, 1):
+            print(f"\n{i}. {ladder['rung_count']} rungs each | Total EV: {ladder['total_ev']:+.1%}")
+            print(f"   Total Exposure: 1.0u (split across {len(ladder['pitchers'])} pitchers)\n")
+            
+            for j, p_bets in enumerate(ladder['bets'], 1):
+                pitcher = p_bets['pitcher']
+                pitcher_pred = predictions[predictions['pitcher'] == pitcher].iloc[0]
+                pitcher_total = p_bets['bets']['kelly_units'].sum()
+                print(f"   {j}. {pitcher} (Proj: {pitcher_pred['projection']:.1f} K's) - Exposure: {pitcher_total:.2f}u")
+                for _, bet in p_bets['bets'].iterrows():
+                    side_icon = "📈" if bet['side'] == 'OVER' else "📉"
+                    print(f"      • {bet['kelly_units']:.2f}u {side_icon} {bet['side']} {bet['line']} @ {bet['book_odds']:+d} ({bet['bookmaker']})")
+                    print(f"        EV: {bet['ev']:+.1%} | Edge: {bet['edge']:.1%}")
+                print()
+    
+    if not single_pitcher_ladders and not multi_pitcher_groups:
+        print("\n⚠️  No suitable ladder opportunities found")
+        print("   Need pitchers with 3+ value bets to form ladders")
         print("   Consider single bets from the value list above")
 
     # ------------------------------------------------------------------

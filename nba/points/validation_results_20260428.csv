@@ -1,0 +1,11 @@
+Date,Is_Playoff,Player,Team,Opponent,Projection,L10,Actual,Diff,Baseline_Diff,Confidence,Red_Flags,Recommended_Side,Book_Line,Book_Odds,Our_Prob,Book_Prob,Edge_PP,EV,Kelly_Units,Bookmaker,Hit_15+,Hit_20+,Hit_25+,Hit_30+
+20260428,True,Jayson Tatum,BOS,PHI,24.62019870441751,24.9,24,-0.6,-0.9,HIGH,None,OVER,24.5,-102.0,0.602,0.505,9.7,0.192,0.49,FanDuel,True,True,False,False
+20260428,True,Karl-Anthony Towns,NYK,ATL,20.467676010591457,20.0,16,-4.5,-4.0,MEDIUM,None,OVER,20.5,-103.0,0.589,0.507,8.2,0.161,0.42,DraftKings,True,False,False,False
+20260428,True,Jalen Brunson,NYK,ATL,24.909967001480688,24.7,39,14.1,14.3,MEDIUM,None,PASS,27.5,-143.0,0.565,0.588,-2.4,-0.04,0.0,BetRivers,True,True,True,True
+20260428,True,Tyrese Maxey,PHI,BOS,27.065249739925815,23.9,25,-2.1,1.1,MEDIUM,None,OVER,25.5,104.0,0.694,0.49,20.3,0.415,1.0,BetRivers,True,True,True,False
+20260428,True,Jaylen Brown,BOS,PHI,29.085433542055085,28.9,22,-7.1,-6.9,MEDIUM,None,OVER,27.5,106.0,0.672,0.485,18.6,0.384,0.9,BetRivers,True,True,False,False
+20260428,True,Devin Vassell,SAS,POR,13.49371374744873,13.2,10,-3.5,-3.2,MEDIUM,None,OVER,12.5,100.0,0.671,0.5,17.1,0.343,0.86,BetMGM,False,False,False,False
+20260428,True,Jalen Johnson,ATL,NYK,20.3716178605777,18.5,18,-2.4,-0.5,MEDIUM,None,OVER,20.5,-102.0,0.583,0.505,7.8,0.154,0.39,FanDuel,True,False,False,False
+20260428,True,De'Aaron Fox,SAS,POR,19.279480924206545,19.6,21,1.7,1.4,MEDIUM,None,OVER,18.5,110.0,0.645,0.476,16.9,0.355,0.81,BetRivers,True,True,False,False
+20260428,True,OG Anunoby,NYK,ATL,18.15324144940389,18.4,17,-1.2,-1.4,LOW,None,OVER,17.5,100.0,0.626,0.5,12.6,0.252,0.63,BetMGM,True,False,False,False
+20260428,True,Joel Embiid,PHI,BOS,27.96676585344417,29.0,33,5.0,4.0,MEDIUM,None,OVER,27.5,102.0,0.624,0.495,12.9,0.26,0.64,BetRivers,True,True,True,True

@@ -1,0 +1,12 @@
+Date,Player,Type,Projection,L10,Actual,Diff,Baseline_Diff,Hit_15+,Hit_20+,Hit_25+,Hit_30+,Prob_15+,Prob_20+,Prob_25+,Ladder_Value,Tier,Conf,Red_Flags,Is_Playoff,Game_Date,Units_15+,Units_20+,Units_25+,Min_Odds_15+,Min_Odds_20+,Min_Odds_25+
+20260421,Jayson Tatum,TOP PLAY,23.3,21.5,19,-4.3,-2.5,True,False,False,False,90,70,40,93,1,HIGH,,True,"Apr 21, 2026",1.5,1.25,0.5,0,0,0
+20260421,Jabari Smith Jr.,TOP PLAY,17.5,17.0,18,0.5,1.0,True,False,False,False,65,34,11,81,1,HIGH,,True,"Apr 21, 2026",1.25,0.5,0.25,0,0,0
+20260421,Jaylen Brown,TOP PLAY,29.4,27.3,36,6.6,8.7,True,True,True,True,93,83,67,73,2,MEDIUM,High variance (7.9),True,"Apr 21, 2026",1.25,1.25,0.75,0,0,0
+20260421,Tyrese Maxey,TOP PLAY,26.5,28.5,29,2.5,0.5,True,True,True,False,93,79,57,70,1,MEDIUM,,True,"Apr 21, 2026",1.5,1.5,1.0,0,0,0
+20260421,Amen Thompson,TOP PLAY,18.9,18.9,16,-2.9,-2.9,True,False,False,False,67,45,24,69,2,MEDIUM,,True,"Apr 21, 2026",1.0,0.5,0.1,0,0,0
+20260421,De'Aaron Fox,TOP PLAY,17.5,17.2,17,-0.5,-0.2,True,False,False,False,63,37,16,69,1,MEDIUM,Med blowout risk,True,"Apr 21, 2026",1.0,0.25,0.1,0,0,0
+20260421,LeBron James,TOP PLAY,18.1,18.0,28,9.9,10.0,True,True,True,False,65,40,19,67,1,MEDIUM,,True,"Apr 21, 2026",1.25,0.75,0.25,0,0,0
+20260421,Derrick White,TOP PLAY,15.3,14.5,8,-7.3,-6.5,False,False,False,False,51,31,16,67,2,MEDIUM,High variance (7.4),True,"Apr 21, 2026",0.5,0.1,0.1,0,0,0
+20260421,Payton Pritchard,TOP PLAY,18.2,17.9,4,-14.2,-13.9,False,False,False,False,63,43,24,65,2,MEDIUM,High variance (7.7),True,"Apr 21, 2026",0.75,0.25,0.1,0,0,0
+20260421,Alperen Sengun,TOP PLAY,19.8,21.1,20,0.2,-1.1,True,True,False,False,69,49,30,64,2,MEDIUM,High variance (7.8),True,"Apr 21, 2026",0.75,0.25,0.1,0,0,0
+20260421,Justin Edwards,FADE,9.7,12.5,5,-4.7,-7.5,False,False,False,False,30,15,6,4,3,LOW,Cooling (-0.5); High variance (8.4),True,"Apr 21, 2026",0.1,0.0,0.1,0,0,0

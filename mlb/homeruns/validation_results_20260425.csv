@@ -1,0 +1,159 @@
+date,player_name,team,opponent,is_home,projection,actual_hr,hit,confidence,red_flags,book_odds,book_prob,edge_pp,ev,kelly_units,recommended_side,bookmaker,pitcher_name,pitcher_hand,park_factor
+20260425,Fernando Tatis Jr.,SD,AZ,0,0.0,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Bobby Witt Jr.,KC,LAA,1,0.0,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Shohei Ohtani,LAD,CHC,1,0.074,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Corbin Carroll,AZ,SD,1,0.082,0,0,MEDIUM,Small sample (96 PA),,,,,,,,,,1.0
+20260425,Manny Machado,SD,AZ,0,0.033,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Vladimir Guerrero Jr.,TOR,CLE,1,0.061,0,0,MEDIUM,,,,,,,,,,,1.0
+20260425,Jackson Merrill,SD,AZ,0,0.074,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Ketel Marte,AZ,SD,1,0.152,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Kevin McGonigle,DET,CIN,0,0.017,1,1,MEDIUM,No HR in last 10 games,,,,,,,,,,1.15
+20260425,Yordan Alvarez,HOU,NYY,1,0.457,0,0,HIGH,,,,,,,,,,,1.1
+20260425,Geraldo Perdomo,AZ,SD,1,0.018,0,0,LOW,Small sample (99 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Francisco Alvarez,NYM,COL,1,0.084,0,0,LOW,Small sample (84 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Pete Crow-Armstrong,CHC,LAD,0,0.016,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Freddie Freeman,LAD,CHC,1,0.05,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Riley Greene,DET,CIN,0,0.118,0,0,HIGH,,,,,,,,,,,1.15
+20260425,Julio Rodríguez,SEA,STL,0,0.014,1,1,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,William Contreras,MIL,PIT,1,0.035,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Rafael Devers,SF,MIA,1,0.028,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,0.85
+20260425,Jake Cronenworth,SD,AZ,0,0.018,0,0,LOW,Small sample (91 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Josh Bell,MIN,TB,0,0.044,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,0.88
+20260425,Matt Wallner,MIN,TB,0,0.048,0,0,LOW,Small sample (93 PA); No HR in last 10 games,,,,,,,,,,0.88
+20260425,Garrett Mitchell,MIL,PIT,1,0.022,0,0,LOW,Small sample (79 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Michael Busch,CHC,LAD,0,0.078,0,0,MEDIUM,,,,,,,,,,,1.0
+20260425,Kyle Schwarber,PHI,ATL,0,0.166,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Bryan Reynolds,PIT,MIL,0,0.044,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Jake Burger,TEX,ATH,1,0.11,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Carlos Correa,HOU,NYY,1,0.027,1,1,MEDIUM,No HR in last 10 games,,,,,,,,,,1.1
+20260425,Randy Arozarena,SEA,STL,0,0.057,0,0,MEDIUM,,,,,,,,,,,1.0
+20260425,Cal Raleigh,SEA,STL,0,0.148,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Matt Chapman,SF,MIA,1,0.014,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,0.85
+20260425,Luke Keaschall,MIN,TB,0,0.014,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,0.88
+20260425,Alex Bregman,CHC,LAD,0,0.064,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Ernie Clement,TOR,CLE,1,0.0,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Mike Yastrzemski,ATL,PHI,1,0.0,0,0,LOW,Small sample (90 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Willy Adames,SF,MIA,1,0.062,0,0,HIGH,,,,,,,,,,,0.85
+20260425,Cam Smith,HOU,NYY,1,0.078,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.1
+20260425,Xander Bogaerts,SD,AZ,0,0.123,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Yandy Díaz,TB,MIN,1,0.042,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,0.88
+20260425,Chase DeLauter,CLE,TOR,0,0.085,0,0,LOW,Small sample (99 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Andy Pages,LAD,CHC,1,0.086,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Nolan Gorman,STL,SEA,1,0.088,0,0,MEDIUM,Small sample (92 PA),,,,,,,,,,1.0
+20260425,Casey Schmitt,SF,MIA,1,0.084,1,1,MEDIUM,Small sample (81 PA),,,,,,,,,,0.85
+20260425,Jo Adell,LAA,KC,0,0.093,1,1,HIGH,,,,,,,,,,,1.0
+20260425,Luis Arraez,SF,MIA,1,0.0,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,0.85
+20260425,Aaron Judge,NYY,HOU,0,0.23,0,0,HIGH,,,,,,,,,,,1.1
+20260425,Brandon Nimmo,TEX,ATH,1,0.084,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Pete Alonso,BAL,BOS,1,0.082,0,0,HIGH,,,,,,,,,,,1.1
+20260425,Chandler Simpson,TB,MIN,1,0.0,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,0.88
+20260425,Zach Neto,LAA,KC,0,0.067,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Nick Gonzales,PIT,MIL,0,0.0,0,0,LOW,Small sample (86 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Justin Crawford,PHI,ATL,0,0.0,0,0,LOW,Small sample (82 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Kyle Tucker,LAD,CHC,1,0.101,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Taylor Ward,BAL,BOS,1,0.044,0,0,MEDIUM,,,,,,,,,,,1.1
+20260425,Tyler Soderstrom,ATH,TEX,0,0.069,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Andrew Benintendi,CWS,WSH,1,0.102,0,0,MEDIUM,Small sample (82 PA),,,,,,,,,,1.0
+20260425,Marcell Ozuna,PIT,MIL,0,0.087,0,0,MEDIUM,Small sample (92 PA),,,,,,,,,,1.0
+20260425,Corey Seager,TEX,ATH,1,0.153,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Willson Contreras,BOS,BAL,0,0.104,1,1,HIGH,,,,,,,,,,,1.1
+20260425,Matt Olson,ATL,PHI,1,0.178,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Evan Carter,TEX,ATH,1,0.087,0,0,MEDIUM,Small sample (95 PA),,,,,,,,,,1.0
+20260425,Logan O'Hoppe,LAA,KC,0,0.049,0,0,MEDIUM,Small sample (90 PA),,,,,,,,,,1.0
+20260425,Jakob Marsee,MIA,SF,0,0.032,0,0,MEDIUM,,,,,,,,,,,0.85
+20260425,Junior Caminero,TB,MIN,1,0.241,0,0,HIGH,,,,,,,,,,,0.88
+20260425,Cody Bellinger,NYY,HOU,0,0.11,0,0,HIGH,,,,,,,,,,,1.1
+20260425,Alec Burleson,STL,SEA,1,0.102,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Cedric Mullins,TB,MIN,1,0.06,0,0,MEDIUM,Small sample (89 PA),,,,,,,,,,0.88
+20260425,Jung Hoo Lee,SF,MIA,1,0.056,0,0,MEDIUM,,,,,,,,,,,0.85
+20260425,Xavier Edwards,MIA,SF,0,0.013,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,0.85
+20260425,Ceddanne Rafaela,BOS,BAL,0,0.021,0,0,LOW,Small sample (88 PA); No HR in last 10 games,,,,,,,,,,1.1
+20260425,Byron Buxton,MIN,TB,0,0.167,0,0,HIGH,,,,,,,,,,,0.88
+20260425,Victor Caratini,MIN,TB,0,0.042,0,0,MEDIUM,Small sample (84 PA),,,,,,,,,,0.88
+20260425,Chase Meidroth,CWS,WSH,1,0.017,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Alec Bohm,PHI,ATL,0,0.017,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Caleb Durbin,BOS,BAL,0,0.0,1,1,LOW,Small sample (92 PA); No HR in last 10 games,,,,,,,,,,1.1
+20260425,Carter Jensen,KC,LAA,1,0.264,0,0,MEDIUM,Small sample (83 PA),,,,,,,,,,1.0
+20260425,Sal Frelick,MIL,PIT,1,0.02,0,0,LOW,Small sample (90 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Brice Turang,MIL,PIT,1,0.091,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Ben Rice,NYY,HOU,0,0.324,0,0,HIGH,,,,,,,,,,,1.1
+20260425,Kazuma Okamoto,TOR,CLE,1,0.127,1,1,HIGH,,,,,,,,,,,1.0
+20260425,Salvador Perez,KC,LAA,1,0.112,1,1,HIGH,,,,,,,,,,,1.0
+20260425,Ryan O'Hearn,PIT,MIL,0,0.097,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Jarren Duran,BOS,BAL,0,0.055,0,0,MEDIUM,Small sample (89 PA),,,,,,,,,,1.1
+20260425,Heliot Ramos,SF,MIA,1,0.087,1,1,MEDIUM,Small sample (96 PA),,,,,,,,,,0.85
+20260425,Cole Young,SEA,STL,0,0.032,1,1,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Matt McLain,CIN,DET,1,0.101,0,0,MEDIUM,,,,,,,,,,,1.15
+20260425,Jonathan Aranda,TB,MIN,1,0.157,0,0,HIGH,,,,,,,,,,,0.88
+20260425,Otto Lopez,MIA,SF,0,0.062,0,0,HIGH,,,,,,,,,,,0.85
+20260425,Jacob Wilson,ATH,TEX,0,0.081,0,0,MEDIUM,,,,,,,,,,,1.0
+20260425,Jacob Young,WSH,CWS,0,0.038,0,0,LOW,Small sample (89 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Bryson Stott,PHI,ATL,0,0.039,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Wilyer Abreu,BOS,BAL,0,0.104,0,0,HIGH,,,,,,,,,,,1.1
+20260425,Shea Langeliers,ATH,TEX,0,0.191,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Austin Riley,ATL,PHI,1,0.124,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Jose Altuve,HOU,NYY,1,0.112,0,0,HIGH,,,,,,,,,,,1.1
+20260425,CJ Abrams,WSH,CWS,0,0.129,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Trent Grisham,NYY,HOU,0,0.169,1,1,MEDIUM,Small sample (92 PA),,,,,,,,,,1.1
+20260425,Masyn Winn,STL,SEA,1,0.049,0,0,MEDIUM,Small sample (86 PA),,,,,,,,,,1.0
+20260425,Seiya Suzuki,CHC,LAD,0,0.159,1,1,HIGH,,,,,,,,,,,1.0
+20260425,Nolan Arenado,AZ,SD,1,0.201,0,0,MEDIUM,Small sample (88 PA),,,,,,,,,,1.0
+20260425,Brady House,WSH,CWS,0,0.077,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Daulton Varsho,TOR,CLE,1,0.12,0,0,MEDIUM,Small sample (88 PA),,,,,,,,,,1.0
+20260425,Jorge Soler,LAA,KC,0,0.135,0,0,MEDIUM,Small sample (99 PA),,,,,,,,,,1.0
+20260425,Trevor Story,BOS,BAL,0,0.065,0,0,MEDIUM,,,,,,,,,,,1.1
+20260425,Jeremiah Jackson,BAL,BOS,1,0.177,0,0,MEDIUM,Small sample (86 PA),,,,,,,,,,1.1
+20260425,J.P. Crawford,SEA,STL,0,0.057,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Drake Baldwin,ATL,PHI,1,0.149,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Gunnar Henderson,BAL,BOS,1,0.183,0,0,HIGH,,,,,,,,,,,1.1
+20260425,Josh Naylor,SEA,STL,0,0.127,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Ke'Bryan Hayes,CIN,DET,1,0.061,0,0,HIGH,,,,,,,,,,,1.15
+20260425,Jake Bauers,MIL,PIT,1,0.161,0,0,MEDIUM,Small sample (86 PA),,,,,,,,,,1.0
+20260425,Andrés Giménez,TOR,CLE,1,0.087,0,0,MEDIUM,Small sample (96 PA),,,,,,,,,,1.0
+20260425,Oneil Cruz,PIT,MIL,0,0.186,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Munetaka Murakami,CWS,WSH,1,0.343,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Nick Kurtz,ATH,TEX,0,0.166,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Josh Jung,TEX,ATH,1,0.14,1,1,MEDIUM,Small sample (92 PA),,,,,,,,,,1.0
+20260425,Spencer Torkelson,DET,CIN,0,0.166,1,1,MEDIUM,Small sample (98 PA),,,,,,,,,,1.15
+20260425,Yainer Diaz,HOU,NYY,1,0.193,0,0,HIGH,,,,,,,,,,,1.1
+20260425,Trea Turner,PHI,ATL,0,0.093,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Connor Norby,MIA,SF,0,0.094,0,0,MEDIUM,Small sample (90 PA),,,,,,,,,,0.85
+20260425,Bryce Harper,PHI,ATL,0,0.172,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Brooks Lee,MIN,TB,0,0.115,0,0,MEDIUM,Small sample (87 PA),,,,,,,,,,0.88
+20260425,JJ Wetherholt,STL,SEA,1,0.098,1,1,HIGH,,,,,,,,,,,1.0
+20260425,Nolan Schanuel,LAA,KC,0,0.073,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Dansby Swanson,CHC,LAD,0,0.169,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Miguel Vargas,CWS,WSH,1,0.175,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Colson Montgomery,CWS,WSH,1,0.226,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Ian Happ,CHC,LAD,0,0.176,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Nico Hoerner,CHC,LAD,0,0.121,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Spencer Steer,CIN,DET,1,0.164,0,0,MEDIUM,Small sample (91 PA),,,,,,,,,,1.15
+20260425,Sal Stewart,CIN,DET,1,0.267,1,1,HIGH,,,,,,,,,,,1.15
+20260425,Ryan McMahon,NYY,HOU,0,0.18,0,0,HIGH,,,,,,,,,,,1.1
+20260425,Christian Walker,HOU,NYY,1,0.214,1,1,HIGH,,,,,,,,,,,1.1
+20260425,Brayan Rocchio,CLE,TOR,0,0.114,0,0,MEDIUM,Small sample (95 PA),,,,,,,,,,1.0
+20260425,José Ramírez,CLE,TOR,0,0.187,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Brandon Lowe,PIT,MIL,0,0.209,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Mike Trout,LAA,KC,0,0.212,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Ozzie Albies,ATL,PHI,1,0.131,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Isaac Paredes,HOU,NYY,1,0.156,0,0,MEDIUM,Small sample (90 PA),,,,,,,,,,1.1
+20260425,Jordan Walker,STL,SEA,1,0.191,0,0,HIGH,,,,,,,,,,,1.0
+20260425,James Wood,WSH,CWS,0,0.242,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Max Muncy,ATH,TEX,0,0.242,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Elly De La Cruz,CIN,DET,1,0.229,1,1,HIGH,,,,,,,,,,,1.15
+20260425,Brandon Marsh,PHI,ATL,0,0.132,0,0,MEDIUM,Small sample (90 PA),,,,,,,,,,1.0
+20260425,Daylen Lile,WSH,CWS,0,0.119,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Dillon Dingler,DET,CIN,0,0.195,0,0,MEDIUM,Small sample (92 PA),,,,,,,,,,1.15
+20260425,Iván Herrera,STL,SEA,1,0.123,1,1,HIGH,,,,,,,,,,,1.0
+20260425,Juan Soto,NYM,COL,1,0.134,0,0,HIGH,,,,,,,,,,,1.0
+20260425,Hunter Goodman,COL,NYM,0,0.198,1,1,HIGH,,,,,,,,,,,1.0
+20260425,Liam Hicks,MIA,SF,0,0.122,0,0,MEDIUM,Small sample (92 PA),,,,,,,,,,0.85
+20260425,Jeff McNeil,ATH,TEX,0,0.047,0,0,MEDIUM,Small sample (91 PA),,,,,,,,,,1.0
+20260425,Bo Bichette,NYM,COL,1,0.015,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Marcus Semien,NYM,COL,1,0.017,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Kyle Karros,COL,NYM,0,0.05,0,0,MEDIUM,Small sample (91 PA),,,,,,,,,,1.0
+20260425,Ezequiel Tovar,COL,NYM,0,0.016,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Brenton Doyle,COL,NYM,0,0.047,0,0,MEDIUM,No HR in last 10 games,,,,,,,,,,1.0
+20260425,Owen Caissie,MIA,SF,0,0.035,0,0,LOW,Small sample (82 PA); No HR in last 10 games,,,,,,,,,,0.85
+20260425,Luis Rengifo,MIL,PIT,1,0.0,0,0,LOW,Small sample (79 PA); No HR in last 10 games,,,,,,,,,,1.0
+20260425,Troy Johnston,COL,NYM,0,0.037,0,0,LOW,Small sample (90 PA); No HR in last 10 games,,,,,,,,,,1.0

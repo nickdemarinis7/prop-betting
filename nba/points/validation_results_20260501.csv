@@ -1,0 +1,11 @@
+Date,Is_Playoff,Player,Team,Opponent,Projection,L10,Actual,Diff,Baseline_Diff,Confidence,Red_Flags,Recommended_Side,Book_Line,Book_Odds,Our_Prob,Book_Prob,Edge_PP,EV,Kelly_Units,Bookmaker,Hit_15+,Hit_20+,Hit_25+,Hit_30+
+20260501,True,RJ Barrett,TOR,CLE,21.803026663974123,22.6,24,2.2,1.4,HIGH,None,,,,,,0.0,0.0,0.0,,True,True,False,False
+20260501,True,Tari Eason,HOU,LAL,11.576934487029032,11.8,14,2.4,2.2,HIGH,None,PASS,13.5,-110.0,0.53,0.524,0.6,0.012,0.03,BetOnline.ag,False,False,False,False
+20260501,True,Jabari Smith Jr.,HOU,LAL,18.591230976270143,19.2,9,-9.6,-10.2,HIGH,None,,,,,,0.0,0.0,0.0,,False,False,False,False
+20260501,True,Scottie Barnes,TOR,CLE,19.460732460788964,20.1,25,5.5,4.9,MEDIUM,None,PASS,21.5,-102.0,0.529,0.505,2.4,0.048,0.12,FanDuel,True,True,True,False
+20260501,True,Tobias Harris,DET,ORL,15.037375784257508,16.2,22,7.0,5.8,MEDIUM,None,PASS,17.5,-121.0,0.57,0.548,2.3,0.042,0.13,BetRivers,True,True,False,False
+20260501,True,Alperen Sengun,HOU,LAL,18.599662783633807,19.0,17,-1.6,-2.0,MEDIUM,None,UNDER,22.5,-120.0,0.609,0.545,6.4,0.117,0.35,BetOnline.ag,True,False,False,False
+20260501,True,Reed Sheppard,HOU,LAL,12.402817649744472,12.3,10,-2.4,-2.3,MEDIUM,None,UNDER,16.5,-120.0,0.657,0.545,11.2,0.205,0.61,BetOnline.ag,False,False,False,False
+20260501,True,Ausar Thompson,DET,ORL,9.181648628778078,9.9,4,-5.2,-5.9,MEDIUM,None,PASS,9.5,-112.0,0.557,0.528,2.9,0.055,0.15,DraftKings,False,False,False,False
+20260501,True,Amen Thompson,HOU,LAL,21.26461266797416,21.8,18,-3.3,-3.8,MEDIUM,None,OVER,18.5,-105.0,0.743,0.512,23.0,0.45,1.18,BetRivers,True,False,False,False
+20260501,True,James Harden,CLE,TOR,17.387983431922972,21.5,16,-1.4,-5.5,LOW,None,UNDER,21.5,-120.0,0.664,0.545,11.9,0.218,0.65,BetMGM,True,False,False,False

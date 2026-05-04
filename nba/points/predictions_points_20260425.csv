@@ -1,0 +1,11 @@
+player_name,team,opponent,is_home,projection,pts_season_avg,pts_last10_avg,book_line,book_odds,bookmaker,model_vs_book,edge_direction,play_quality
+Jalen Johnson,ATL,NYK,1,21.934314711775823,22.5,22.8,,,,0.0,,98
+Rudy Gobert,MIN,DEN,1,12.483524102058412,10.9,12.8,,,,0.0,,95
+Ayo Dosunmu,MIN,DEN,1,15.252860012969974,14.8,15.3,,,,0.0,,94
+Donte DiVincenzo,MIN,DEN,1,12.26094595718384,12.2,11.3,,,,0.0,,91
+Anthony Edwards,MIN,DEN,1,28.384348992500307,28.8,27.7,,,,0.0,,85
+Nikola Jokić,DEN,MIN,0,23.141359926599126,27.7,24.0,,,,0.0,,85
+Karl-Anthony Towns,NYK,ATL,0,21.842445755247162,20.1,21.8,,,,0.0,,84
+Jamal Murray,DEN,MIN,0,23.710852295550538,25.4,25.3,,,,0.0,,79
+OG Anunoby,NYK,ATL,0,17.621466105871328,16.7,16.8,,,,0.0,,70
+Cade Cunningham,DET,ORL,0,21.580501222030563,23.9,20.1,,,,0.0,,70

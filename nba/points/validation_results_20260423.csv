@@ -1,0 +1,14 @@
+Date,Player,Type,Projection,L10,Actual,Diff,Baseline_Diff,Hit_15+,Hit_20+,Hit_25+,Hit_30+,Prob_15+,Prob_20+,Prob_25+,Ladder_Value,Tier,Conf,Red_Flags,Is_Playoff,Game_Date,Units_15+,Units_20+,Units_25+,Min_Odds_15+,Min_Odds_20+,Min_Odds_25+
+20260423,RJ Barrett,TOP PLAY,21.2,20.8,33,11.8,12.2,True,True,True,True,83,57,28,82,1,HIGH,Med blowout risk,True,"Apr 23, 2026",1.25,0.75,0.25,0,0,0
+20260423,Karl-Anthony Towns,TOP PLAY,21.8,21.8,21,-0.8,-0.8,True,True,False,False,84,60,32,79,2,MEDIUM,,True,"Apr 23, 2026",1.5,1.0,0.25,0,0,0
+20260423,Ayo Dosunmu,TOP PLAY,15.1,15.3,25,9.9,9.7,True,True,True,False,50,24,8,68,2,HIGH,,True,"Apr 23, 2026",0.75,0.1,0.1,0,0,0
+20260423,Julius Randle,TOP PLAY,20.3,19.3,15,-5.3,-4.3,True,False,False,False,71,51,31,67,2,MEDIUM,High variance (6.9),True,"Apr 23, 2026",1.0,0.5,0.1,0,0,0
+20260423,Rudy Gobert,TOP PLAY,12.5,12.8,10,-2.5,-2.8,False,False,False,False,38,19,7,65,1,HIGH,,True,"Apr 23, 2026",0.5,0.25,0.25,0,0,0
+20260423,Nikola Jokić,TOP PLAY,23.8,24.0,27,3.2,3.0,True,True,True,False,82,65,45,62,2,MEDIUM,High variance (8.2),True,"Apr 23, 2026",1.25,0.75,0.25,0,0,0
+20260423,Jamal Murray,TOP PLAY,23.6,25.3,16,-7.6,-9.3,True,False,False,False,81,64,44,62,2,MEDIUM,High variance (10.9),True,"Apr 23, 2026",1.25,0.75,0.25,0,0,0
+20260423,Jalen Johnson,TOP PLAY,21.8,22.8,24,2.2,1.2,True,True,False,False,78,58,36,62,2,MEDIUM,,True,"Apr 23, 2026",1.25,0.75,0.25,0,0,0
+20260423,OG Anunoby,TOP PLAY,18.5,16.8,29,10.5,12.2,True,True,True,False,64,44,25,62,2,LOW,High variance (8.1),True,"Apr 23, 2026",0.75,0.25,0.1,0,0,0
+20260423,Scottie Barnes,TOP PLAY,16.0,15.8,33,17.0,17.2,True,True,True,True,55,31,13,62,2,HIGH,Cooling (-0.2); Med blowout risk,True,"Apr 23, 2026",0.5,0.1,0.1,0,0,0
+20260423,Evan Mobley,FADE,17.5,20.8,15,-2.5,-5.8,True,False,False,False,60,40,22,37,3,LOW,High variance (7.2); Med blowout risk,True,"Apr 23, 2026",0.25,0.1,0.1,0,0,0
+20260423,Max Strus,FADE,10.6,12.6,15,4.4,2.4,True,False,False,False,33,17,7,18,3,LOW,High variance (9.5); Med blowout risk,True,"Apr 23, 2026",0.1,0.1,0.1,0,0,0
+20260423,Nae'Qwan Tomlin,FADE,5.5,3.3,0,-5.5,-3.3,False,False,False,False,13,4,1,0,3,LOW,Cooling (-0.6); Med blowout risk,True,"Apr 23, 2026",0.1,0.0,0.0,0,0,0

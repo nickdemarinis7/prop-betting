@@ -1,0 +1,178 @@
+date,player_name,team,opponent,is_home,projection,actual_hr,hit,confidence,red_flags,book_odds,book_prob,edge_pp,ev,kelly_units,recommended_side,bookmaker,pitcher_name,pitcher_hand,park_factor
+20260502,Jonathan Aranda,TB,SF,1,0.14,0,0,HIGH,,2400.0,0.04,10.0,2.5,0.26,YES,BetRivers,Landen Roupp,R,0.95
+20260502,Brooks Lee,MIN,TOR,1,0.108,0,0,HIGH,,2800.0,0.034,7.4,2.132,0.19,YES,BetRivers,Dylan Cease,R,1.02
+20260502,Jung Hoo Lee,SF,TB,0,0.093,0,0,HIGH,,2800.0,0.034,5.9,1.697,0.15,YES,BetRivers,Griffin Jax,R,0.95
+20260502,Junior Caminero,TB,SF,1,0.183,0,0,HIGH,,1100.0,0.083,10.0,1.196,0.27,YES,BetRivers,Landen Roupp,R,0.95
+20260502,Chandler Simpson,TB,SF,1,0.045,0,0,MEDIUM,No HR in last 10 games,4500.0,0.022,2.3,1.07,0.06,PASS,BetRivers,Landen Roupp,R,0.95
+20260502,Cedric Mullins,TB,SF,1,0.068,0,0,MEDIUM,No HR in last 10 games,2400.0,0.04,2.8,0.7,0.07,PASS,BetRivers,Landen Roupp,R,0.95
+20260502,JJ Wetherholt,STL,LAD,1,0.22,0,0,HIGH,,650.0,0.133,8.7,0.65,0.25,YES,BetRivers,Roki Sasaki,R,1.0
+20260502,Gleyber Torres,DET,TEX,1,0.081,0,0,HIGH,,1700.0,0.056,2.5,0.458,0.07,PASS,BetRivers,Kumar Rocker,R,0.98
+20260502,Spencer Torkelson,DET,TEX,1,0.18,0,0,HIGH,,700.0,0.125,5.5,0.44,0.16,YES,BetRivers,Kumar Rocker,R,0.98
+20260502,Willy Adames,SF,TB,0,0.13,0,0,MEDIUM,No HR in last 10 games,1000.0,0.091,3.9,0.43,0.11,PASS,BetRivers,Griffin Jax,R,0.95
+20260502,Nolan Gorman,STL,LAD,1,0.177,0,0,HIGH,,700.0,0.125,5.2,0.416,0.15,YES,BetRivers,Roki Sasaki,R,1.0
+20260502,Jordan Walker,STL,LAD,1,0.205,1,1,HIGH,,575.0,0.148,5.7,0.384,0.17,YES,BetRivers,Roki Sasaki,R,1.0
+20260502,Iván Herrera,STL,LAD,1,0.16,0,0,HIGH,,750.0,0.118,4.2,0.36,0.12,YES,BetRivers,Roki Sasaki,R,1.0
+20260502,Alec Burleson,STL,LAD,1,0.176,0,0,HIGH,,650.0,0.133,4.3,0.32,0.12,YES,BetRivers,Roki Sasaki,R,1.0
+20260502,Luis Arraez,SF,TB,0,0.056,0,0,MEDIUM,No HR in last 10 games,2200.0,0.043,1.3,0.288,0.03,PASS,BetRivers,Griffin Jax,R,0.95
+20260502,TJ Rumfield,COL,ATL,1,0.124,0,0,MEDIUM,No HR in last 10 games,900.0,0.1,2.4,0.24,0.07,PASS,BetOnline.ag,Chris Sale,R,1.3
+20260502,Christian Walker,HOU,BOS,0,0.182,1,1,HIGH,,575.0,0.148,3.4,0.228,0.1,PASS,BetRivers,Connelly Early,R,1.05
+20260502,Andy Pages,LAD,STL,0,0.128,0,0,MEDIUM,No HR in last 10 games,850.0,0.105,2.3,0.216,0.06,PASS,BetRivers,Michael McGreevy,R,1.0
+20260502,Troy Johnston,COL,ATL,1,0.12,0,0,MEDIUM,No HR in last 10 games,900.0,0.1,2.0,0.2,0.06,PASS,BetOnline.ag,Chris Sale,R,1.3
+20260502,Dillon Dingler,DET,TEX,1,0.129,1,1,HIGH,,800.0,0.111,1.8,0.161,0.05,PASS,BetRivers,Kumar Rocker,R,0.98
+20260502,Hunter Goodman,COL,ATL,1,0.277,0,0,HIGH,,310.0,0.244,3.3,0.136,0.11,PASS,BetRivers,Chris Sale,R,1.3
+20260502,Riley Greene,DET,TEX,1,0.16,0,0,HIGH,,575.0,0.148,1.2,0.08,0.03,PASS,BetRivers,Kumar Rocker,R,0.98
+20260502,Rafael Devers,SF,TB,0,0.135,0,0,MEDIUM,No HR in last 10 games,700.0,0.125,1.0,0.08,0.03,PASS,BetRivers,Griffin Jax,R,0.95
+20260502,Matt Chapman,SF,TB,0,0.108,0,0,MEDIUM,No HR in last 10 games,900.0,0.1,0.8,0.08,0.02,PASS,BetRivers,Griffin Jax,R,0.95
+20260502,Ildemaro Vargas,AZ,CHC,0,0.153,0,0,HIGH,,600.0,0.143,1.0,0.071,0.03,PASS,BetOnline.ag,Shota Imanaga,R,1.08
+20260502,Heliot Ramos,SF,TB,0,0.119,0,0,HIGH,,800.0,0.111,0.8,0.071,0.02,PASS,BetRivers,Griffin Jax,R,0.95
+20260502,Casey Schmitt,SF,TB,0,0.152,0,0,HIGH,,600.0,0.143,0.9,0.064,0.03,PASS,BetRivers,Griffin Jax,R,0.95
+20260502,Mauricio Dubón,ATL,COL,0,0.111,0,0,MEDIUM,No HR in last 10 games,850.0,0.105,0.6,0.054,0.02,PASS,BetRivers,Brennan Bernardino,R,1.3
+20260502,Masyn Winn,STL,LAD,1,0.086,0,0,MEDIUM,No HR in last 10 games,1100.0,0.083,0.3,0.032,0.01,PASS,BetRivers,Roki Sasaki,R,1.0
+20260502,Teoscar Hernández,LAD,STL,0,0.129,0,0,MEDIUM,No HR in last 10 games,700.0,0.125,0.4,0.032,0.01,PASS,BetRivers,Michael McGreevy,R,1.0
+20260502,Trent Grisham,NYY,BAL,1,0.215,1,1,HIGH,,,,0.0,0.0,0.0,,,Kyle Bradish,R,1.18
+20260502,Ben Rice,NYY,BAL,1,0.256,0,0,HIGH,,,,0.0,0.0,0.0,,,Kyle Bradish,R,1.18
+20260502,Aaron Judge,NYY,BAL,1,0.305,0,0,HIGH,,,,0.0,0.0,0.0,,,Kyle Bradish,R,1.18
+20260502,Cody Bellinger,NYY,BAL,1,0.193,2,1,HIGH,,,,0.0,0.0,0.0,,,Kyle Bradish,R,1.18
+20260502,Ryan McMahon,NYY,BAL,1,0.158,0,0,HIGH,,,,0.0,0.0,0.0,,,Kyle Bradish,R,1.18
+20260502,José Caballero,NYY,BAL,1,0.176,0,0,HIGH,,,,0.0,0.0,0.0,,,Kyle Bradish,R,1.18
+20260502,Gunnar Henderson,BAL,NYY,0,0.177,0,0,HIGH,,,,0.0,0.0,0.0,,,Ryan Weathers,R,1.18
+20260502,Pete Alonso,BAL,NYY,0,0.244,1,1,HIGH,,,,0.0,0.0,0.0,,,Ryan Weathers,R,1.18
+20260502,Byron Buxton,MIN,TOR,1,0.206,1,1,HIGH,,,,0.0,0.0,0.0,,,Dylan Cease,R,1.02
+20260502,Ryan Jeffers,MIN,TOR,1,0.113,0,0,HIGH,,,,0.0,0.0,0.0,,,Dylan Cease,R,1.02
+20260502,Jesús Sánchez,TOR,MIN,0,0.137,0,0,HIGH,,,,0.0,0.0,0.0,,,Connor Prielipp,R,1.02
+20260502,Ernie Clement,TOR,MIN,0,0.079,0,0,HIGH,,,,0.0,0.0,0.0,,,Connor Prielipp,R,1.02
+20260502,Kazuma Okamoto,TOR,MIN,0,0.197,1,1,HIGH,,,,0.0,0.0,0.0,,,Connor Prielipp,R,1.02
+20260502,Lenyn Sosa,TOR,MIN,0,0.135,1,1,HIGH,,,,0.0,0.0,0.0,,,Connor Prielipp,R,1.02
+20260502,Daulton Varsho,TOR,MIN,0,0.119,0,0,HIGH,,,,0.0,0.0,0.0,,,Connor Prielipp,R,1.02
+20260502,Michael Busch,CHC,AZ,1,0.214,0,0,HIGH,,,,0.0,0.0,0.0,,,Ryne Nelson,R,1.08
+20260502,Alex Bregman,CHC,AZ,1,0.136,0,0,HIGH,,,,0.0,0.0,0.0,,,Ryne Nelson,R,1.08
+20260502,Ian Happ,CHC,AZ,1,0.211,1,1,HIGH,,,,0.0,0.0,0.0,,,Ryne Nelson,R,1.08
+20260502,Seiya Suzuki,CHC,AZ,1,0.279,0,0,HIGH,,,,0.0,0.0,0.0,,,Ryne Nelson,R,1.08
+20260502,Pete Crow-Armstrong,CHC,AZ,1,0.211,0,0,HIGH,,,,0.0,0.0,0.0,,,Ryne Nelson,R,1.08
+20260502,Dansby Swanson,CHC,AZ,1,0.189,0,0,HIGH,,,,0.0,0.0,0.0,,,Ryne Nelson,R,1.08
+20260502,Ketel Marte,AZ,CHC,0,0.126,0,0,HIGH,,,,0.0,0.0,0.0,,,Shota Imanaga,R,1.08
+20260502,Geraldo Perdomo,AZ,CHC,0,0.09,0,0,HIGH,,,,0.0,0.0,0.0,,,Shota Imanaga,R,1.08
+20260502,Corbin Carroll,AZ,CHC,0,0.133,0,0,HIGH,,,,0.0,0.0,0.0,,,Shota Imanaga,R,1.08
+20260502,Nolan Arenado,AZ,CHC,0,0.118,0,0,HIGH,,,,0.0,0.0,0.0,,,Shota Imanaga,R,1.08
+20260502,Nick Kurtz,ATH,CLE,1,0.151,0,0,HIGH,,,,0.0,0.0,0.0,,,Slade Cecconi,R,0.91
+20260502,Shea Langeliers,ATH,CLE,1,0.24,2,1,HIGH,,,,0.0,0.0,0.0,,,Slade Cecconi,R,0.91
+20260502,Tyler Soderstrom,ATH,CLE,1,0.152,0,0,HIGH,,,,0.0,0.0,0.0,,,Slade Cecconi,R,0.91
+20260502,Brent Rooker,ATH,CLE,1,0.2,0,0,HIGH,,,,0.0,0.0,0.0,,,Slade Cecconi,R,0.91
+20260502,Angel Martínez,CLE,ATH,0,0.171,0,0,HIGH,,,,0.0,0.0,0.0,,,Jacob Lopez,R,0.91
+20260502,Kyle Manzardo,CLE,ATH,0,0.176,1,1,HIGH,,,,0.0,0.0,0.0,,,Jacob Lopez,R,0.91
+20260502,Oneil Cruz,PIT,CIN,1,0.127,0,0,HIGH,,,,0.0,0.0,0.0,,,Rhett Lowder,R,0.93
+20260502,Bryan Reynolds,PIT,CIN,1,0.08,0,0,HIGH,,,,0.0,0.0,0.0,,,Rhett Lowder,R,0.93
+20260502,Ryan O'Hearn,PIT,CIN,1,0.09,0,0,HIGH,,,,0.0,0.0,0.0,,,Rhett Lowder,R,0.93
+20260502,Marcell Ozuna,PIT,CIN,1,0.09,0,0,HIGH,,,,0.0,0.0,0.0,,,Rhett Lowder,R,0.93
+20260502,TJ Friedl,CIN,PIT,0,0.073,0,0,HIGH,,,,0.0,0.0,0.0,,,Carmen Mlodzinski,R,0.93
+20260502,Elly De La Cruz,CIN,PIT,0,0.131,0,0,HIGH,,,,0.0,0.0,0.0,,,Carmen Mlodzinski,R,0.93
+20260502,Matt McLain,CIN,PIT,0,0.076,0,0,HIGH,,,,0.0,0.0,0.0,,,Carmen Mlodzinski,R,0.93
+20260502,Sal Stewart,CIN,PIT,0,0.113,0,0,HIGH,,,,0.0,0.0,0.0,,,Carmen Mlodzinski,R,0.93
+20260502,Spencer Steer,CIN,PIT,0,0.106,0,0,HIGH,,,,0.0,0.0,0.0,,,Carmen Mlodzinski,R,0.93
+20260502,James Wood,WSH,MIL,1,0.143,0,0,HIGH,,,,0.0,0.0,0.0,,,Kyle Harrison,R,1.01
+20260502,Brady House,WSH,MIL,1,0.103,0,0,HIGH,,,,0.0,0.0,0.0,,,Kyle Harrison,R,1.01
+20260502,CJ Abrams,WSH,MIL,1,0.123,0,0,HIGH,,,,0.0,0.0,0.0,,,Kyle Harrison,R,1.01
+20260502,Daylen Lile,WSH,MIL,1,0.082,0,0,HIGH,,,,0.0,0.0,0.0,,,Kyle Harrison,R,1.01
+20260502,William Contreras,MIL,WSH,0,0.095,0,0,HIGH,,,,0.0,0.0,0.0,,,Foster Griffin,R,1.01
+20260502,Sal Frelick,MIL,WSH,0,0.102,0,0,HIGH,,,,0.0,0.0,0.0,,,Foster Griffin,R,1.01
+20260502,Willson Contreras,BOS,HOU,1,0.138,0,0,HIGH,,,,0.0,0.0,0.0,,,Spencer Arrighetti,R,1.05
+20260502,Wilyer Abreu,BOS,HOU,1,0.097,0,0,HIGH,,,,0.0,0.0,0.0,,,Spencer Arrighetti,R,1.05
+20260502,Carlos Correa,HOU,BOS,0,0.113,0,0,HIGH,,,,0.0,0.0,0.0,,,Connelly Early,R,1.05
+20260502,Isaac Paredes,HOU,BOS,0,0.111,0,0,HIGH,,,,0.0,0.0,0.0,,,Connelly Early,R,1.05
+20260502,Yainer Diaz,HOU,BOS,0,0.117,0,0,HIGH,,,,0.0,0.0,0.0,,,Connelly Early,R,1.05
+20260502,Xavier Edwards,MIA,PHI,1,0.053,1,1,HIGH,,,,0.0,0.0,0.0,,,Andrew Painter,R,0.92
+20260502,Liam Hicks,MIA,PHI,1,0.147,0,0,HIGH,,,,0.0,0.0,0.0,,,Andrew Painter,R,0.92
+20260502,Agustín Ramírez,MIA,PHI,1,0.096,0,0,HIGH,,,,0.0,0.0,0.0,,,Andrew Painter,R,0.92
+20260502,Connor Norby,MIA,PHI,1,0.094,0,0,HIGH,,,,0.0,0.0,0.0,,,Andrew Painter,R,0.92
+20260502,Trea Turner,PHI,MIA,0,0.082,0,0,HIGH,,,,0.0,0.0,0.0,,,Max Meyer,R,0.92
+20260502,Kyle Schwarber,PHI,MIA,0,0.176,0,0,HIGH,,,,0.0,0.0,0.0,,,Max Meyer,R,0.92
+20260502,Bryce Harper,PHI,MIA,0,0.109,0,0,HIGH,,,,0.0,0.0,0.0,,,Max Meyer,R,0.92
+20260502,Adolis García,PHI,MIA,0,0.083,0,0,HIGH,,,,0.0,0.0,0.0,,,Max Meyer,R,0.92
+20260502,Bryson Stott,PHI,MIA,0,0.067,0,0,HIGH,,,,0.0,0.0,0.0,,,Max Meyer,R,0.92
+20260502,Michael Harris II,ATL,COL,0,0.204,0,0,HIGH,,390.0,0.204,-0.0,-0.0,0.0,PASS,BetRivers,Brennan Bernardino,R,1.3
+20260502,Taylor Ward,BAL,NYY,0,0.157,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Ryan Weathers,R,1.18
+20260502,Trevor Larnach,MIN,TOR,1,0.083,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Dylan Cease,R,1.02
+20260502,Josh Bell,MIN,TOR,1,0.09,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Dylan Cease,R,1.02
+20260502,Luke Keaschall,MIN,TOR,1,0.056,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Dylan Cease,R,1.02
+20260502,Matt Wallner,MIN,TOR,1,0.078,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Dylan Cease,R,1.02
+20260502,George Springer,TOR,MIN,0,0.159,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Connor Prielipp,R,1.02
+20260502,Jacob Wilson,ATH,CLE,1,0.095,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Slade Cecconi,R,0.91
+20260502,Steven Kwan,CLE,ATH,0,0.065,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Jacob Lopez,R,0.91
+20260502,José Ramírez,CLE,ATH,0,0.146,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Jacob Lopez,R,0.91
+20260502,Chase DeLauter,CLE,ATH,0,0.128,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Jacob Lopez,R,0.91
+20260502,Nick Gonzales,PIT,CIN,1,0.046,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Rhett Lowder,R,0.93
+20260502,Nasim Nuñez,WSH,MIL,1,0.049,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Kyle Harrison,R,1.01
+20260502,Garrett Mitchell,MIL,WSH,0,0.077,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Foster Griffin,R,1.01
+20260502,Brice Turang,MIL,WSH,0,0.093,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Foster Griffin,R,1.01
+20260502,Jake Bauers,MIL,WSH,0,0.107,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Foster Griffin,R,1.01
+20260502,Luis Rengifo,MIL,WSH,0,0.058,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Foster Griffin,R,1.01
+20260502,Roman Anthony,BOS,HOU,1,0.062,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Spencer Arrighetti,R,1.05
+20260502,Trevor Story,BOS,HOU,1,0.086,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Spencer Arrighetti,R,1.05
+20260502,Jose Altuve,HOU,BOS,0,0.114,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Connelly Early,R,1.05
+20260502,Jakob Marsee,MIA,PHI,1,0.066,0,0,MEDIUM,,,,0.0,0.0,0.0,,,Andrew Painter,R,0.92
+20260502,Otto Lopez,MIA,PHI,1,0.072,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Andrew Painter,R,0.92
+20260502,Alec Bohm,PHI,MIA,0,0.049,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Max Meyer,R,0.92
+20260502,J.T. Realmuto,PHI,MIA,0,0.061,0,0,MEDIUM,No HR in last 10 games,,,0.0,0.0,0.0,,,Max Meyer,R,0.92
+20260502,Max Muncy,LAD,STL,0,0.169,0,0,HIGH,,460.0,0.179,-1.0,-0.054,0.0,PASS,BetRivers,Michael McGreevy,R,1.0
+20260502,Kevin McGonigle,DET,TEX,1,0.089,0,0,MEDIUM,,950.0,0.095,-0.6,-0.066,0.0,PASS,BetRivers,Kumar Rocker,R,0.98
+20260502,Vinnie Pasquantino,KC,SEA,0,0.169,0,0,HIGH,,450.0,0.182,-1.3,-0.07,0.0,PASS,BetOnline.ag,Emerson Hancock,R,0.89
+20260502,Salvador Perez,KC,SEA,0,0.169,0,0,HIGH,,450.0,0.182,-1.3,-0.07,0.0,PASS,BetOnline.ag,Emerson Hancock,R,0.89
+20260502,Ozzie Albies,ATL,COL,0,0.172,0,0,HIGH,,440.0,0.185,-1.3,-0.071,0.0,PASS,BetRivers,Brennan Bernardino,R,1.3
+20260502,Jazz Chisholm Jr.,NYY,BAL,1,0.213,0,0,HIGH,,335.0,0.23,-1.7,-0.073,0.0,PASS,BetRivers,Kyle Bradish,R,1.18
+20260502,Brandon Lowe,PIT,CIN,1,0.132,0,0,HIGH,,600.0,0.143,-1.1,-0.076,0.0,PASS,BetOnline.ag,Rhett Lowder,R,0.93
+20260502,Maikel Garcia,KC,SEA,0,0.115,0,0,HIGH,,700.0,0.125,-1.0,-0.08,0.0,PASS,BetOnline.ag,Emerson Hancock,R,0.89
+20260502,Jordan Beck,COL,ATL,1,0.136,0,0,MEDIUM,No HR in last 10 games,575.0,0.148,-1.2,-0.082,0.0,PASS,BetRivers,Chris Sale,R,1.3
+20260502,Brenton Doyle,COL,ATL,1,0.135,0,0,MEDIUM,No HR in last 10 games,575.0,0.148,-1.3,-0.089,0.0,PASS,BetRivers,Chris Sale,R,1.3
+20260502,Yordan Alvarez,HOU,BOS,0,0.201,0,0,HIGH,,350.0,0.222,-2.1,-0.095,0.0,PASS,BetRivers,Connelly Early,R,1.05
+20260502,Josh Jung,TEX,DET,0,0.098,0,0,HIGH,,800.0,0.111,-1.3,-0.118,0.0,PASS,BetRivers,Keider Montero,R,0.98
+20260502,Will Smith,LAD,STL,0,0.11,0,0,HIGH,,700.0,0.125,-1.5,-0.12,0.0,PASS,BetRivers,Michael McGreevy,R,1.0
+20260502,Drake Baldwin,ATL,COL,0,0.176,1,1,HIGH,,400.0,0.2,-2.4,-0.12,0.0,PASS,BetOnline.ag,Brennan Bernardino,R,1.3
+20260502,Jeremiah Jackson,BAL,NYY,0,0.174,0,0,HIGH,,400.0,0.2,-2.6,-0.13,0.0,PASS,BetOnline.ag,Ryan Weathers,R,1.18
+20260502,Evan Carter,TEX,DET,0,0.086,0,0,HIGH,,900.0,0.1,-1.4,-0.14,0.0,PASS,BetRivers,Keider Montero,R,0.98
+20260502,Jac Caglianone,KC,SEA,0,0.156,0,0,HIGH,,450.0,0.182,-2.6,-0.142,0.0,PASS,BetOnline.ag,Emerson Hancock,R,0.89
+20260502,Nathaniel Lowe,CIN,PIT,0,0.121,0,0,HIGH,,600.0,0.143,-2.2,-0.153,0.0,PASS,BetOnline.ag,Carmen Mlodzinski,R,0.93
+20260502,Kyle Karros,COL,ATL,1,0.098,0,0,MEDIUM,No HR in last 10 games,750.0,0.118,-2.0,-0.167,0.0,PASS,BetRivers,Chris Sale,R,1.3
+20260502,Shohei Ohtani,LAD,STL,0,0.199,0,0,HIGH,,310.0,0.244,-4.5,-0.184,0.0,PASS,BetRivers,Michael McGreevy,R,1.0
+20260502,Matt Olson,ATL,COL,0,0.24,1,1,HIGH,,240.0,0.294,-5.4,-0.184,0.0,PASS,BetRivers,Brennan Bernardino,R,1.3
+20260502,Colson Montgomery,CWS,SD,0,0.149,0,0,HIGH,,440.0,0.185,-3.6,-0.195,0.0,PASS,BetRivers,Michael King,R,0.94
+20260502,Carter Jensen,KC,SEA,0,0.153,0,0,HIGH,,420.0,0.192,-3.9,-0.204,0.0,PASS,BetRivers,Emerson Hancock,R,0.89
+20260502,Jarren Duran,BOS,HOU,1,0.087,0,0,HIGH,,800.0,0.111,-2.4,-0.217,0.0,PASS,BetRivers,Spencer Arrighetti,R,1.05
+20260502,Miguel Vargas,CWS,SD,0,0.111,0,0,HIGH,,600.0,0.143,-3.2,-0.223,0.0,PASS,BetOnline.ag,Michael King,R,0.94
+20260502,Kyle Tucker,LAD,STL,0,0.109,0,0,MEDIUM,No HR in last 10 games,600.0,0.143,-3.4,-0.237,0.0,PASS,BetRivers,Michael McGreevy,R,1.0
+20260502,Cam Smith,HOU,BOS,0,0.12,0,0,HIGH,,500.0,0.167,-4.7,-0.28,0.0,PASS,BetOnline.ag,Connelly Early,R,1.05
+20260502,Bobby Witt Jr.,KC,SEA,0,0.137,0,0,HIGH,,425.0,0.19,-5.3,-0.281,0.0,PASS,BetRivers,Emerson Hancock,R,0.89
+20260502,Freddie Freeman,LAD,STL,0,0.114,0,0,MEDIUM,No HR in last 10 games,525.0,0.16,-4.6,-0.287,0.0,PASS,BetRivers,Michael McGreevy,R,1.0
+20260502,Munetaka Murakami,CWS,SD,0,0.178,0,0,HIGH,,300.0,0.25,-7.2,-0.288,0.0,PASS,BetOnline.ag,Michael King,R,0.94
+20260502,Ezequiel Tovar,COL,ATL,1,0.101,0,0,MEDIUM,No HR in last 10 games,600.0,0.143,-4.2,-0.293,0.0,PASS,BetRivers,Chris Sale,R,1.3
+20260502,Gavin Sheets,SD,CWS,1,0.116,0,0,HIGH,,500.0,0.167,-5.1,-0.304,0.0,PASS,BetOnline.ag,Sean Burke,R,0.94
+20260502,Jorge Soler,LAA,NYM,1,0.127,0,0,HIGH,,440.0,0.185,-5.8,-0.314,0.0,PASS,BetRivers,Nolan McLean,R,0.99
+20260502,Mike Trout,LAA,NYM,1,0.153,0,0,HIGH,,335.0,0.23,-7.7,-0.334,0.0,PASS,BetRivers,Nolan McLean,R,0.99
+20260502,Mike Yastrzemski,ATL,COL,0,0.111,0,0,MEDIUM,No HR in last 10 games,500.0,0.167,-5.6,-0.334,0.0,PASS,BetOnline.ag,Brennan Bernardino,R,1.3
+20260502,Xander Bogaerts,SD,CWS,1,0.092,0,0,HIGH,,600.0,0.143,-5.1,-0.356,0.0,PASS,BetRivers,Sean Burke,R,0.94
+20260502,Jo Adell,LAA,NYM,1,0.127,0,0,HIGH,,400.0,0.2,-7.3,-0.365,0.0,PASS,BetOnline.ag,Nolan McLean,R,0.99
+20260502,Corey Seager,TEX,DET,0,0.101,0,0,HIGH,,525.0,0.16,-5.9,-0.369,0.0,PASS,BetRivers,Keider Montero,R,0.98
+20260502,Nolan Schanuel,LAA,NYM,1,0.078,0,0,HIGH,,700.0,0.125,-4.7,-0.376,0.0,PASS,BetOnline.ag,Nolan McLean,R,0.99
+20260502,Juan Soto,NYM,LAA,0,0.156,0,0,HIGH,,295.0,0.253,-9.7,-0.384,0.0,PASS,BetRivers,Reid Detmers,R,0.99
+20260502,Austin Riley,ATL,COL,0,0.11,1,1,MEDIUM,No HR in last 10 games,450.0,0.182,-7.2,-0.395,0.0,PASS,BetRivers,Brennan Bernardino,R,1.3
+20260502,Jake Burger,TEX,DET,0,0.083,1,1,MEDIUM,No HR in last 10 games,600.0,0.143,-6.0,-0.419,0.0,PASS,BetRivers,Keider Montero,R,0.98
+20260502,Julio Rodríguez,SEA,KC,1,0.116,0,0,HIGH,,400.0,0.2,-8.4,-0.42,0.0,PASS,BetOnline.ag,Seth Lugo,R,0.89
+20260502,Manny Machado,SD,CWS,1,0.114,0,0,HIGH,,400.0,0.2,-8.6,-0.43,0.0,PASS,BetOnline.ag,Sean Burke,R,0.94
+20260502,Cole Young,SEA,KC,1,0.076,0,0,HIGH,,600.0,0.143,-6.7,-0.468,0.0,PASS,BetOnline.ag,Seth Lugo,R,0.89
+20260502,Jake Cronenworth,SD,CWS,1,0.059,0,0,MEDIUM,No HR in last 10 games,800.0,0.111,-5.2,-0.469,0.0,PASS,BetRivers,Sean Burke,R,0.94
+20260502,Randy Arozarena,SEA,KC,1,0.091,0,0,HIGH,,480.0,0.172,-8.1,-0.472,0.0,PASS,BetRivers,Seth Lugo,R,0.89
+20260502,Josh Smith,TEX,DET,0,0.058,0,0,MEDIUM,No HR in last 10 games,800.0,0.111,-5.3,-0.478,0.0,PASS,BetRivers,Keider Montero,R,0.98
+20260502,Zach Neto,LAA,NYM,1,0.103,0,0,MEDIUM,No HR in last 10 games,400.0,0.2,-9.7,-0.485,0.0,PASS,BetOnline.ag,Nolan McLean,R,0.99
+20260502,Ronald Acuña Jr.,ATL,COL,0,0.114,0,0,MEDIUM,,340.0,0.227,-11.3,-0.498,0.0,PASS,BetRivers,Brennan Bernardino,R,1.3
+20260502,Andrew Benintendi,CWS,SD,0,0.082,0,0,MEDIUM,,500.0,0.167,-8.5,-0.508,0.0,PASS,BetOnline.ag,Michael King,R,0.94
+20260502,Josh Naylor,SEA,KC,1,0.094,0,0,HIGH,,420.0,0.192,-9.8,-0.511,0.0,PASS,BetRivers,Seth Lugo,R,0.89
+20260502,Bo Bichette,NYM,LAA,0,0.081,0,0,HIGH,,500.0,0.167,-8.6,-0.514,0.0,PASS,BetOnline.ag,Reid Detmers,R,0.99
+20260502,Jacob Young,WSH,MIL,1,0.069,0,0,MEDIUM,No HR in last 10 games,600.0,0.143,-7.4,-0.517,0.0,PASS,BetOnline.ag,Kyle Harrison,R,1.01
+20260502,J.P. Crawford,SEA,KC,1,0.06,0,0,HIGH,,650.0,0.133,-7.3,-0.55,0.0,PASS,BetRivers,Seth Lugo,R,0.89
+20260502,Vladimir Guerrero Jr.,TOR,MIN,0,0.098,0,0,MEDIUM,No HR in last 10 games,335.0,0.23,-13.2,-0.574,0.0,PASS,BetRivers,Connor Prielipp,R,1.02
+20260502,Ramón Laureano,SD,CWS,1,0.083,0,0,MEDIUM,No HR in last 10 games,400.0,0.2,-11.7,-0.585,0.0,PASS,BetOnline.ag,Sean Burke,R,0.94
+20260502,Lourdes Gurriel Jr.,AZ,CHC,0,0.093,0,0,MEDIUM,No HR in last 10 games,335.0,0.23,-13.7,-0.595,0.0,PASS,BetRivers,Shota Imanaga,R,1.08
+20260502,Francisco Alvarez,NYM,LAA,0,0.089,0,0,MEDIUM,No HR in last 10 games,350.0,0.222,-13.3,-0.6,0.0,PASS,BetRivers,Reid Detmers,R,0.99
+20260502,Marcus Semien,NYM,LAA,0,0.063,0,0,MEDIUM,No HR in last 10 games,525.0,0.16,-9.7,-0.606,0.0,PASS,BetRivers,Reid Detmers,R,0.99
+20260502,Chase Meidroth,CWS,SD,0,0.038,0,0,MEDIUM,No HR in last 10 games,900.0,0.1,-6.2,-0.62,0.0,PASS,BetOnline.ag,Michael King,R,0.94
+20260502,Jackson Merrill,SD,CWS,1,0.072,0,0,MEDIUM,No HR in last 10 games,400.0,0.2,-12.8,-0.64,0.0,PASS,BetOnline.ag,Sean Burke,R,0.94
+20260502,Fernando Tatis Jr.,SD,CWS,1,0.072,0,0,MEDIUM,No HR in last 10 games,335.0,0.23,-15.8,-0.687,0.0,PASS,BetRivers,Sean Burke,R,0.94

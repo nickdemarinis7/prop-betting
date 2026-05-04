@@ -1,94 +1,153 @@
 """
-Validate Picks - Check how yesterday's predictions performed
-Compares predictions to actual game results
+🏀 NBA Assists Prediction Validation
+Compares predictions to actual game results.
 
 Usage:
     python validate.py                   # Validate yesterday
-    python validate.py --date 20260418   # Validate specific date
-    python validate.py --cumulative      # Show cumulative stats across all dates
+    python validate.py --date 20260427   # Validate specific date
+    python validate.py --cumulative      # Cumulative stats across all dates
+
+Reads predictions_assists_YYYYMMDD.csv (current format) — falls back to
+legacy predictions_production_YYYYMMDD.csv where it can.
+
+P&L is computed from the recommended_side / book_odds / kelly_units
+columns the predictor now writes. If those columns are missing (legacy
+files), we fall back to a flat-1u/-110 simulation against any prob_X+
+columns that are present.
 """
 
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-
 import glob
+import argparse
+import warnings
+from datetime import datetime, timedelta
+
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
+
+warnings.filterwarnings('ignore', category=FutureWarning)
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+
 from shared.scrapers.gamelog import GameLogScraper
 from nba_api.stats.static import players
-import argparse
+
 
 # ======================================================================
-# Constants
+# Helpers
 # ======================================================================
-PLAYOFF_START_MMDD = (4, 14)  # NBA playoffs typically start mid-April
+PLAYOFF_START_MMDD = (4, 14)
 
 
 def is_playoff_date(date_str):
-    """Check if a date falls in the playoff window."""
     dt = datetime.strptime(date_str, '%Y%m%d')
     return dt.month > PLAYOFF_START_MMDD[0] or (
         dt.month == PLAYOFF_START_MMDD[0] and dt.day >= PLAYOFF_START_MMDD[1]
     )
 
 
+def _normalize_columns(predictions):
+    """Return a copy with both legacy (capitalized) and new (snake_case)
+    column names available, so downstream code can read whichever exists.
+    """
+    df = predictions.copy()
+    legacy_to_new = {
+        'Player': 'player_name',
+        'Team': 'team',
+        'Opp': 'opponent',
+        'Home': 'is_home',
+        'Proj': 'projection',
+        'L10': 'ast_last10_avg',
+        'Conf': 'confidence',
+        'Red_Flags': 'red_flags',
+        '5+%': 'prob_5+',
+        '7+%': 'prob_7+',
+        '10+%': 'prob_10+',
+    }
+    for legacy, new in legacy_to_new.items():
+        if legacy in df.columns and new not in df.columns:
+            df[new] = df[legacy]
+        if new in df.columns and legacy not in df.columns:
+            df[legacy] = df[new]
+    return df
+
+
+def _amer_to_decimal(odds):
+    if odds is None or pd.isna(odds):
+        return None
+    o = float(odds)
+    return 1 + (o / 100) if o > 0 else 1 + (100 / abs(o))
+
+
 def simulate_pnl(row):
+    """Simulate P&L for a single validated row using the predictor's
+    recommended bet (recommended_side / book_odds / kelly_units).
+
+    Falls back to legacy ladder simulation if those columns are absent.
     """
-    Simulate P&L for a single player's ladder bets.
-    Assumes standard -110 juice when no Min_Odds column is present.
-    Returns dict with units_wagered, units_won, net_pnl.
-    """
-    units_wagered = 0.0
+    rec = row.get('Recommended_Side', row.get('recommended_side', ''))
+    odds = row.get('Book_Odds', row.get('book_odds'))
+    line = row.get('Book_Line', row.get('book_line'))
+    kelly = row.get('Kelly_Units', row.get('kelly_units'))
+
+    if rec in ('OVER', 'UNDER') and pd.notna(odds) and pd.notna(line):
+        stake = float(kelly) if pd.notna(kelly) and float(kelly) > 0 else 1.0
+        decimal = _amer_to_decimal(odds)
+        if decimal is None:
+            return {'units_wagered': 0.0, 'units_won': 0.0, 'net_pnl': 0.0}
+        actual = row['Actual']
+        # OVER hits when actual > line (sportsbooks always set .5 lines)
+        hit = (actual > line) if rec == 'OVER' else (actual < line)
+        won = stake * decimal if hit else 0.0
+        return {
+            'units_wagered': round(stake, 2),
+            'units_won': round(won, 2),
+            'net_pnl': round(won - stake, 2),
+        }
+
+    # ---- Legacy fallback: bet on prob_X+ ladder rungs at -110 flat 1u
+    units_w = 0.0
     units_won = 0.0
-
-    for threshold, units_col, hit_col, odds_col in [
-        (5, 'Units_5+', 'Hit_5+', 'Min_Odds_5+'),
-        (7, 'Units_7+', 'Hit_7+', 'Min_Odds_7+'),
-        (10, 'Units_10+', 'Hit_10+', 'Min_Odds_10+'),
+    for thresh, prob_col, hit_col in [
+        (5, 'prob_5+', 'Hit_5+'),
+        (7, 'prob_7+', 'Hit_7+'),
+        (10, 'prob_10+', 'Hit_10+'),
     ]:
-        units = row.get(units_col, 0)
-        if pd.isna(units) or units <= 0:
-            continue
-
-        units_wagered += units
-
+        prob = row.get(prob_col)
+        if pd.isna(prob) or float(prob) < 55:  # legacy probs are 0-100
+            # prob may be 0-1 instead — handle both
+            if pd.isna(prob) or float(prob) < 0.55:
+                continue
+        units_w += 1.0
         if row.get(hit_col, False):
-            # Use min odds from prediction as proxy for the line we'd bet
-            odds = row.get(odds_col, -110)
-            if pd.isna(odds) or odds == 0:
-                odds = -110
-            odds = float(odds)
-
-            if odds < 0:
-                payout = units * (100 / abs(odds))
-            else:
-                payout = units * (odds / 100)
-            units_won += units + payout  # Return of stake + profit
-        # else: loss — units_won stays 0 for this leg
-
-    net = units_won - units_wagered
+            units_won += 1.0 + (100 / 110)
     return {
-        'units_wagered': round(units_wagered, 2),
+        'units_wagered': round(units_w, 2),
         'units_won': round(units_won, 2),
-        'net_pnl': round(net, 2),
+        'net_pnl': round(units_won - units_w, 2),
     }
 
 
 # ======================================================================
-# Fetch + validate a single date
+# Validate one date
 # ======================================================================
 def validate_date(date_str, gamelog_scraper, all_players, quiet=False):
-    """Validate predictions for a single date. Returns results DataFrame or None."""
-    predictions_file = f"predictions_production_{date_str}.csv"
-
-    if not os.path.exists(predictions_file):
+    """Validate predictions for a single date. Returns DataFrame or None."""
+    new_file = f"predictions_assists_{date_str}.csv"
+    legacy_file = f"predictions_production_{date_str}.csv"
+    if os.path.exists(new_file):
+        predictions_file = new_file
+    elif os.path.exists(legacy_file):
+        predictions_file = legacy_file
+    else:
         if not quiet:
-            print(f"❌ File not found: {predictions_file}")
+            print(f"❌ File not found: {new_file} or {legacy_file}")
         return None
 
     predictions = pd.read_csv(predictions_file)
+    predictions = _normalize_columns(predictions)
     playoff = is_playoff_date(date_str)
 
     if not quiet:
@@ -96,184 +155,276 @@ def validate_date(date_str, gamelog_scraper, all_players, quiet=False):
         print(f"\n{mode} — Validating: {date_str}")
         print(f"📁 {predictions_file} ({len(predictions)} predictions)")
 
+    name_to_id = {p['full_name']: p['id'] for p in all_players}
+    validate_dt = pd.to_datetime(date_str, format='%Y%m%d').date()
+
     results = []
-
     for _, row in predictions.iterrows():
-        player_name = row['Player']
-        projection = row['Proj']
-
-        player_match = [p for p in all_players if p['full_name'] == player_name]
-        if not player_match:
+        player_name = row.get('player_name')
+        if pd.isna(player_name) or not player_name:
+            continue
+        projection = row.get('projection')
+        if pd.isna(projection):
             continue
 
-        player_id = player_match[0]['id']
-        recent_games = gamelog_scraper.get_recent_games(player_id, n_games=1)
+        player_id = name_to_id.get(player_name)
+        if player_id is None:
+            # Try last-name fuzzy match
+            last = str(player_name).split()[-1].lower()
+            match = next(
+                (p for p in all_players
+                 if p['full_name'].split()[-1].lower() == last
+                 and p['full_name'].split()[0][0].lower() == str(player_name)[0].lower()),
+                None,
+            )
+            if match is None:
+                continue
+            player_id = match['id']
 
+        recent_games = gamelog_scraper.get_recent_games(player_id, n_games=3)
         if recent_games.empty:
             continue
 
-        actual_assists = recent_games['AST'].iloc[0]
-        game_date = recent_games['GAME_DATE'].iloc[0]
-
-        # Verify game was on the validation date
-        game_dt = pd.to_datetime(game_date)
-        validate_dt = pd.to_datetime(date_str, format='%Y%m%d')
-        if game_dt.date() != validate_dt.date():
+        matched = None
+        for _, g in recent_games.iterrows():
+            if pd.to_datetime(g['GAME_DATE']).date() == validate_dt:
+                matched = g
+                break
+        if matched is None:
             if not quiet:
-                print(f"   ⚠️  {player_name} did not play on {date_str} (last game: {game_date}) — skipping")
+                last_date = recent_games['GAME_DATE'].iloc[0]
+                print(f"   ⚠️  {player_name} did not play on {date_str} "
+                      f"(last: {last_date}) — skipping")
             continue
 
-        diff = round(actual_assists - projection, 1)
-        l10 = row.get('L10', projection)  # Baseline: L10 average
-        baseline_diff = round(actual_assists - l10, 1) if pd.notna(l10) else None
+        actual = int(matched['AST'])
+        diff = round(actual - float(projection), 1)
+        l10 = row.get('ast_last10_avg', projection)
+        try:
+            baseline_diff = round(actual - float(l10), 1)
+        except (TypeError, ValueError):
+            baseline_diff = None
 
         result = {
             'Date': date_str,
+            'Is_Playoff': playoff,
             'Player': player_name,
-            'Type': row['Type'],
-            'Projection': projection,
+            'Team': row.get('team', ''),
+            'Opponent': row.get('opponent', ''),
+            'Projection': float(projection),
             'L10': l10,
-            'Actual': int(actual_assists),
+            'Actual': actual,
             'Diff': diff,
             'Baseline_Diff': baseline_diff,
-            'Hit_5+': actual_assists >= 5,
-            'Hit_7+': actual_assists >= 7,
-            'Hit_10+': actual_assists >= 10,
-            'Prob_5+': row.get('5+%', 0),
-            'Prob_7+': row.get('7+%', 0),
-            'Prob_10+': row.get('10+%', 0),
-            'Ladder_Value': row.get('Ladder_Value', 0),
-            'Is_Playoff': playoff,
-            'Game_Date': game_date,
+            'Confidence': row.get('confidence', ''),
+            'Red_Flags': row.get('red_flags', 'None'),
+            'Recommended_Side': row.get('recommended_side', ''),
+            'Book_Line': row.get('book_line'),
+            'Book_Odds': row.get('book_odds'),
+            'Our_Prob': row.get('our_prob'),
+            'Book_Prob': row.get('book_prob'),
+            'Edge_PP': row.get('edge_pp'),
+            'EV': row.get('ev'),
+            'Kelly_Units': row.get('kelly_units'),
+            'Bookmaker': row.get('bookmaker', ''),
+            'Hit_3+': actual >= 3,
+            'Hit_5+': actual >= 5,
+            'Hit_7+': actual >= 7,
+            'Hit_10+': actual >= 10,
         }
-
-        # Carry over unit columns for P&L
-        for col in ['Units_5+', 'Units_7+', 'Units_10+', 'Min_Odds_5+', 'Min_Odds_7+', 'Min_Odds_10+']:
-            result[col] = row.get(col, 0)
-
+        # Carry whatever ladder probs exist
+        for col in ['prob_3+', 'prob_5+', 'prob_7+', 'prob_10+']:
+            if col in row.index:
+                result[col] = row.get(col)
         results.append(result)
+
+        if not quiet:
+            icon = "✅" if abs(diff) <= 3 else "⚠️" if abs(diff) <= 5 else "❌"
+            print(f"   {icon} {player_name:25s} Proj:{float(projection):5.1f} "
+                  f"Act:{actual:2d} AST  Diff:{diff:+5.1f}")
 
     if not results:
         if not quiet:
             print("   ❌ No results to validate")
         return None
-
     return pd.DataFrame(results)
 
 
 # ======================================================================
-# Display helpers
+# Display
 # ======================================================================
-def print_summary(results_df, label=""):
-    """Print accuracy summary for a results DataFrame."""
-    top_plays = results_df[results_df['Type'] == 'TOP PLAY']
-    fades = results_df[results_df['Type'] == 'FADE']
-    n_playoff = results_df['Is_Playoff'].sum()
-    n_regular = len(results_df) - n_playoff
-
+def print_summary(df, label=""):
     print("=" * 80)
-    print(f"📊 RESULTS SUMMARY{' — ' + label if label else ''}")
+    print(f"📊 NBA POINTS VALIDATION{' — ' + label if label else ''}")
     print("=" * 80)
-    print(f"\nPlayers validated: {len(results_df)} ({n_regular} reg season, {n_playoff} playoff)")
 
-    if len(top_plays) > 0:
-        print(f"\nTOP PLAYS ({len(top_plays)} players):")
-        print("-" * 60)
+    n = len(df)
+    n_playoff = int(df['Is_Playoff'].sum()) if 'Is_Playoff' in df.columns else 0
+    print(f"\nPlayers validated: {n} ({n - n_playoff} reg season, {n_playoff} playoff)")
 
-        for thresh, prob_col, hit_col in [('5+', 'Prob_5+', 'Hit_5+'),
-                                           ('7+', 'Prob_7+', 'Hit_7+'),
-                                           ('10+', 'Prob_10+', 'Hit_10+')]:
-            actual_rate = top_plays[hit_col].mean() * 100
-            expected_rate = top_plays[prob_col].mean()
-            gap = actual_rate - expected_rate
-            gap_icon = "✅" if abs(gap) < 8 else ("📈" if gap > 0 else "📉")
-            print(f"   {thresh} AST Hit Rate:  {actual_rate:5.1f}% (Expected: {expected_rate:.0f}%) {gap_icon} {gap:+.1f}pp")
+    # Overall accuracy
+    mae = df['Diff'].abs().mean()
+    rmse = np.sqrt((df['Diff'] ** 2).mean())
+    bias = df['Diff'].mean()
+    print(f"\n🎯 Overall:")
+    print(f"   MAE:    {mae:.2f} AST")
+    print(f"   RMSE:   {rmse:.2f} AST")
+    print(f"   Bias:   {bias:+.2f} AST ({'over' if bias < 0 else 'under'}-projecting)")
 
-        # Model MAE vs baseline (L10 naive) MAE
-        model_mae = top_plays['Diff'].abs().mean()
-        print(f"\n   Model MAE:    {model_mae:.2f} assists")
+    w1 = (df['Diff'].abs() <= 1).mean()
+    w2 = (df['Diff'].abs() <= 2).mean()
+    w3 = (df['Diff'].abs() <= 3).mean()
+    print(f"\n📏 Accuracy:")
+    print(f"   Within 1 AST: {w1:.0%} | Within 2 AST: {w2:.0%} | Within 3 AST: {w3:.0%}")
 
-        if 'Baseline_Diff' in top_plays.columns:
-            baseline_valid = top_plays['Baseline_Diff'].dropna()
-            if len(baseline_valid) > 0:
-                baseline_mae = baseline_valid.abs().mean()
-                improvement = baseline_mae - model_mae
-                pct = (improvement / baseline_mae * 100) if baseline_mae > 0 else 0
-                icon = "✅" if improvement > 0 else "⚠️"
-                print(f"   Baseline MAE: {baseline_mae:.2f} assists (just using L10 avg)")
-                print(f"   {icon} Model is {abs(improvement):.2f} assists {'better' if improvement > 0 else 'worse'} ({abs(pct):.0f}%)")
+    # Baseline (L10)
+    if 'Baseline_Diff' in df.columns:
+        valid = df['Baseline_Diff'].dropna()
+        if len(valid) > 0:
+            base_mae = valid.abs().mean()
+            improvement = base_mae - mae
+            pct = (improvement / base_mae * 100) if base_mae > 0 else 0
+            icon = "✅" if improvement > 0 else "⚠️"
+            print(f"\n📐 Baseline Comparison (just using L10 avg):")
+            print(f"   Baseline MAE: {base_mae:.2f} AST")
+            print(f"   Model MAE:    {mae:.2f} AST")
+            print(f"   {icon} Model is {abs(improvement):.2f} AST "
+                  f"{'better' if improvement > 0 else 'worse'} ({abs(pct):.0f}%)")
 
-        # Bias
-        bias = top_plays['Diff'].mean()
-        bias_dir = "over-projecting" if bias < 0 else "under-projecting"
-        print(f"\n   Bias: {bias:+.2f} (model is {bias_dir})")
+    # By projection bucket
+    print(f"\n📊 By Projection Range:")
+    for lo, hi, lbl in [(0, 3, '<3'), (3, 5, '3-5'),
+                         (5, 8, '5-8'), (8, 20, '8+')]:
+        sub = df[(df['Projection'] >= lo) & (df['Projection'] < hi)]
+        if len(sub) > 0:
+            print(f"   {lbl:5s}: n={len(sub):3d}  "
+                  f"MAE={sub['Diff'].abs().mean():.2f}  "
+                  f"Bias={sub['Diff'].mean():+.2f}")
 
-    if len(fades) > 0:
-        print(f"\nFADES ({len(fades)} players):")
-        print("-" * 60)
-        fade_5_rate = fades['Hit_5+'].mean() * 100
-        print(f"   5+ AST Hit Rate: {fade_5_rate:.0f}% (lower is better — we're fading these)")
+    # By confidence
+    if 'Confidence' in df.columns and df['Confidence'].notna().any():
+        print(f"\n🎯 By Confidence:")
+        for conf in ['HIGH', 'MEDIUM', 'LOW']:
+            sub = df[df['Confidence'] == conf]
+            if len(sub) > 0:
+                print(f"   {conf:6s}: n={len(sub):3d}  "
+                      f"MAE={sub['Diff'].abs().mean():.2f}  "
+                      f"Bias={sub['Diff'].mean():+.2f}")
+
+    # Recommended-side hit rates (the actual betting decisions)
+    if 'Recommended_Side' in df.columns:
+        plays = df[df['Recommended_Side'].isin(['OVER', 'UNDER'])
+                   & df['Book_Line'].notna()]
+        if not plays.empty:
+            wins = (
+                ((plays['Recommended_Side'] == 'OVER')
+                 & (plays['Actual'] > plays['Book_Line']))
+                | ((plays['Recommended_Side'] == 'UNDER')
+                   & (plays['Actual'] < plays['Book_Line']))
+            )
+            print(f"\n📈 Recommended Plays:")
+            print(f"   {len(plays)} bets  ({(plays['Recommended_Side'] == 'OVER').sum()} OVER, "
+                  f"{(plays['Recommended_Side'] == 'UNDER').sum()} UNDER)")
+            print(f"   Hit rate: {wins.mean():.1%}  "
+                  f"(avg our_prob: {plays['Our_Prob'].mean():.1%})")
+            calib_gap = wins.mean() - plays['Our_Prob'].mean()
+            icon = "✅" if abs(calib_gap) < 0.08 else ("📈" if calib_gap > 0 else "📉")
+            print(f"   Calibration: {calib_gap:+.1%} {icon} "
+                  f"(actual vs predicted hit rate)")
+
+    # Calibration buckets on our_prob
+    if 'Our_Prob' in df.columns and df['Our_Prob'].notna().any():
+        plays = df[df['Recommended_Side'].isin(['OVER', 'UNDER'])
+                   & df['Our_Prob'].notna()
+                   & df['Book_Line'].notna()].copy()
+        if not plays.empty:
+            plays['hit'] = (
+                ((plays['Recommended_Side'] == 'OVER')
+                 & (plays['Actual'] > plays['Book_Line']))
+                | ((plays['Recommended_Side'] == 'UNDER')
+                   & (plays['Actual'] < plays['Book_Line']))
+            ).astype(int)
+            print(f"\n📐 Calibration by our_prob bucket:")
+            print(f"   {'bucket':<13} {'n':>4}  {'avg prob':>9}  "
+                  f"{'actual':>8}  {'gap':>7}")
+            for lo, hi in [(0.50, 0.60), (0.60, 0.70),
+                           (0.70, 0.80), (0.80, 1.00)]:
+                sub = plays[(plays['Our_Prob'] >= lo)
+                            & (plays['Our_Prob'] < hi)]
+                if sub.empty:
+                    continue
+                avg_p = sub['Our_Prob'].mean()
+                actual = sub['hit'].mean()
+                gap = actual - avg_p
+                icon = "✅" if abs(gap) < 0.08 else ("📈" if gap > 0 else "📉")
+                print(f"   {lo:.2f}-{hi:.2f}    {len(sub):>4}  "
+                      f"{avg_p:>9.1%}  {actual:>8.1%}  {gap:>+7.1%} {icon}")
 
     # P&L
-    pnl_data = results_df.apply(simulate_pnl, axis=1, result_type='expand')
-    total_wagered = pnl_data['units_wagered'].sum()
-    total_won = pnl_data['units_won'].sum()
-    net = pnl_data['net_pnl'].sum()
-
-    if total_wagered > 0:
-        roi = (net / total_wagered) * 100
-        print(f"\n💰 P&L SIMULATION (based on unit recommendations):")
-        print("-" * 60)
-        print(f"   Units Wagered:  {total_wagered:.2f}u")
-        print(f"   Units Returned: {total_won:.2f}u")
+    pnl = df.apply(simulate_pnl, axis=1, result_type='expand')
+    total_w = pnl['units_wagered'].sum()
+    total_won = pnl['units_won'].sum()
+    net = pnl['net_pnl'].sum()
+    if total_w > 0:
+        roi = (net / total_w) * 100
         icon = "✅" if net >= 0 else "❌"
+        print(f"\n💰 P&L SIMULATION (kelly stakes at actual book odds):")
+        print(f"   Units wagered:  {total_w:.2f}u")
+        print(f"   Units returned: {total_won:.2f}u")
         print(f"   {icon} Net P&L:      {net:+.2f}u (ROI: {roi:+.1f}%)")
-
     print()
 
 
-def print_individual(results_df):
-    """Print individual player results."""
+def print_individual(df):
     print("=" * 80)
     print("🎯 INDIVIDUAL RESULTS")
     print("=" * 80)
     print()
 
-    sorted_df = results_df.sort_values('Ladder_Value', ascending=False)
+    sorted_df = df.sort_values('Diff', key=lambda x: x.abs(), ascending=False)
 
     for _, row in sorted_df.iterrows():
-        player = row['Player']
         proj = row['Projection']
-        actual = row['Actual']
+        actual = int(row['Actual'])
         diff = row['Diff']
-        playoff_tag = " 🏆" if row['Is_Playoff'] else ""
-
-        if abs(diff) <= 1.5:
+        playoff_tag = " 🏆" if row.get('Is_Playoff', False) else ""
+        if abs(diff) <= 3:
             icon = "✅"
-        elif abs(diff) <= 3.0:
+        elif abs(diff) <= 5:
             icon = "⚠️"
         else:
             icon = "❌"
+        conf = row.get('Confidence', '')
+        conf_icon = (
+            '🟢' if conf == 'HIGH' else '🟡' if conf == 'MEDIUM'
+            else '🔴' if conf == 'LOW' else ''
+        )
+        flags = row.get('Red_Flags', 'None')
+        flag_str = (
+            f" ⚠️ {flags}" if flags not in ('None', '') and pd.notna(flags) else ''
+        )
+        print(f"{icon} {row['Player']:25s} | Proj:{proj:5.1f} | "
+              f"Act:{actual:2d} AST | Diff:{diff:+6.1f} {conf_icon}{playoff_tag}{flag_str}")
 
-        print(f"{icon} {player:25} | Proj: {proj:4.1f} | Actual: {actual:2d} | Diff: {diff:+5.1f}{playoff_tag}")
-
-        ladder = []
-        for thresh, hit_col, prob_col in [('5+', 'Hit_5+', 'Prob_5+'),
-                                           ('7+', 'Hit_7+', 'Prob_7+'),
-                                           ('10+', 'Hit_10+', 'Prob_10+')]:
-            prob = row[prob_col]
-            hit = row[hit_col]
-            if hit:
-                ladder.append(f"{thresh} ✅ ({prob:.0f}%)")
-            elif prob > 5:
-                ladder.append(f"{thresh} ❌ ({prob:.0f}%)")
-        print(f"   Ladder: {' | '.join(ladder)}")
-
-        # P&L for this player
-        pnl = simulate_pnl(row)
-        if pnl['units_wagered'] > 0:
-            icon = "✅" if pnl['net_pnl'] >= 0 else "❌"
-            print(f"   💰 {pnl['units_wagered']:.2f}u wagered → {icon} {pnl['net_pnl']:+.2f}u")
+        # Bet outcome
+        rec = row.get('Recommended_Side', '')
+        if rec in ('OVER', 'UNDER') and pd.notna(row.get('Book_Line')):
+            line = row['Book_Line']
+            odds = row.get('Book_Odds')
+            won = (
+                (rec == 'OVER' and actual > line)
+                or (rec == 'UNDER' and actual < line)
+            )
+            bet_icon = "✅" if won else "❌"
+            kelly = row.get('Kelly_Units')
+            stake = (
+                f" {float(kelly):.2f}u" if pd.notna(kelly) and float(kelly) > 0
+                else ''
+            )
+            odds_str = (
+                f" @ {int(odds):+d}" if pd.notna(odds) else ''
+            )
+            print(f"   {bet_icon} {rec} {line}{odds_str}{stake}")
         print()
 
 
@@ -281,93 +432,98 @@ def print_individual(results_df):
 # Main
 # ======================================================================
 parser = argparse.ArgumentParser(description="Validate NBA assists predictions")
-parser.add_argument('--date', type=str, help='Date to validate (YYYYMMDD)', default=None)
-parser.add_argument('--cumulative', action='store_true', help='Show cumulative stats across all dates')
+parser.add_argument('--date', type=str, default=None,
+                    help='Date to validate (YYYYMMDD)')
+parser.add_argument('--cumulative', action='store_true',
+                    help='Cumulative stats across all dates')
 args = parser.parse_args()
 
 print("=" * 80)
-print("📊 PICKS VALIDATION — How Did We Do?")
+print("🏀 NBA ASSISTS VALIDATION — How Did We Do?")
 print("=" * 80)
 
 gamelog_scraper = GameLogScraper()
 all_players_list = players.get_players()
 
 if args.cumulative:
-    # ------------------------------------------------------------------
-    # Cumulative mode: load all existing validation CSVs + validate remaining
-    # ------------------------------------------------------------------
-    pred_files = sorted(glob.glob('predictions_production_*.csv'))
+    all_files = (
+        glob.glob('predictions_assists_*.csv')
+        + glob.glob('predictions_production_*.csv')
+    )
+    by_date = {}
+    for pf in all_files:
+        base = os.path.basename(pf)
+        ds = (
+            base.replace('predictions_assists_', '')
+                .replace('predictions_production_', '')
+                .replace('.csv', '')
+        )
+        # Prefer the new filename when both exist
+        if ds not in by_date or 'predictions_assists_' in base:
+            by_date[ds] = pf
+    pred_files = [by_date[d] for d in sorted(by_date)]
     if not pred_files:
         print("\n❌ No prediction files found")
         sys.exit(1)
 
     all_results = []
-    dates_processed = []
-
     for pf in pred_files:
-        ds = os.path.basename(pf).replace('predictions_production_', '').replace('.csv', '')
-
-        # Check if we already have a validation CSV
+        base = os.path.basename(pf)
+        ds = (
+            base.replace('predictions_assists_', '')
+                .replace('predictions_production_', '')
+                .replace('.csv', '')
+        )
         val_file = f"validation_results_{ds}.csv"
         if os.path.exists(val_file):
             try:
-                existing = pd.read_csv(val_file)
-                if 'Is_Playoff' not in existing.columns:
-                    existing['Is_Playoff'] = is_playoff_date(ds)
-                all_results.append(existing)
-                dates_processed.append(ds)
+                cached = pd.read_csv(val_file)
+                # Migrate cached schema to new column names if needed
+                if 'Conf' in cached.columns and 'Confidence' not in cached.columns:
+                    cached['Confidence'] = cached['Conf']
+                if 'projection' in cached.columns and 'Projection' not in cached.columns:
+                    cached['Projection'] = cached['projection']
+                all_results.append(cached)
+                print(f"   ↪ Reused cached validation for {ds} ({len(cached)} rows)")
                 continue
             except Exception:
                 pass
-
-        # Fetch live data for this date
-        result = validate_date(ds, gamelog_scraper, all_players_list, quiet=True)
-        if result is not None:
-            result.to_csv(val_file, index=False)
-            all_results.append(result)
-            dates_processed.append(ds)
+        df = validate_date(ds, gamelog_scraper, all_players_list, quiet=True)
+        if df is None:
+            continue
+        df.to_csv(val_file, index=False)
+        all_results.append(df)
+        print(f"   ✓ Validated {ds} ({len(df)} players)")
 
     if not all_results:
-        print("\n❌ No validation data available")
+        print("\n❌ Nothing to summarize")
         sys.exit(1)
 
     combined = pd.concat(all_results, ignore_index=True)
-
-    print(f"\n📅 Dates: {len(dates_processed)} ({dates_processed[0]} → {dates_processed[-1]})")
     print_summary(combined, label="CUMULATIVE")
-    print_individual(combined)
-
-    output_file = "validation_cumulative.csv"
-    combined.to_csv(output_file, index=False)
-    print("=" * 80)
-    print(f"✅ Saved cumulative results to: {output_file}")
-    print("=" * 80)
-
+    print(f"\n✅ {len(combined)} player-days across "
+          f"{combined['Date'].nunique()} dates")
 else:
-    # ------------------------------------------------------------------
-    # Single-date mode
-    # ------------------------------------------------------------------
     if args.date:
         date_str = args.date
     else:
-        yesterday = datetime.now() - timedelta(days=1)
-        date_str = yesterday.strftime('%Y%m%d')
+        date_str = (datetime.now() - timedelta(days=1)).strftime('%Y%m%d')
 
     print(f"\n🔄 Fetching actual game results for {date_str}...")
-
-    results_df = validate_date(date_str, gamelog_scraper, all_players_list)
-
-    if results_df is None:
+    df = validate_date(date_str, gamelog_scraper, all_players_list)
+    if df is None:
         print(f"\nAvailable prediction files:")
-        for f in sorted(glob.glob('predictions_production_*.csv')):
+        for f in sorted(
+            glob.glob('predictions_assists_*.csv')
+            + glob.glob('predictions_production_*.csv')
+        ):
             print(f"   • {os.path.basename(f)}")
         sys.exit(1)
 
-    print_summary(results_df, label=date_str)
-    print_individual(results_df)
+    print_summary(df, label=date_str)
+    print_individual(df)
 
-    output_file = f"validation_results_{date_str}.csv"
-    results_df.to_csv(output_file, index=False)
+    out = f"validation_results_{date_str}.csv"
+    df.to_csv(out, index=False)
     print("=" * 80)
-    print(f"✅ Saved detailed results to: {output_file}")
-    print("=" * 80)
+    print(f"✅ Saved detailed results to: {out}")

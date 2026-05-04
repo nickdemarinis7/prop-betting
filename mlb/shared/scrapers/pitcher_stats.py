@@ -92,6 +92,9 @@ class PitcherStatsScraper:
                                             # Get pitcher handedness
                                             pitch_hand = person.get('pitchHand', {}).get('code', 'R')
                                             
+                                            hr_allowed = int(stats.get('homeRuns', 0) or 0)
+                                            hr9 = (hr_allowed / ip * 9) if ip > 0 else 0
+                                            
                                             all_pitchers.append({
                                                 'pitcher_id': pitcher_id,
                                                 'pitcher_name': pitcher_name,
@@ -102,6 +105,9 @@ class PitcherStatsScraper:
                                                 'SO': so,
                                                 'K9': k9,
                                                 'K_PCT': k_pct,
+                                                'HR': hr_allowed,
+                                                'HR9': hr9,
+                                                'BF': stats.get('battersFaced', 0),
                                                 'BB': stats.get('baseOnBalls', 0),
                                                 'ERA': stats.get('era', 0),
                                                 'WHIP': stats.get('whip', 0)

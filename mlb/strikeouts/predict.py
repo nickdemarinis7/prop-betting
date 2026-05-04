@@ -1,6 +1,11 @@
 """
-MLB Strikeout Predictions V2 - Simplified & Improved
-Focus on what actually matters for strikeout prediction
+MLB Strikeout Predictions V2 - heuristic-heavy model.
+
+NOTE: predict_simplified.py is the V3 successor with fewer hand-tuned
+adjustments and a cleaner data-driven blend. Both produce the same
+prob_X+ columns so either can feed ladder_with_odds.py and validate.py.
+Run V2 if you need the elite-K caps and multi-stage early-exit checks;
+run V3 if you want a leaner baseline for ML correction work.
 """
 
 import pandas as pd
@@ -8,6 +13,10 @@ import numpy as np
 from datetime import datetime
 import sys
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 
@@ -18,6 +27,8 @@ from mlb.shared.features.pitcher_context import PitcherContextAnalyzer
 from mlb.shared.scrapers.rotochamp_lineups import RotoChampLineupScraper
 from mlb.shared.scrapers.mlb_lineups import MLBLineupScraper
 from mlb.shared.scrapers.batter_stats import BatterStatsScraper
+from mlb.shared.scrapers.odds_api import OddsAPIScraper
+from core.name_utils import normalize_name, filter_by_name
 from scipy import stats as scipy_stats
 
 try:
@@ -39,6 +50,7 @@ context_analyzer = PitcherContextAnalyzer()
 lineup_scraper = RotoChampLineupScraper()
 mlb_lineup_scraper = MLBLineupScraper()
 batter_scraper = BatterStatsScraper()
+odds_scraper = OddsAPIScraper()
 
 # Initialize ML corrector (loads saved model or trains from validation data)
 ml_corrector = None
@@ -65,6 +77,14 @@ if games_df.empty:
     sys.exit(1)
 
 print(f"   ✓ Found {len(games_df)} games today")
+
+# Fetch odds data for book implied projections
+print("\n📡 Fetching sportsbook odds...")
+odds_df = odds_scraper.get_all_strikeout_odds()
+if not odds_df.empty:
+    print(f"   ✓ Found odds for {len(odds_df)} pitcher/line combinations")
+else:
+    print("   ⚠️  No odds found")
 
 # Collect all starting pitchers
 starters = []
@@ -184,15 +204,10 @@ for starter in starters:
             base_k9 = (season_k9 * 0.6) + (recent_k9 * 0.4)
         
         # PHASE 1 FIX #2: Regress elite K/9 pitchers toward mean
-        # Softer regression when recent K/9 confirms elite level
+        # Reverted to simple 70/30 blend — conditional logic made bias worse
         if base_k9 > 12.0:
             original_k9 = base_k9
-            if recent_k9 > 11.0:
-                # Recent performance confirms elite — gentle regression
-                base_k9 = (base_k9 * 0.85) + (11.0 * 0.15)
-            else:
-                # Season inflated vs recent — stronger regression
-                base_k9 = (base_k9 * 0.7) + (11.0 * 0.3)
+            base_k9 = (base_k9 * 0.7) + (11.0 * 0.3)
             print(f"   ⚠️  Elite K/9 regression: {original_k9:.2f} → {base_k9:.2f}")
         
         print(f"   Season K/9: {season_k9:.2f} | Recent K/9: {recent_k9:.2f} | Base: {base_k9:.2f}")
@@ -290,10 +305,8 @@ for starter in starters:
         # 6. FINAL PROJECTION
         final_projection = base_projection * opponent_multiplier * home_multiplier * rest_multiplier
         
-        # Calibration offset: tiered by pitcher quality
-        # HIGH-K pitchers (aces) were overcorrected by flat -0.5; use -0.3
-        # MEDIUM/LOW-K pitchers still need the full -0.5
-        calibration_offset = 0.3 if base_k9 > 8.0 else 0.5
+        # Calibration offset: flat -0.5K (reverted from tiered — made bias worse)
+        calibration_offset = 0.5
         final_projection -= calibration_offset
         final_projection = max(final_projection, 0.5)
         
@@ -384,16 +397,17 @@ for starter in starters:
                 print(f"   🤖 ML Correction: {ml_correction:+.2f} K → {final_projection:.2f} K")
         
         # 10. CALCULATE PROBABILITIES (after all corrections)
-        # Inflate std_dev by 1.15x for calibration (validation shows ~7pp over-confidence at 5.5+ K)
+        # Inflate std_dev by 1.15x for calibration (validation shows ~7pp
+        # over-confidence at 5.5+ K). These prob_X+ columns are required by
+        # ladder_with_odds.py and validate.py.
         prob_std_dev = std_dev * 1.15
         probabilities = {}
         for line in [3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5]:
             prob = 1 - scipy_stats.norm.cdf(line, final_projection, prob_std_dev)
             probabilities[f'prob_{line}+'] = prob
-            
             if prob > 0.10:
                 print(f"   {line}+ K: {prob:.1%}")
-        
+
         # 11. CONFIDENCE TIER
         confidence = 'HIGH'
         if len(red_flags) >= 2:
@@ -402,8 +416,6 @@ for starter in starters:
             confidence = 'MEDIUM'
         elif std_dev > 2.8:
             confidence = 'MEDIUM'
-        
-        print(f"   Confidence: {confidence} | Red Flags: {', '.join(red_flags) if red_flags else 'None'}")
         
         # Store prediction
         pred = {
@@ -423,6 +435,7 @@ for starter in starters:
             'confidence': confidence,
             'red_flags': '; '.join(red_flags) if red_flags else 'None',
             'blowup_rate': round(blowup_rate, 2),
+            'book_implied': 'N/A',
             **{k: round(v, 3) for k, v in probabilities.items()}
         }
         
@@ -439,6 +452,21 @@ if predictions:
     df = pd.DataFrame(predictions)
     df = df.sort_values('projection', ascending=False)
     
+    # Populate book_implied field using full-name matching (avoids matching
+    # "Eury Pérez" to "Martín Pérez", etc.)
+    for idx, row in df.iterrows():
+        pitcher_odds = filter_by_name(odds_df, 'pitcher', row['pitcher'])
+        if pitcher_odds.empty:
+            # Fallback: last-name match if full-name match fails (handles
+            # cases where book uses "M. Perez" abbreviations).
+            last = row['pitcher'].split()[-1]
+            pitcher_odds = odds_df[
+                odds_df['pitcher'].str.contains(last, case=False, na=False)
+            ]
+        if not pitcher_odds.empty:
+            best_odds = pitcher_odds.loc[pitcher_odds['odds'].abs().idxmin()]
+            df.at[idx, 'book_implied'] = f"{best_odds['line']} @ {best_odds['odds']:+d} ({best_odds['bookmaker']})"
+    
     if target_date:
         date_str = target_date.replace('-', '')
     else:
@@ -451,10 +479,24 @@ if predictions:
     print(f"✅ Predictions saved to: {filename}")
     print("=" * 80)
     
-    print("\n📊 TOP PROJECTIONS:")
-    for _, row in df.head(10).iterrows():
+    print("\n📊 PROJECTIONS:")
+    print("=" * 80)
+    
+    for _, row in df.iterrows():
+        # Pull book implied from the column already populated above
+        book_projection = row.get('book_implied', 'N/A')
+        
         conf_icon = '🟢' if row['confidence'] == 'HIGH' else '🟡' if row['confidence'] == 'MEDIUM' else '🔴'
-        flags = f" ⚠️ {row['red_flags']}" if row['red_flags'] != 'None' else ''
-        print(f"   {conf_icon} {row['pitcher']:25s} {row['projection']:.1f} K  ({row['team']} vs {row['opponent']}){flags}")
+        flags = row['red_flags'] if row['red_flags'] != 'None' else 'None'
+        
+        print(f"\n{conf_icon} {row['pitcher']:25s} ({row['team']} vs {row['opponent']})")
+        print(f"   Our Projection: {row['projection']:.1f} K")
+        print(f"   Book Implied: {book_projection}")
+        print(f"   Reasons:")
+        print(f"     - Season K/9: {row['season_k9']:.2f} | Recent K/9: {row['recent_k9']:.2f}")
+        print(f"     - Expected IP: {row['expected_ip']:.1f} | Opponent K Rate: {row['opponent_k_rate']:.3f}")
+        print(f"     - Confidence: {row['confidence']} | Red Flags: {flags}")
+        if abs(row['ml_correction']) > 0.1:
+            print(f"     - ML Correction: {row['ml_correction']:+.2f} K")
 else:
     print("\n⚠️  No predictions generated")

@@ -14,8 +14,11 @@ No over-engineering. Just the edge.
 import sys
 import os
 
-# Add parent directory to path for imports
+# Add NBA shared dir for nba.shared.* imports and project root for cross-sport
+# imports (core.* and mlb.shared.*).
+_project_root = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, _project_root)
 
 from shared.scrapers.gamelog import GameLogScraper
 from shared.scrapers.nba_api import NBAApiScraper
@@ -29,6 +32,20 @@ from shared.utils.betting_math import (
     prob_to_american_odds,
     recommend_units
 )
+
+# Cross-sport imports (odds API lives under mlb/, name utils under core/)
+from mlb.shared.scrapers.odds_api import (
+    OddsAPIScraper,
+    calculate_implied_probability,
+    calculate_expected_value,
+)
+from core.name_utils import normalize_name, filter_by_name
+
+# Local module — prob calibrator lives next to this script
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+if _THIS_DIR not in sys.path:
+    sys.path.insert(0, _THIS_DIR)
+from prob_calibrator import ProbabilityCalibrator
 from nba_api.stats.static import teams
 import pandas as pd
 import numpy as np
@@ -61,6 +78,15 @@ pace_analyzer = PaceAnalyzer()
 availability_tracker = PlayerAvailabilityTracker()
 usage_boost_calc = UsageBoostCalculator()
 fatigue_analyzer = FatigueAnalyzer()
+
+# Initialize probability calibrator (isotonic regression on validation history).
+# Maps raw normal-CDF probabilities to empirically calibrated hit rates.
+prob_calibrator = ProbabilityCalibrator()
+if not prob_calibrator.load():
+    print("   ⚠️  No prob calibrator found, attempting to train...")
+    if not prob_calibrator.train():
+        print("   ⚠️  Calibrator unavailable; using raw probabilities.")
+        prob_calibrator = None
 
 # Step 1: Get tonight's games
 print("\n📅 Tonight's Schedule...")
@@ -112,12 +138,6 @@ if not espn_injuries.empty:
         ]
         if not out_players.empty:
             print(f"   ⚠️  {len(out_players)} players OUT/DOUBTFUL - will be filtered from predictions")
-            
-            # Normalize names for filtering (handle accents)
-            import unicodedata
-            def normalize_name(name):
-                normalized = unicodedata.normalize('NFD', name)
-                return ''.join(c for c in normalized if unicodedata.category(c) != 'Mn').lower()
             
             for _, inj in out_players.iterrows():
                 player_name = inj['player_name']
@@ -467,11 +487,6 @@ for _, player in tonight_players.iterrows():
     
     # Filter OUT players (injuries)
     if out_player_names:
-        import unicodedata
-        def normalize_name(name):
-            normalized = unicodedata.normalize('NFD', name)
-            return ''.join(c for c in normalized if unicodedata.category(c) != 'Mn').lower()
-        
         player_name_normalized = normalize_name(player['PLAYER_NAME'])
         if player_name_normalized in out_player_names:
             filtered_count += 1
@@ -589,13 +604,14 @@ for _, player in tonight_players.iterrows():
     if is_playoff:
         final_prediction *= 0.90
     
-    # 6. Calibration dampener — blend prediction toward L10 to reduce over-projection
-    #    Eased from 55/45 to 60/40: Apr 20 showed slight under-projection (-2.16 excl outliers)
+    # 6. L10 anchor blend — validation (137 samples) shows the GBM loses to
+    #    a simple L10 average by 12%.  Heavily anchor to L10; let the model
+    #    contribute matchup/pace/fatigue signal at a small weight.
     l10_avg = features.get('pts_last_10', player['PTS'])
-    final_prediction = (final_prediction * 0.60) + (l10_avg * 0.40)
+    final_prediction = (final_prediction * 0.35) + (l10_avg * 0.65)
     
-    # 7. Sanity check - Don't project more than 1.25x recent average
-    max_reasonable = max(l10_avg * 1.25, 8.0)  # At least 8.0 for low-point players
+    # 7. Sanity check - Don't project more than 1.15x recent average
+    max_reasonable = max(l10_avg * 1.15, 8.0)  # At least 8.0 for low-point players
     final_prediction = min(final_prediction, max_reasonable)
     
     # 7b. Global cap - no player above 38 points
@@ -660,16 +676,24 @@ for _, player in tonight_players.iterrows():
     else:
         confidence = 'LOW'
     
-    # Calculate ladder probabilities for points thresholds (10-40)
-    # Inflate std_dev by 1.4x for calibration (validation showed over-confidence)
-    std_dev = min(features.get('pts_std', 5.0), 7.0) * 1.4
-    prob_10 = calculate_probability(final_prediction, std_dev, 10)
-    prob_15 = calculate_probability(final_prediction, std_dev, 15)
-    prob_20 = calculate_probability(final_prediction, std_dev, 20)
-    prob_25 = calculate_probability(final_prediction, std_dev, 25)
-    prob_30 = calculate_probability(final_prediction, std_dev, 30)
-    prob_35 = calculate_probability(final_prediction, std_dev, 35)
-    prob_40 = calculate_probability(final_prediction, std_dev, 40)
+    # Calculate ladder probabilities for points thresholds (10-40).
+    # Use the player's own historical PTS std (capped to avoid wild values
+    # from tiny sample sizes). Calibrator (Platt sigmoid) corrects any
+    # residual systematic bias, so we no longer multiply std by 1.4x.
+    std_dev = max(min(features.get('pts_std', 5.0), 7.5), 2.5)
+
+    def _cal(raw_p):
+        if prob_calibrator is not None and prob_calibrator.is_fitted:
+            return float(prob_calibrator.calibrate(raw_p))
+        return raw_p
+
+    prob_10 = _cal(calculate_probability(final_prediction, std_dev, 10))
+    prob_15 = _cal(calculate_probability(final_prediction, std_dev, 15))
+    prob_20 = _cal(calculate_probability(final_prediction, std_dev, 20))
+    prob_25 = _cal(calculate_probability(final_prediction, std_dev, 25))
+    prob_30 = _cal(calculate_probability(final_prediction, std_dev, 30))
+    prob_35 = _cal(calculate_probability(final_prediction, std_dev, 35))
+    prob_40 = _cal(calculate_probability(final_prediction, std_dev, 40))
     
     predictions.append({
         'PLAYER_ID': player_id,
@@ -711,6 +735,148 @@ print(f"   ✓ {len(predictions)} players analyzed ({filtered_count} filtered: i
 
 # Step 5: Display results
 results_df = pd.DataFrame(predictions).sort_values('final_projection', ascending=False)
+
+# FETCH BOOK ODDS FOR COMPARISON
+print("\n📊 Fetching book odds for edge comparison...")
+odds_scraper = OddsAPIScraper()
+odds_df = odds_scraper.get_all_nba_points_odds()
+
+# ---------------------------------------------------------------------
+# EV-BASED EDGE ANALYSIS
+# Scan all (line, side) combos per player, compute calibrated probs +
+# EV + Kelly stakes, collect alternate-line ladder rungs.
+# ---------------------------------------------------------------------
+results_df['book_line'] = float('nan')
+results_df['book_odds'] = float('nan')
+results_df['bookmaker'] = ''
+results_df['recommended_side'] = ''
+results_df['our_prob'] = float('nan')
+results_df['book_prob'] = float('nan')
+results_df['edge_pp'] = 0.0
+results_df['ev'] = 0.0
+results_df['kelly_units'] = 0.0
+# model_vs_book kept for backward compat (in points)
+results_df['model_vs_book'] = 0.0
+
+# ¼-Kelly sizing capped at 1.5u per leg
+NBA_KELLY_FRACTION = 0.25
+NBA_MAX_KELLY = 1.5
+
+def nba_kelly_units(our_p, american_odds):
+    if american_odds < 0:
+        decimal = 1 + (100 / abs(american_odds))
+    else:
+        decimal = 1 + (american_odds / 100)
+    b = decimal - 1
+    if b <= 0:
+        return 0.0
+    kelly = (our_p * b - (1 - our_p)) / b
+    if kelly <= 0:
+        return 0.0
+    units = kelly * NBA_KELLY_FRACTION * 10
+    return round(min(units, NBA_MAX_KELLY), 2)
+
+def our_prob_at_line(projection, std_dev, line, side):
+    """Calibrated probability for OVER/UNDER any book line."""
+    raw_over = 1.0 - stats.norm.cdf(line, projection, std_dev)
+    if prob_calibrator is not None and prob_calibrator.is_fitted:
+        cal_over = float(prob_calibrator.calibrate(raw_over))
+    else:
+        cal_over = raw_over
+    return cal_over if side == 'Over' else 1.0 - cal_over
+
+# Edge thresholds for points
+MIN_EV_PLAY = 0.05
+MIN_EDGE_PP_PLAY = 0.04
+
+# pitcher_alts equivalent: per-player alternate rungs
+alternates_by_player = {}
+
+if not odds_df.empty:
+    for idx, row in results_df.iterrows():
+        player_name = row['player_name']
+        proj = float(row['final_projection'])
+        # Use this player's own pts_std (same as used for prob_X+ columns)
+        player_std = max(min(float(row.get('consistency', 5.0) or 5.0), 7.5), 2.5)
+        
+        player_odds = filter_by_name(odds_df, 'player', player_name)
+        if player_odds.empty:
+            continue
+        
+        # Score every (line, side) — keep best EV per (line, side)
+        seen = {}
+        for _, lr in player_odds.iterrows():
+            line_val = float(lr['line'])
+            side = lr['over_under']
+            our_p = our_prob_at_line(proj, player_std, line_val, side)
+            book_p = calculate_implied_probability(int(lr['odds']))
+            ev = calculate_expected_value(our_p, int(lr['odds']))
+            rung = {
+                'line': line_val,
+                'side': side.upper(),
+                'odds': int(lr['odds']),
+                'bookmaker': lr['bookmaker'],
+                'our_prob': round(our_p, 3),
+                'book_prob': round(book_p, 3),
+                'edge_pp': round((our_p - book_p) * 100, 1),
+                'ev': round(ev, 3),
+                'kelly_units': nba_kelly_units(our_p, int(lr['odds'])),
+            }
+            key = (line_val, side)
+            if key not in seen or rung['ev'] > seen[key]['ev']:
+                seen[key] = rung
+        candidate_rungs = list(seen.values())
+        if not candidate_rungs:
+            continue
+        
+        # Main pick: highest EV at the most-traded line (Over closest to even)
+        over_rows = player_odds[player_odds['over_under'] == 'Over']
+        if over_rows.empty:
+            continue
+        main_line = float(over_rows.loc[over_rows['odds'].abs().idxmin(), 'line'])
+        main_rungs = [r for r in candidate_rungs if r['line'] == main_line]
+        if not main_rungs:
+            continue
+        main_pick = max(main_rungs, key=lambda r: r['ev'])
+        
+        results_df.at[idx, 'book_line'] = main_line
+        results_df.at[idx, 'book_odds'] = main_pick['odds']
+        results_df.at[idx, 'bookmaker'] = main_pick['bookmaker']
+        results_df.at[idx, 'our_prob'] = main_pick['our_prob']
+        results_df.at[idx, 'book_prob'] = main_pick['book_prob']
+        results_df.at[idx, 'edge_pp'] = main_pick['edge_pp']
+        results_df.at[idx, 'ev'] = main_pick['ev']
+        results_df.at[idx, 'kelly_units'] = main_pick['kelly_units']
+        results_df.at[idx, 'model_vs_book'] = round(proj - main_line, 1)
+        if (
+            main_pick['ev'] >= MIN_EV_PLAY
+            and (main_pick['our_prob'] - main_pick['book_prob']) >= MIN_EDGE_PP_PLAY
+        ):
+            # OVER bets disabled: validation (137 samples) showed 32% hit rate
+            # on OVERs vs 68% predicted — catastrophic miscalibration.  UNDER
+            # bets hit 75%.  Re-enable once new blend weights are validated.
+            if main_pick['side'] == 'OVER':
+                results_df.at[idx, 'recommended_side'] = 'PASS'
+            else:
+                results_df.at[idx, 'recommended_side'] = main_pick['side']
+        else:
+            results_df.at[idx, 'recommended_side'] = 'PASS'
+        
+        # Alternate rungs: same direction, different lines, +EV
+        alts = [
+            r for r in candidate_rungs
+            if r['line'] != main_line
+            and r['side'] == main_pick['side']
+            and r['ev'] >= MIN_EV_PLAY
+        ]
+        alts.sort(key=lambda r: r['ev'], reverse=True)
+        if alts:
+            alternates_by_player[player_name] = alts
+    
+    matched = (results_df['book_line'].notna()).sum()
+    print(f"   ✓ Matched {matched} players with book odds")
+else:
+    print("   ⚠️  No book odds available - edges will be model-only")
 
 # Analyze and create smart picks
 print("\n" + "=" * 80)
@@ -989,700 +1155,140 @@ smart_picks['tier'] = smart_picks.apply(get_confidence_tier, axis=1)
 
 print()
 print("=" * 80)
-print("💰 TOP BETTING OPPORTUNITIES - LADDER BETTING GUIDE")
+print("📊 PROJECTIONS")
 print("=" * 80)
 print()
 
-# Display by tier
-for tier_num in [1, 2, 3]:
-    tier_picks = smart_picks[smart_picks['tier'] == tier_num]
-    
-    if tier_picks.empty:
-        continue
-    
-    # Tier header
-    if tier_num == 1:
-        print("🟢 TIER 1: SAFEST BETS")
-        print("   (High ladder value + positive momentum + low variance)")
-    elif tier_num == 2:
-        print("🟡 TIER 2: GOOD VALUE")
-        print("   (Solid opportunities with minor concerns)")
-    else:
-        print("🟠 TIER 3: HIGHER RISK")
-        print("   (Negative momentum, high variance, or other red flags)")
-    
-    print("=" * 80)
-    print()
-    
-    for i, (_, row) in enumerate(tier_picks.iterrows(), 1):
-        location = "🏠" if row['is_home'] == 1 else "✈️"
-        
-        # Quality indicator
-        quality = row['play_quality']
-        if quality >= 75:
-            quality_icon = "🟢"
-        elif quality >= 60:
-            quality_icon = "🟡"
-        else:
-            quality_icon = "🔴"
-        
-        print(f"#{i} {row['player_name']} ({row['team']}) {location} vs {row['opponent']}")
-        print("-" * 80)
-        
-        # Projection and comparison
-        projection = row['final_projection']
-        l10_avg = row['lpts_10_avg']
-        std_dev = row['consistency']
-        ratio = projection / l10_avg if l10_avg > 0 else 1.0
-        
-        print(f"📊 PROJECTION: {projection:.1f} PTS  (L10: {l10_avg:.1f}, Std: {std_dev:.1f} | {ratio:.2f}x)")
-        print()
-        
-        # Ladder probabilities - the key info for betting
-        prob_10 = row['prob_10+']
-        prob_15 = row['prob_15+']
-        prob_20 = row['prob_20+']
-        prob_25 = row['prob_25+']
-        prob_30 = row['prob_30+']
-        prob_35 = row['prob_35+']
-        prob_40 = row['prob_40+']
-        
-        print(f"🎯 LADDER PROBABILITIES:")
-        print(f"   10+ PTS: {prob_10:>5.0%}  {'🔥' if prob_10 > 0.90 else '✅' if prob_10 > 0.75 else ''}")
-        print(f"   15+ PTS: {prob_15:>5.0%}  {'🔥' if prob_15 > 0.80 else '✅' if prob_15 > 0.60 else ''}")
-        print(f"   20+ PTS: {prob_20:>5.0%}  {'🔥' if prob_20 > 0.60 else '✅' if prob_20 > 0.40 else ''}")
-        print(f"   25+ PTS: {prob_25:>5.0%}  {'🔥' if prob_25 > 0.40 else '✅' if prob_25 > 0.20 else ''}")
-        print(f"   30+ PTS: {prob_30:>5.0%}  {'🔥' if prob_30 > 0.25 else '✅' if prob_30 > 0.10 else ''}")
-        print(f"   35+ PTS: {prob_35:>5.0%}  {'🔥' if prob_35 > 0.15 else '✅' if prob_35 > 0.05 else ''}")
-        print(f"   40+ PTS: {prob_40:>5.0%}  {'🔥' if prob_40 > 0.10 else '✅' if prob_40 > 0.03 else ''}")
-        print()
-        
-        # Calculate implied odds needed for +EV
-        def prob_to_american_odds(prob):
-            """Convert probability to American odds"""
-            if prob >= 0.5:
-                return int(-100 * prob / (1 - prob))
-            else:
-                return int(100 * (1 - prob) / prob)
-        
-        print(f"💵 MINIMUM ODDS FOR +EV:")
-        if prob_15 > 0.01:
-            min_odds_15 = prob_to_american_odds(prob_15)
-            print(f"   15+ PTS: {min_odds_15:+5d} or better")
-        if prob_20 > 0.01:
-            min_odds_20 = prob_to_american_odds(prob_20)
-            print(f"   20+ PTS: {min_odds_20:+5d} or better")
-        if prob_25 > 0.01:
-            min_odds_25 = prob_to_american_odds(prob_25)
-            print(f"   25+ PTS: {min_odds_25:+5d} or better")
-        if prob_30 > 0.01:
-            min_odds_30 = prob_to_american_odds(prob_30)
-            print(f"   30+ PTS: {min_odds_30:+5d} or better")
-        print()
-        
-        # Historical hit rate from actual recent games
-        player_id = row['PLAYER_ID']
-        recent_games = gamelog_scraper.get_recent_games(player_id, n_games=10)
-        
-        if not recent_games.empty and 'PTS' in recent_games.columns:
-            points = recent_games['PTS'].values
-            hist_15 = (points >= 15).sum()
-            hist_20 = (points >= 20).sum()
-            hist_25 = (points >= 25).sum()
-            
-            print(f"📈 ACTUAL HIT RATE (Last 10 games):")
-            print(f"   15+ PTS: {hist_15}/10 games ({hist_15*10}%)")
-            if hist_20 > 0 or prob_20 > 0.15:
-                print(f"   20+ PTS: {hist_20}/10 games ({hist_20*10}%)")
-            if hist_25 > 0 or prob_25 > 0.05:
-                print(f"   25+ PTS: {hist_25}/10 games ({hist_25*10}%)")
-            if prob_30 > 0.02:
-                hist_30 = (points >= 30).sum()
-                print(f"   30+ PTS: {hist_30}/10 games ({hist_30*10}%)")
-            print()
-        
-        # Context - why these numbers
-        print(f"📝 CONTEXT:")
-        
-        # Key factors
-        factors = []
-        
-        # Red flags - NEW!
-        red_flags = []
-        
-        # Matchup
-        defense_factor = row['defense_factor']
-        if defense_factor > 1.08:
-            factors.append(f"Soft matchup ({defense_factor:.2f}x)")
-        elif defense_factor > 1.03:
-            factors.append(f"Favorable matchup ({defense_factor:.2f}x)")
-        elif defense_factor < 0.92:
-            factors.append(f"Tough matchup ({defense_factor:.2f}x)")
-            red_flags.append(f"Tough defense ({defense_factor:.2f}x)")
-        
-        # Usage boost
-        teammates_out = row.get('injured_teammates', 0)
-        if teammates_out >= 4:
-            factors.append(f"High usage boost ({int(teammates_out)} teammates out)")
-        elif teammates_out >= 2:
-            factors.append(f"Usage boost ({int(teammates_out)} teammates out)")
-        
-        # Form - with red flag for negative momentum
-        momentum = row.get('pts_momentum', 0)
-        if momentum > 0.2:
-            factors.append(f"Hot streak (momentum: {momentum:+.1f})")
-        elif momentum < -0.2:
-            factors.append(f"Cooling off (momentum: {momentum:+.1f})")
-            red_flags.append(f"Negative momentum ({momentum:+.1f}) - Player trending down")
-        
-        # Consistency
-        std_dev = row['consistency']
-        if std_dev < 2.0:
-            factors.append(f"Very consistent (σ: {std_dev:.1f})")
-        elif std_dev > 6.5:
-            factors.append(f"High variance (σ: {std_dev:.1f})")
-            red_flags.append(f"High variance (σ: {std_dev:.1f}) - Unpredictable")
-        
-        # Pace
-        pace_boost = row['pace_boost']
-        if pace_boost > 1.03:
-            factors.append(f"Fast pace ({pace_boost:.3f}x)")
-        
-        # Blowout risk
-        if row['blowout_risk'] == 'HIGH':
-            factors.append("⚠️ BLOWOUT RISK")
-            red_flags.append("HIGH blowout risk - May sit in 4th quarter")
-        elif row['blowout_risk'] == 'MEDIUM':
-            red_flags.append("MEDIUM blowout risk - Monitor game flow")
-        
-        for factor in factors:
-            print(f"   • {factor}")
-        
-        # Show red flags if any
-        if red_flags:
-            print()
-            print(f"⚠️ RED FLAGS:")
-            for flag in red_flags:
-                print(f"   • {flag}")
-        
-        print()
-        
-        # Recommend unit sizing based on tier, probability, and red flags
-        def recommend_units(prob, tier, has_red_flags):
-            """Recommend unit size from: 1.5, 1.25, 1, 0.75, 0.5, 0.25, 0.1"""
-            # Base units on probability
-            if prob >= 0.80:
-                base_units = 1.5
-            elif prob >= 0.70:
-                base_units = 1.25
-            elif prob >= 0.60:
-                base_units = 1.0
-            elif prob >= 0.50:
-                base_units = 0.75
-            elif prob >= 0.40:
-                base_units = 0.5
-            elif prob >= 0.25:
-                base_units = 0.25
-            else:
-                base_units = 0.1
-            
-            # Adjust for tier
-            if tier == 3:  # Higher risk
-                base_units = max(0.1, base_units - 0.5)
-            elif tier == 1:  # Safest
-                base_units = min(1.5, base_units + 0.25)
-            
-            # Reduce if red flags
-            if has_red_flags:
-                base_units = max(0.1, base_units - 0.25)
-            
-            # Round to nearest valid unit size
-            valid_units = [1.5, 1.25, 1.0, 0.75, 0.5, 0.25, 0.1]
-            return min(valid_units, key=lambda x: abs(x - base_units))
-        
-        # Calculate unit recommendations
-        has_flags = len(red_flags) > 0
-        tier_num = row['tier']
-        units_5 = recommend_units(prob_15, tier_num, has_flags) if prob_15 > 0.01 else 0
-        units_7 = recommend_units(prob_20, tier_num, has_flags) if prob_20 > 0.15 else 0
-        units_10 = recommend_units(prob_25, tier_num, has_flags) if prob_25 > 0.05 else 0
-        
-        print(f"💰 RECOMMENDED UNITS:")
-        if units_5 > 0:
-            print(f"   15+ PTS: {units_5:.2f}u")
-        if units_7 > 0:
-            print(f"   20+ PTS: {units_7:.2f}u")
-        if units_10 > 0:
-            print(f"   25+ PTS: {units_10:.2f}u")
-        print()
-        
-        # Show both scores
-        ladder_value = row['ladder_value']
-        print(f"💎 Ladder Value: {ladder_value:.0f}/100  |  Quality: {quality:.0f}/100 {quality_icon}")
-        print()
-        
-        if i < len(tier_picks):
-            print()
-    
-    # Add spacing between tiers
-    print()
-
-print("=" * 80)
-print()
-
-# Show fade list (players to avoid)
-print("=" * 80)
-print("🚫 FADE LIST - AVOID THESE PLAYERS")
-print("=" * 80)
-print()
-print("   High-risk plays with negative factors:")
-print()
-
-# Get fade candidates: Low quality OR high projection with warnings
-fade_candidates = results_df[
-    (results_df['play_quality'] < 45) |
-    ((results_df['blowout_risk'] == 'HIGH') & (results_df['is_favored'] == True))
-].nsmallest(5, 'play_quality')
-
-if not fade_candidates.empty:
-    for i, (_, row) in enumerate(fade_candidates.iterrows(), 1):
-        location = "🏠" if row['is_home'] == 1 else "✈️"
-        quality = row['play_quality']
-        
-        print(f"   {i}. {row['player_name']:25} ({row['team']:3}) {location} vs {row['opponent']:3}")
-        print(f"      Projection: {row['final_projection']:.1f} PTS | Season: {row['season_avg']:.1f} | L10: {row['lpts_10_avg']:.1f}")
-        print(f"      Quality: {quality:.0f}/100 🔴 | {', '.join(row['reasons'])}")
-        print()
-else:
-    print("   No major fade candidates tonight - all top players look good!")
-    print()
-
-print("=" * 80)
-print()
-
-print("\n" + "=" * 80)
-print("🏆 TOP 20 PROJECTED POINTS")
-print("=" * 80)
-print()
-
-for i, (_, row) in enumerate(results_df.head(20).iterrows(), 1):
-    # Icons
+for i, (_, row) in enumerate(smart_picks.iterrows(), 1):
     location = "🏠" if row['is_home'] == 1 else "✈️"
     
-    # Matchup quality
-    if row['defense_factor'] < 0.92:
-        matchup = "🔒 TOUGH"
-    elif row['defense_factor'] > 1.08:
-        matchup = "🎯 SOFT"
-    else:
-        matchup = "➡️  AVG"
-    
-    # Pace
-    if row['pace_boost'] > 1.03:
-        pace = "⚡ FPTS"
-    elif row['pace_boost'] < 0.97:
-        pace = "🐌 SLOW"
-    else:
-        pace = ""
-    
-    # Trend
-    if row['recent_trend'] > 0.5:
-        trend = "📈 HOT"
-    elif row['recent_trend'] < -0.5:
-        trend = "📉 COLD"
-    else:
-        trend = ""
-    
-    # Confidence
-    conf_icon = "🟢" if row['confidence'] == 'HIGH' else "🟡" if row['confidence'] == 'MEDIUM' else "🔴"
-    
-    # Blowout risk warning
-    blowout_warning = ""
-    if row.get('blowout_risk') == 'HIGH' and row.get('is_favored'):
-        blowout_warning = " ⚠️ BLOWOUT RISK"
-    elif row.get('blowout_risk') == 'MEDIUM' and row.get('is_favored'):
-        blowout_warning = " ⚠️ May sit early"
-    
-    print(f"{i:2}. {row['player_name']:25} ({row['team']:3}) {location} vs {row['opponent']:3}{blowout_warning}")
-    print(f"    Projection: {row['final_projection']:4.1f} PTS {conf_icon}")
-    print(f"    Season: {row['season_avg']:4.1f} | L5: {row['lpts_5_avg']:4.1f} | L10: {row['lpts_10_avg']:4.1f}")
-    print(f"    Matchup: {matchup} (Opp allows {row['opp_pts_allowed']:.1f}) {pace} {trend}")
-    
-    # Show breakdown if adjustments are significant
-    if abs(row['defense_factor'] - 1.0) > 0.05 or abs(row['pace_boost'] - 1.0) > 0.03:
-        print(f"    Adjustments: Defense {row['defense_factor']:.2f}x | Pace {row['pace_boost']:.2f}x")
-    
-    print()
-
-# Show injury alerts and usage boost candidates
-if injury_alerts:
-    print("=" * 80)
-    print("⚠️  INJURY ALERTS - REVIEW MANUALLY")
-    print("=" * 80)
-    print()
-    print("   The following players are OUT. Consider:")
-    print("   • Who benefits from increased usage?")
-    print("   • Are any projected players affected?")
-    print()
-    for alert in injury_alerts[:10]:
-        print(f"   • {alert}")
-    print()
-    
-    # Identify usage boost candidates
-    print("=" * 80)
-    print("🚀 USAGE BOOST CANDIDATES")
-    print("=" * 80)
-    print()
-    print("   Teammates of injured players who may see increased opportunity:")
-    print()
-    
-    # Get injured players by team
-    if not espn_injuries.empty:
-        injured_by_team = {}
-        out_injuries = espn_injuries[espn_injuries['status'] == 'OUT']
-        
-        for _, inj in out_injuries.iterrows():
-            team = inj.get('team', '')
-            player = inj.get('player_name', '')
-            
-            # Only track teams playing tonight
-            team_abbr = None
-            for tid, tname in team_id_to_name.items():
-                if team in tname and tid in matchups:
-                    team_abbr = team_id_to_abbr.get(tid)
-                    break
-            
-            if team_abbr:
-                if team_abbr not in injured_by_team:
-                    injured_by_team[team_abbr] = []
-                injured_by_team[team_abbr].append(player)
-        
-        # Show candidates from results
-        if injured_by_team:
-            for team_abbr, injured_players in injured_by_team.items():
-                # Find teammates in our projections
-                teammates = results_df[results_df['team'] == team_abbr].head(5)
-                
-                if not teammates.empty:
-                    print(f"   {team_abbr} ({len(injured_players)} OUT: {', '.join(injured_players[:2])}{'...' if len(injured_players) > 2 else ''})")
-                    
-                    for _, tm in teammates.iterrows():
-                        boost_indicator = ""
-                        # Highlight if they're a guard/playmaker
-                        if tm['season_avg'] >= 3.0:  # Has some playmaking ability
-                            boost_indicator = " ⭐"
-                        
-                        print(f"      → {tm['player_name']:25} Proj: {tm['final_projection']:4.1f} (Season: {tm['season_avg']:4.1f}){boost_indicator}")
-                    print()
-        else:
-            print("   No significant injuries affecting tonight's teams")
-    print()
-
-# Summary
-print("=" * 80)
-print("📊 SUMMARY")
-print("=" * 80)
-print()
-print(f"Model Performance:")
-print(f"  • MAE: {test_mae:.2f} points (typical error)")
-print(f"  • R²: {test_r2:.1%} (variance explained)")
-print()
-print(f"Tonight's Analysis:")
-print(f"  • {len(games)} games")
-print(f"  • {len(results_df)} players projected")
-print(f"  • {len(results_df[results_df['confidence']=='HIGH'])} high-confidence plays")
-print()
-print(f"Edge Factors:")
-print(f"  ✓ Recent form (L5, L10 weighted heavily)")
-print(f"  ✓ Opponent defense (±15% impact)")
-print(f"  ✓ Pace matchup (±5% impact)")
-print(f"  ✓ Home/away splits")
-print()
-
-# Add usage boost indicators to dataframe
-if not espn_injuries.empty:
-    # Build injured teammates map
-    injured_by_team = {}
-    out_injuries = espn_injuries[espn_injuries['status'] == 'OUT']
-    
-    for _, inj in out_injuries.iterrows():
-        team = inj.get('team', '')
-        player = inj.get('player_name', '')
-        
-        # Find team abbreviation
-        team_abbr = None
-        for tid, tname in team_id_to_name.items():
-            if team in tname and tid in matchups:
-                team_abbr = team_id_to_abbr.get(tid)
-                break
-        
-        if team_abbr:
-            if team_abbr not in injured_by_team:
-                injured_by_team[team_abbr] = []
-            injured_by_team[team_abbr].append(player)
-    
-    # Add columns
-    results_df['injured_teammates'] = results_df['team'].apply(
-        lambda t: len(injured_by_team.get(t, []))
-    )
-    results_df['is_playmaker'] = results_df['season_avg'] >= 3.0
-    results_df['usage_boost_candidate'] = (
-        (results_df['injured_teammates'] >= 2) & 
-        (results_df['is_playmaker'])
-    )
-else:
-    results_df['injured_teammates'] = 0
-    results_df['is_playmaker'] = results_df['season_avg'] >= 3.0
-    results_df['usage_boost_candidate'] = False
-
-# Create focused CSV with only Smart Picks and Fade List
-smart_picks_df = smart_picks.copy()
-smart_picks_df['recommendation'] = 'TOP PLAY'
-
-fade_list_df = fade_candidates.copy()
-fade_list_df['recommendation'] = 'FADE'
-
-# Combine
-focused_df = pd.concat([smart_picks_df, fade_list_df], ignore_index=True)
-
-# Prepare comprehensive CSV for ladder betting
-# Calculate minimum odds needed for +EV
-def prob_to_american_odds(prob):
-    """Convert probability to American odds"""
-    if prob >= 0.5:
-        return int(-100 * prob / (1 - prob))
-    else:
-        return int(100 * (1 - prob) / prob)
-
-# Add calculated columns
-for col in ['prob_25+', 'prob_15+', 'prob_20+', 'prob_25+']:
-    if col in focused_df.columns:
-        # Probability as percentage
-        focused_df[f'{col}_pct'] = (focused_df[col] * 100).round(0).astype(int)
-        
-        # Minimum odds for +EV
-        threshold = col.replace('prob_', '').replace('+', '')
-        focused_df[f'min_odds_{threshold}'] = focused_df[col].apply(
-            lambda p: prob_to_american_odds(p) if p > 0.01 else None
-        )
-
-# Round numeric columns
-for col in ['final_projection', 'season_avg', 'lpts_10_avg']:
-    if col in focused_df.columns:
-        focused_df[col] = focused_df[col].round(1)
-
-if 'defense_factor' in focused_df.columns:
-    focused_df['defense_factor'] = focused_df['defense_factor'].round(2)
-
-if 'consistency' in focused_df.columns:
-    focused_df['std_dev'] = focused_df['consistency'].round(1)
-
-# Calculate projection ratio
-if 'final_projection' in focused_df.columns and 'lpts_10_avg' in focused_df.columns:
-    focused_df['proj_ratio'] = (focused_df['final_projection'] / focused_df['lpts_10_avg']).round(2)
-
-# Create clear matchup description
-if 'defense_factor' in focused_df.columns:
-    def matchup_label(df):
-        if df > 1.10:
-            return 'SOFT'
-        elif df > 1.05:
-            return 'FAVORABLE'
-        elif df < 0.92:
-            return 'TOUGH'
-        else:
-            return 'AVERAGE'
-    focused_df['matchup'] = focused_df['defense_factor'].apply(matchup_label)
-
-# Add tier classification
-def get_tier_for_csv(row):
-    """Determine confidence tier for CSV"""
-    ladder_value = row.get('ladder_value', 0)
-    momentum = row.get('pts_momentum', 0)
-    std_dev = min(row.get('consistency', 5.0), 7.0)
-    
-    if ladder_value >= 65 and momentum >= -0.05 and std_dev < 6.0:
-        return 1
-    elif momentum < -0.25 or std_dev > 7.0 or ladder_value < 45:
-        return 3
-    else:
-        return 2
-
-focused_df['tier'] = focused_df.apply(get_tier_for_csv, axis=1)
-
-# Generate red flags summary
-def generate_red_flags(row):
-    """Generate comma-separated red flags for CSV"""
-    flags = []
-    
-    # Negative momentum
-    momentum = row.get('pts_momentum', 0)
-    if momentum < -0.2:
-        flags.append(f"Cooling ({momentum:+.1f})")
-    
-    # High variance (NBA points std_devs are naturally higher)
-    std_dev = row.get('consistency', 0)
-    if std_dev > 6.5:
-        flags.append(f"High variance ({std_dev:.1f})")
-    
-    # Tough matchup
-    defense_factor = row.get('defense_factor', 1.0)
-    if defense_factor < 0.92:
-        flags.append(f"Tough defense ({defense_factor:.2f})")
-    
-    # Blowout risk
-    blowout = row.get('blowout_risk', '')
-    if blowout == 'HIGH':
-        flags.append("High blowout risk")
-    elif blowout == 'MEDIUM':
-        flags.append("Med blowout risk")
-    
-    return '; '.join(flags) if flags else 'None'
-
-focused_df['red_flags'] = focused_df.apply(generate_red_flags, axis=1)
-
-# Add unit sizing recommendations
-def calculate_unit_size(prob, tier, has_red_flags):
-    """Calculate recommended unit size"""
-    # Base units on probability
-    if prob >= 0.80:
-        base_units = 1.5
-    elif prob >= 0.70:
-        base_units = 1.25
-    elif prob >= 0.60:
-        base_units = 1.0
-    elif prob >= 0.50:
-        base_units = 0.75
-    elif prob >= 0.40:
-        base_units = 0.5
-    elif prob >= 0.25:
-        base_units = 0.25
-    else:
-        base_units = 0.1
-    
-    # Adjust for tier
-    if tier == 3:  # Higher risk
-        base_units = max(0.1, base_units - 0.5)
-    elif tier == 1:  # Safest
-        base_units = min(1.5, base_units + 0.25)
-    
-    # Reduce if red flags
-    if has_red_flags:
-        base_units = max(0.1, base_units - 0.25)
-    
-    # Round to nearest valid unit size
-    valid_units = [1.5, 1.25, 1.0, 0.75, 0.5, 0.25, 0.1]
-    return min(valid_units, key=lambda x: abs(x - base_units))
-
-# Calculate units for each threshold
-focused_df['units_5'] = focused_df.apply(
-    lambda row: calculate_unit_size(row['prob_15+'], row['tier'], row['red_flags'] != 'None') 
-    if row.get('prob_15+', 0) > 0.01 else 0, 
-    axis=1
-)
-focused_df['units_7'] = focused_df.apply(
-    lambda row: calculate_unit_size(row['prob_20+'], row['tier'], row['red_flags'] != 'None') 
-    if row.get('prob_20+', 0) > 0.15 else 0, 
-    axis=1
-)
-focused_df['units_10'] = focused_df.apply(
-    lambda row: calculate_unit_size(row['prob_25+'], row['tier'], row['red_flags'] != 'None') 
-    if row.get('prob_25+', 0) > 0.05 else 0, 
-    axis=1
-)
-
-# Select and order columns for ladder betting workflow
-csv_columns = [
-    # Identity
-    'recommendation',
-    'player_name', 
-    'team', 
-    'opponent',
-    'is_home',
+    print(f"{i}. {row['player_name']} ({row['team']}) {location} vs {row['opponent']}")
+    print("-" * 80)
     
     # Projection
-    'final_projection',
-    'lpts_10_avg',
-    'proj_ratio',
+    projection = row['final_projection']
+    l10_avg = row['lpts_10_avg']
+    season_avg = row['season_avg']
     
-    # Ladder Probabilities (%)
-    'prob_15+_pct',
-    'prob_20+_pct',
-    'prob_25+_pct',
+    print(f"   Our Projection: {projection:.1f} PTS")
+    print(f"   Season Avg: {season_avg:.1f} | L10 Avg: {l10_avg:.1f}")
     
-    # Minimum Odds for +EV
-    'min_odds_5',
-    'min_odds_7',
-    'min_odds_10',
+    # Edge info
+    if pd.notna(row.get('book_line')):
+        side = row.get('recommended_side', '')
+        side_icon = "🟢 OVER" if side == 'OVER' else "🔴 UNDER" if side == 'UNDER' else "⚪ PASS"
+        book_info = f"{row['book_line']:.1f} @ {int(row['book_odds']):+d} ({row['bookmaker']})"
+        print(f"   Book Line:    {book_info}")
+        if pd.notna(row.get('our_prob')):
+            print(
+                f"   Our: {row['our_prob']:.1%} | Book: {row['book_prob']:.1%} | "
+                f"Edge: {row['edge_pp']:+.1f}pp | EV: {row['ev']:+.1%} | "
+                f"Stake: {row['kelly_units']:.2f}u  {side_icon}"
+            )
+    print()
     
-    # Recommended Units
-    'units_5',
-    'units_7',
-    'units_10',
+    # Reasons
+    print(f"   Reasons:")
+    print(f"     - Momentum: {row.get('pts_momentum', 0):+.2f}")
+    print(f"     - Consistency (std dev): {row['consistency']:.2f}")
+    print(f"     - Matchup: {row.get('matchup_quality', 'N/A')}")
+    print(f"     - Pace: {row.get('pace_factor', 'N/A')}")
+    print()
+
+print("=" * 80)
+print()
+
+# TOP PLAYS — EV-based recommendations with calibrated probs + Kelly stakes
+if not odds_df.empty and results_df['book_line'].notna().any():
+    SUSPICIOUS_EV = 0.25  # Edges this large often signal a stale line
+    plays = results_df[
+        (results_df['recommended_side'].isin(['OVER', 'UNDER']))
+        & (results_df['confidence'].isin(['HIGH', 'MEDIUM']))
+    ].copy()
+    plays = plays.sort_values('ev', ascending=False)
     
-    # Scores
-    'ladder_value',
-    'tier',
-    'play_quality',
-    'confidence',
-    
-    # Context
-    'matchup',
-    'defense_factor',
-    'injured_teammates',
-    'std_dev',
-    'blowout_risk',
-    'red_flags',
-    
-    # Additional
-    'season_avg'
-]
+    print(f"\n🎯 TOP PLAYS — {len(plays)} qualifying bets today")
+    print("=" * 80)
+    if plays.empty:
+        print("   No qualifying plays (no edges ≥+5% EV with HIGH/MEDIUM confidence)")
+    else:
+        MAX_PLAYER_EXPOSURE = 1.5
+        for i, (_, p) in enumerate(plays.head(7).iterrows(), 1):
+            conf_icon = '🟢' if p['confidence'] == 'HIGH' else '🟡'
+            side_icon = '📈' if p['recommended_side'] == 'OVER' else '📉'
+            verify = " ⚠️ VERIFY LINE" if p['ev'] > SUSPICIOUS_EV else ""
+            
+            main_rung = {
+                'line': p['book_line'],
+                'side': p['recommended_side'],
+                'odds': int(p['book_odds']),
+                'bookmaker': p['bookmaker'],
+                'our_prob': p['our_prob'],
+                'book_prob': p['book_prob'],
+                'edge_pp': p['edge_pp'],
+                'ev': p['ev'],
+                'kelly_units': float(p.get('kelly_units', 0)),
+                'is_main': True,
+            }
+            alts = alternates_by_player.get(p['player_name'], [])
+            ladder = [main_rung] + [{**a, 'is_main': False} for a in alts]
+            total_units = sum(r['kelly_units'] for r in ladder)
+            if total_units > MAX_PLAYER_EXPOSURE and total_units > 0:
+                scale = MAX_PLAYER_EXPOSURE / total_units
+                for r in ladder:
+                    r['kelly_units'] = round(r['kelly_units'] * scale, 2)
+            
+            print(
+                f"\n{i}. {conf_icon} {side_icon} {p['recommended_side']} — "
+                f"{p['player_name']} ({p['team']} vs {p['opponent']}){verify}"
+            )
+            print(
+                f"   Projection: {p['final_projection']:.1f} PTS | "
+                f"L10: {p['lpts_10_avg']:.1f} | Season: {p['season_avg']:.1f}"
+            )
+            print(f"   Ladder ({len(ladder)} rung{'s' if len(ladder) > 1 else ''}, "
+                  f"total {sum(r['kelly_units'] for r in ladder):.2f}u):")
+            for r in ladder:
+                tag = 'MAIN' if r['is_main'] else 'ALT '
+                print(
+                    f"     • {tag} {r['kelly_units']:.2f}u  "
+                    f"{p['recommended_side']} {r['line']} @ {r['odds']:+d} "
+                    f"({r['bookmaker']})  Our {r['our_prob']:.1%} | EV {r['ev']:+.1%}"
+                )
+    print("\n" + "=" * 80)
+    print("💡 EV ≥ +5% with edge ≥ +4pp qualifies as a TOP PLAY.")
+    print("=" * 80)
+
+# SAVE PREDICTIONS TO CSV
+from datetime import datetime
+date_str = datetime.now().strftime('%Y%m%d')
+filename = f"predictions_points_{date_str}.csv"
+
+# Select columns to save
+csv_columns = ['player_name', 'team', 'opponent', 'is_home', 'final_projection',
+               'season_avg', 'lpts_10_avg', 'confidence', 'book_line',
+               'book_odds', 'bookmaker', 'recommended_side',
+               'our_prob', 'book_prob', 'edge_pp', 'ev', 'kelly_units',
+               'model_vs_book', 'play_quality', 'red_flags']
 
 # Only include columns that exist
-csv_columns = [col for col in csv_columns if col in focused_df.columns]
+available_cols = [col for col in csv_columns if col in smart_picks.columns]
+output_df = smart_picks[available_cols].copy()
 
-# Rename columns for maximum clarity
-column_rename = {
-    'recommendation': 'Type',
-    'player_name': 'Player',
-    'team': 'Team',
-    'opponent': 'Opp',
-    'is_home': 'Home',
-    'final_projection': 'Proj',
-    'lpts_10_avg': 'L10',
-    'proj_ratio': 'Ratio',
-    'prob_15+_pct': '15+%',
-    'prob_20+_pct': '20+%',
-    'prob_25+_pct': '25+%',
-    'min_odds_5': 'Min_Odds_15+',
-    'min_odds_7': 'Min_Odds_20+',
-    'min_odds_10': 'Min_Odds_25+',
-    'units_5': 'Units_15+',
-    'units_7': 'Units_20+',
-    'units_10': 'Units_25+',
-    'ladder_value': 'Ladder_Value',
-    'tier': 'Tier',
-    'play_quality': 'Quality',
-    'confidence': 'Conf',
-    'matchup': 'Matchup',
-    'defense_factor': 'Def_Factor',
-    'injured_teammates': 'Tmts_Out',
-    'std_dev': 'StdDev',
-    'blowout_risk': 'Blowout',
-    'red_flags': 'Red_Flags',
-    'season_avg': 'Season'
+# Rename columns for clarity
+column_map = {
+    'final_projection': 'projection',
+    'season_avg': 'pts_season_avg',
+    'lpts_10_avg': 'pts_last10_avg',
 }
+output_df = output_df.rename(columns=column_map)
 
-# Save ladder betting focused CSV
-output_file = f"predictions_production_{pd.Timestamp.now().strftime('%Y%m%d')}.csv"
-focused_df[csv_columns].rename(columns=column_rename).to_csv(output_file, index=False)
-print(f"✅ Saved to: {output_file}")
-print(f"   ({len(smart_picks_df)} Top Plays + {len(fade_list_df)} Fade candidates)")
-print()
-print("💡 Pro Tips:")
-print("   • Focus on HIGH confidence plays (🟢)")
-print("   • Fade TOUGH matchups (🔒) unless player is hot (📈)")
-print("   • Target SOFT matchups (🎯) + FPTS pace (⚡)")
-print("   • Review injury alerts before betting")
-print()
-print("=" * 80)
+# Sort by play_quality or projection
+if 'play_quality' in output_df.columns:
+    output_df = output_df.sort_values('play_quality', ascending=False)
+else:
+    output_df = output_df.sort_values('projection', ascending=False)
+
+output_df.to_csv(filename, index=False)
+print(f"✅ Predictions saved to: {filename}")
+print(f"   Total predictions: {len(output_df)}")

@@ -1,0 +1,10 @@
+Date,Is_Playoff,Player,Team,Opponent,Projection,L10,Actual,Diff,Baseline_Diff,Confidence,Red_Flags,Recommended_Side,Book_Line,Book_Odds,Our_Prob,Book_Prob,Edge_PP,EV,Kelly_Units,Bookmaker,Hit_15+,Hit_20+,Hit_25+,Hit_30+
+20260425,True,Jalen Johnson,ATL,NYK,21.934314711775823,22.8,14,-7.9,-8.8,,None,,,,,,,,,,False,False,False,False
+20260425,True,Rudy Gobert,MIN,DEN,12.483524102058412,12.8,4,-8.5,-8.8,,None,,,,,,,,,,False,False,False,False
+20260425,True,Ayo Dosunmu,MIN,DEN,15.252860012969974,15.3,43,27.7,27.7,,None,,,,,,,,,,True,True,True,True
+20260425,True,Donte DiVincenzo,MIN,DEN,12.26094595718384,11.3,0,-12.3,-11.3,,None,,,,,,,,,,False,False,False,False
+20260425,True,Anthony Edwards,MIN,DEN,28.384348992500307,27.7,5,-23.4,-22.7,,None,,,,,,,,,,False,False,False,False
+20260425,True,Nikola Jokić,DEN,MIN,23.14135992659913,24.0,24,0.9,0.0,,None,,,,,,,,,,True,True,False,False
+20260425,True,Karl-Anthony Towns,NYK,ATL,21.84244575524716,21.8,20,-1.8,-1.8,,None,,,,,,,,,,True,True,False,False
+20260425,True,Jamal Murray,DEN,MIN,23.710852295550534,25.3,30,6.3,4.7,,None,,,,,,,,,,True,True,True,True
+20260425,True,OG Anunoby,NYK,ATL,17.621466105871328,16.8,22,4.4,5.2,,None,,,,,,,,,,True,True,False,False

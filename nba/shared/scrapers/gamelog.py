@@ -71,7 +71,7 @@ class GameLogScraper:
         
         # Convert GAME_DATE to datetime for proper sorting
         if 'GAME_DATE' in gamelog.columns:
-            gamelog['GAME_DATE_PARSED'] = pd.to_datetime(gamelog['GAME_DATE'])
+            gamelog['GAME_DATE_PARSED'] = pd.to_datetime(gamelog['GAME_DATE'], format='mixed')
             gamelog = gamelog.sort_values('GAME_DATE_PARSED', ascending=False).head(n_games)
             gamelog = gamelog.drop('GAME_DATE_PARSED', axis=1)  # Clean up temp column
         else:
@@ -94,8 +94,15 @@ class GameLogScraper:
         if gamelog_df.empty or len(gamelog_df) < 3:
             return None
         
-        # Sort by date (oldest first for rolling calculations)
-        df = gamelog_df.sort_values('GAME_DATE', ascending=True).copy()
+        # Sort by date (oldest first for rolling calculations).
+        # GAME_DATE comes from the NBA API as a string ("Apr 12, 2026"), so a
+        # naive string sort orders months alphabetically (Apr < Feb < Jan)
+        # rather than chronologically. That bug used to make `df.tail(N)`
+        # return the wrong N games — e.g. Sharpe's January hot streak instead
+        # of his most recent April performances. Parse to datetime first.
+        df = gamelog_df.copy()
+        df['_GAME_DATE_PARSED'] = pd.to_datetime(df['GAME_DATE'], format='mixed')
+        df = df.sort_values('_GAME_DATE_PARSED', ascending=True).drop(columns=['_GAME_DATE_PARSED'])
         
         features = {}
         
@@ -149,13 +156,12 @@ class GameLogScraper:
             features['pts_home_avg'] = df['PTS'].mean()
             features['pts_away_avg'] = df['PTS'].mean()
         
-        # Days since last game (rest factor)
+        # Days since last game (rest factor).
+        # IMPORTANT: don't mutate `df` here — subsequent code (pts_recent_high
+        # etc.) relies on df being sorted oldest-first. Use a local view.
         if 'GAME_DATE' in df.columns and len(df) >= 2:
-            df['GAME_DATE'] = pd.to_datetime(df['GAME_DATE'])
-            df = df.sort_values('GAME_DATE', ascending=False)
-            last_game = df.iloc[0]['GAME_DATE']
-            second_last = df.iloc[1]['GAME_DATE']
-            features['days_rest'] = (last_game - second_last).days
+            dates = pd.to_datetime(df['GAME_DATE'], format='mixed').sort_values(ascending=False)
+            features['days_rest'] = (dates.iloc[0] - dates.iloc[1]).days
         else:
             features['days_rest'] = 1
         
@@ -273,7 +279,7 @@ class GameLogScraper:
                 continue
             
             # Sort by date
-            gamelog['_date_parsed'] = pd.to_datetime(gamelog['GAME_DATE'])
+            gamelog['_date_parsed'] = pd.to_datetime(gamelog['GAME_DATE'], format='mixed')
             gamelog = gamelog.sort_values('_date_parsed', ascending=True)
             
             # For each game (except first 10), use previous games as features

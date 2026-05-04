@@ -1,0 +1,11 @@
+player_name,team,opponent,is_home,projection,pts_season_avg,pts_last10_avg,confidence,book_line,book_odds,bookmaker,recommended_side,our_prob,book_prob,edge_pp,ev,kelly_units,model_vs_book,play_quality
+RJ Barrett,TOR,CLE,1,21.803026663974123,19.3,22.6,HIGH,,,,,,,0.0,0.0,0.0,0.0,100
+Tari Eason,HOU,LAL,1,11.576934487029032,10.5,11.8,HIGH,13.5,-110.0,BetOnline.ag,PASS,0.53,0.524,0.6,0.012,0.03,-1.9,97
+Jabari Smith Jr.,HOU,LAL,1,18.591230976270143,15.8,19.2,HIGH,,,,,,,0.0,0.0,0.0,0.0,94
+Scottie Barnes,TOR,CLE,1,19.460732460788964,18.1,20.1,MEDIUM,21.5,-102.0,FanDuel,PASS,0.529,0.505,2.4,0.048,0.12,-2.0,91
+Tobias Harris,DET,ORL,0,15.037375784257508,13.3,16.2,MEDIUM,17.5,-121.0,BetRivers,PASS,0.57,0.548,2.3,0.042,0.13,-2.5,91
+Alperen Sengun,HOU,LAL,1,18.599662783633807,20.4,19.0,MEDIUM,22.5,-120.0,BetOnline.ag,UNDER,0.609,0.545,6.4,0.117,0.35,-3.9,87
+Reed Sheppard,HOU,LAL,1,12.402817649744472,13.5,12.3,MEDIUM,16.5,-120.0,BetOnline.ag,UNDER,0.657,0.545,11.2,0.205,0.61,-4.1,87
+Ausar Thompson,DET,ORL,0,9.181648628778078,9.9,9.9,MEDIUM,9.5,-112.0,DraftKings,PASS,0.557,0.528,2.9,0.055,0.15,-0.3,85
+Amen Thompson,HOU,LAL,1,21.26461266797416,18.3,21.8,MEDIUM,18.5,-105.0,BetRivers,OVER,0.743,0.512,23.0,0.45,1.18,2.8,81
+James Harden,CLE,TOR,0,17.387983431922972,23.6,21.5,LOW,21.5,-120.0,BetMGM,UNDER,0.664,0.545,11.9,0.218,0.65,-4.1,41

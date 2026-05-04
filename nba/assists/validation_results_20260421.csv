@@ -1,0 +1,13 @@
+Date,Player,Type,Projection,L10,Actual,Diff,Baseline_Diff,Hit_5+,Hit_7+,Hit_10+,Prob_5+,Prob_7+,Prob_10+,Ladder_Value,Is_Playoff,Game_Date,Units_5+,Units_7+,Units_10+,Min_Odds_5+,Min_Odds_7+,Min_Odds_10+
+20260421,De'Aaron Fox,TOP PLAY,5.6,6.2,4,-1.6,-2.2,False,False,False,57,33,9,72,True,"Apr 21, 2026",0.5,0.1,0.1,-133,201.0,1053.0
+20260421,Alperen Sengun,TOP PLAY,5.5,6.7,5,-0.5,-1.7,True,False,False,55,35,13,72,True,"Apr 21, 2026",0.75,0.25,0.1,-121,182.0,658.0
+20260421,Stephon Castle,TOP PLAY,7.1,8.6,5,-2.1,-3.6,True,False,False,71,51,23,70,True,"Apr 21, 2026",1.0,0.5,0.1,-248,-105.0,343.0
+20260421,Payton Pritchard,TOP PLAY,3.9,3.8,5,1.1,1.2,True,False,False,38,20,5,70,True,"Apr 21, 2026",0.25,0.1,0.1,162,396.0,1862.0
+20260421,Amen Thompson,TOP PLAY,4.8,5.2,9,4.2,3.8,True,True,False,48,25,5,69,True,"Apr 21, 2026",0.5,0.1,0.1,109,302.0,1777.0
+20260421,Jayson Tatum,TOP PLAY,4.4,3.9,9,4.6,5.1,True,True,False,44,28,11,67,True,"Apr 21, 2026",0.5,0.25,0.1,125,253.0,811.0
+20260421,Deni Avdija,TOP PLAY,5.9,6.6,3,-2.9,-3.6,False,False,False,58,40,17,59,True,"Apr 21, 2026",0.1,0.1,0.1,-139,150.0,480.0
+20260421,LeBron James,TOP PLAY,7.8,7.1,7,-0.8,-0.1,True,True,False,70,56,25,57,True,"Apr 21, 2026",0.25,0.1,0.1,-232,-127.0,300.0
+20260421,Jrue Holiday,TOP PLAY,5.4,4.9,9,3.6,4.1,True,True,False,53,38,18,56,True,"Apr 21, 2026",0.1,0.1,0.1,-113,165.0,449.0
+20260421,Nikola Vučević,TOP PLAY,2.1,2.2,1,-1.1,-1.2,False,False,False,16,5,0,55,True,"Apr 21, 2026",0.1,0.0,0.0,530,2064.0,
+20260421,Luke Kennard,FADE,2.3,1.3,2,-0.3,0.7,False,False,False,27,15,4,14,True,"Apr 21, 2026",0.1,0.0,0.0,265,580.0,2240.0
+20260421,Jarred Vanderbilt,FADE,2.0,0.9,1,-1.0,0.1,False,False,False,7,1,0,5,True,"Apr 21, 2026",0.1,0.0,0.0,1360,,

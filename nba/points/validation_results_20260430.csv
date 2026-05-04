@@ -1,0 +1,9 @@
+Date,Is_Playoff,Player,Team,Opponent,Projection,L10,Actual,Diff,Baseline_Diff,Confidence,Red_Flags,Recommended_Side,Book_Line,Book_Odds,Our_Prob,Book_Prob,Edge_PP,EV,Kelly_Units,Bookmaker,Hit_15+,Hit_20+,Hit_25+,Hit_30+
+20260430,True,Jayson Tatum,BOS,PHI,24.733947031847222,24.1,17,-7.7,-7.1,HIGH,None,PASS,25.5,105.0,0.521,0.488,3.3,0.068,0.16,Bovada,True,False,False,False
+20260430,True,Jalen Brunson,NYK,ATL,26.554533207313913,25.4,17,-9.6,-8.4,MEDIUM,None,PASS,28.5,108.0,0.466,0.481,-1.4,-0.03,0.0,BetRivers,True,False,False,False
+20260430,True,Jaden McDaniels,MIN,DEN,14.903693155498503,16.9,32,17.1,15.1,HIGH,None,UNDER,18.5,-113.0,0.642,0.531,11.1,0.209,0.59,DraftKings,True,True,True,True
+20260430,True,Karl-Anthony Towns,NYK,ATL,21.403745874234662,20.1,12,-9.4,-8.1,MEDIUM,None,OVER,19.5,-103.0,0.73,0.507,22.2,0.438,1.13,DraftKings,False,False,False,False
+20260430,True,Naz Reid,MIN,DEN,12.25380513715744,11.9,15,2.7,3.1,MEDIUM,None,PASS,13.5,110.0,0.474,0.476,-0.3,-0.006,0.0,Bovada,True,False,False,False
+20260430,True,Jalen Johnson,ATL,NYK,19.288184033017274,18.3,21,1.7,2.7,MEDIUM,None,PASS,20.5,100.0,0.49,0.5,-1.0,-0.021,0.0,BetRivers,True,True,False,False
+20260430,True,Tyrese Maxey,PHI,BOS,24.01085460607737,24.3,30,6.0,5.7,MEDIUM,None,PASS,25.5,-122.0,0.531,0.55,-1.8,-0.033,0.0,BetOnline.ag,True,True,True,True
+20260430,True,Joel Embiid,PHI,BOS,26.597398965177653,28.8,19,-7.6,-9.8,MEDIUM,None,PASS,28.5,-130.0,0.541,0.565,-2.4,-0.043,0.0,Bovada,True,False,False,False

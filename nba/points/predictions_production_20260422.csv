@@ -1,0 +1,16 @@
+Type,Player,Team,Opp,Home,Proj,L10,Ratio,15+%,20+%,25+%,Units_15+,Units_20+,Units_25+,Ladder_Value,Tier,Quality,Conf,Matchup,Def_Factor,Tmts_Out,StdDev,Blowout,Red_Flags,Season
+TOP PLAY,Jalen Duren,DET,ORL,1,23.2,25.0,0.93,80,63,43,1.0,0.75,0.25,60,2,64,LOW,AVERAGE,1.01,0,7.0,LOW,High variance (7.0),19.5
+TOP PLAY,Cade Cunningham,DET,ORL,1,20.5,20.1,1.02,71,52,32,1.0,0.5,0.1,60,2,76,LOW,AVERAGE,1.01,0,10.6,LOW,High variance (10.6),23.9
+TOP PLAY,Paolo Banchero,ORL,DET,0,22.5,24.6,0.91,78,60,40,1.0,0.75,0.25,52,2,75,MEDIUM,AVERAGE,0.94,0,8.4,LOW,High variance (8.4),22.2
+TOP PLAY,Desmond Bane,ORL,DET,0,17.8,18.6,0.96,61,41,23,0.75,0.25,0.1,52,2,70,LOW,AVERAGE,0.94,0,7.2,LOW,High variance (7.2),20.1
+TOP PLAY,Jalen Suggs,ORL,DET,0,13.5,14.0,0.96,42,19,6,0.5,0.1,0.1,52,2,82,MEDIUM,AVERAGE,0.94,0,5.4,LOW,None,13.8
+TOP PLAY,Wendell Carter Jr.,ORL,DET,0,12.3,13.6,0.9,37,17,6,0.25,0.1,0.1,50,2,64,LOW,AVERAGE,0.94,0,5.7,LOW,None,11.8
+TOP PLAY,Franz Wagner,ORL,DET,0,17.0,17.2,0.99,58,38,21,0.5,0.1,0.1,49,2,64,LOW,AVERAGE,0.94,0,7.7,LOW,High variance (7.7),20.6
+TOP PLAY,Tobias Harris,DET,ORL,1,13.2,14.6,0.9,42,21,8,0.5,0.1,0.1,49,2,79,MEDIUM,AVERAGE,1.01,0,6.1,LOW,None,13.3
+TOP PLAY,Isaiah Stewart,DET,ORL,1,9.9,10.5,0.94,22,6,1,0.1,0.0,0.0,43,3,82,MEDIUM,AVERAGE,1.01,0,4.7,LOW,None,10.0
+TOP PLAY,Chet Holmgren,OKC,PHX,1,15.6,16.8,0.93,53,30,13,0.1,0.1,0.1,42,3,32,LOW,AVERAGE,1.0,0,5.9,HIGH,Cooling (-0.2); High blowout risk,17.1
+FADE,Chet Holmgren,OKC,PHX,1,15.6,16.8,0.93,53,30,13,0.1,0.1,0.1,42,3,32,LOW,AVERAGE,1.0,0,5.9,HIGH,Cooling (-0.2); High blowout risk,17.1
+FADE,Jared McCain,OKC,PHX,1,8.1,9.4,0.86,23,10,3,0.1,0.0,0.0,1,3,32,LOW,AVERAGE,1.0,0,6.6,HIGH,Cooling (-0.2); High variance (6.6); High blowout risk,8.3
+FADE,Shai Gilgeous-Alexander,OKC,PHX,1,27.5,31.2,0.88,90,78,60,0.75,0.5,0.25,40,3,40,LOW,AVERAGE,1.0,0,7.7,HIGH,High variance (7.7); High blowout risk,31.1
+FADE,Jalen Williams,OKC,PHX,1,15.0,16.0,0.94,50,28,12,0.1,0.1,0.1,40,3,40,LOW,AVERAGE,1.0,0,6.2,HIGH,High blowout risk,17.1
+FADE,Isaiah Joe,OKC,PHX,1,8.5,8.7,0.98,23,10,3,0.1,0.0,0.0,21,3,40,LOW,AVERAGE,1.0,0,6.3,HIGH,High blowout risk,11.1

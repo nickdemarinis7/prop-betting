@@ -135,11 +135,21 @@ def fetch_actual_strikeouts(date_str, predictions_df, quiet=False):
 # Single-date validation
 # ======================================================================
 def validate_date(date_str, quiet=False):
-    """Validate predictions for one date. Returns DataFrame or None."""
-    predictions_file = f"predictions_strikeouts_{date_str}.csv"
-    if not os.path.exists(predictions_file):
+    """Validate predictions for one date. Returns DataFrame or None.
+
+    Accepts either predictions_strikeouts_YYYYMMDD.csv or
+    predictions_strikeouts_simplified_YYYYMMDD.csv (preferring the
+    simplified version when both exist, since that's our current output).
+    """
+    simplified_file = f"predictions_strikeouts_simplified_{date_str}.csv"
+    original_file = f"predictions_strikeouts_{date_str}.csv"
+    if os.path.exists(simplified_file):
+        predictions_file = simplified_file
+    elif os.path.exists(original_file):
+        predictions_file = original_file
+    else:
         if not quiet:
-            print(f"❌ File not found: {predictions_file}")
+            print(f"❌ File not found: {original_file} or {simplified_file}")
         return None
 
     predictions_df = pd.read_csv(predictions_file)
@@ -297,7 +307,19 @@ if args.cumulative:
     # ------------------------------------------------------------------
     # Cumulative mode
     # ------------------------------------------------------------------
-    pred_files = sorted(glob.glob('predictions_strikeouts_*.csv'))
+    # Match both simplified and original filenames, de-duped by date so
+    # each day validates exactly once (preferring simplified).
+    all_files = glob.glob('predictions_strikeouts_*.csv')
+    # Exclude _rerun files — they may contain live/in-game odds
+    all_files = [f for f in all_files if '_rerun' not in f]
+    by_date = {}
+    for pf in all_files:
+        base = os.path.basename(pf)
+        ds = base.replace('predictions_strikeouts_simplified_', '').replace(
+            'predictions_strikeouts_', '').replace('.csv', '')
+        if ds not in by_date or 'simplified' in base:
+            by_date[ds] = pf
+    pred_files = [by_date[d] for d in sorted(by_date)]
     if not pred_files:
         print("\n❌ No prediction files found")
         sys.exit(1)
@@ -306,7 +328,9 @@ if args.cumulative:
     dates_done = []
 
     for pf in pred_files:
-        ds = os.path.basename(pf).replace('predictions_strikeouts_', '').replace('.csv', '')
+        base = os.path.basename(pf)
+        ds = base.replace('predictions_strikeouts_simplified_', '').replace(
+            'predictions_strikeouts_', '').replace('.csv', '')
 
         # Reuse existing validation CSV if present
         val_file = f"validation_results_{ds}.csv"

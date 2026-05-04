@@ -1,0 +1,2 @@
+Date,Is_Playoff,Player,Team,Opponent,Projection,L10,Actual,Diff,Baseline_Diff,Confidence,Red_Flags,Recommended_Side,Book_Line,Book_Odds,Our_Prob,Book_Prob,Edge_PP,EV,Kelly_Units,Bookmaker,Hit_15+,Hit_20+,Hit_25+,Hit_30+,prob_15+,prob_20+,prob_25+
+20260418,True,Nae'Qwan Tomlin,CLE,TOR,7.4,3.3,2,-5.4,-1.3,LOW,Cooling (-0.3); High variance (6.0); Med blowout risk,,,,,,,,,,False,False,False,False,10,2,0

@@ -18,131 +18,12 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))
 # Add parent directories to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 
-
-class NBAOddsAPI:
-    """Fetch NBA player props odds from The Odds API"""
-    
-    def __init__(self, api_key=None):
-        self.api_key = api_key or os.getenv('ODDS_API_KEY')
-        self.base_url = "https://api.the-odds-api.com/v4"
-        self.session = requests.Session()
-    
-    def get_all_points_odds(self):
-        """Get player points odds for all today's NBA games"""
-        if not self.api_key:
-            print("   ⚠️  No API key - cannot fetch odds")
-            return pd.DataFrame()
-        
-        try:
-            # Step 1: Get all NBA events
-            events_url = f"{self.base_url}/sports/basketball_nba/events"
-            params = {'apiKey': self.api_key}
-            
-            events_response = self.session.get(events_url, params=params, timeout=10)
-            events_response.raise_for_status()
-            events = events_response.json()
-            
-            if not events:
-                print("   ⚠️  No upcoming NBA games found")
-                return pd.DataFrame()
-            
-            print(f"   📅 Found {len(events)} NBA games")
-            
-            # Step 2: Get points odds for each event
-            all_odds = []
-            
-            for i, event in enumerate(events[:15], 1):  # Limit to save API calls
-                event_id = event['id']
-                
-                # Get odds for player points
-                odds_url = f"{self.base_url}/sports/basketball_nba/events/{event_id}/odds"
-                params = {
-                    'apiKey': self.api_key,
-                    'regions': 'us',
-                    'markets': 'player_points',
-                    'oddsFormat': 'american'
-                }
-                
-                try:
-                    odds_response = self.session.get(odds_url, params=params, timeout=10)
-                    odds_response.raise_for_status()
-                    
-                    if i == 1:
-                        remaining = odds_response.headers.get('x-requests-remaining')
-                        if remaining:
-                            print(f"   📊 Odds API requests remaining: {remaining}")
-                    
-                    odds_data = odds_response.json()
-                    game_odds = self._parse_points_odds(odds_data)
-                    
-                    if not game_odds.empty:
-                        all_odds.append(game_odds)
-                        print(f"   ✅ Game {i}: Found {len(game_odds)} points odds")
-                    
-                except Exception as e:
-                    print(f"   ⚠️  Game {i}: {str(e)[:50]}")
-                    continue
-            
-            if all_odds:
-                combined = pd.concat(all_odds, ignore_index=True)
-                print(f"   ✅ Total: {len(combined)} points odds from {len(all_odds)} games")
-                return combined
-            else:
-                print("   ⚠️  No points odds available")
-                return pd.DataFrame()
-                
-        except Exception as e:
-            print(f"   ❌ Error fetching points odds: {e}")
-            return pd.DataFrame()
-    
-    def _parse_points_odds(self, game_data):
-        """Parse points odds from API response"""
-        odds_list = []
-        
-        if not game_data or 'bookmakers' not in game_data:
-            return pd.DataFrame()
-        
-        for bookmaker in game_data['bookmakers']:
-            book_name = bookmaker['title']
-            
-            for market in bookmaker.get('markets', []):
-                if market['key'] != 'player_points':
-                    continue
-                
-                for outcome in market.get('outcomes', []):
-                    player_name = outcome.get('description', '')
-                    line = outcome.get('point')
-                    odds = outcome.get('price')
-                    over_under = outcome.get('name')
-                    
-                    odds_list.append({
-                        'player': player_name,
-                        'bookmaker': book_name,
-                        'line': line,
-                        'over_under': over_under,
-                        'odds': odds
-                    })
-        
-        return pd.DataFrame(odds_list)
-
-
-def calculate_implied_probability(american_odds):
-    """Convert American odds to implied probability"""
-    if american_odds < 0:
-        return abs(american_odds) / (abs(american_odds) + 100)
-    else:
-        return 100 / (american_odds + 100)
-
-
-def calculate_expected_value(our_prob, american_odds):
-    """Calculate expected value of a bet"""
-    if american_odds < 0:
-        decimal_odds = 1 + (100 / abs(american_odds))
-    else:
-        decimal_odds = 1 + (american_odds / 100)
-    
-    ev = our_prob * decimal_odds - 1
-    return ev
+# Use shared OddsAPIScraper rather than a local duplicate.
+from mlb.shared.scrapers.odds_api import (
+    OddsAPIScraper,
+    calculate_implied_probability,
+    calculate_expected_value,
+)
 
 
 def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
@@ -168,8 +49,8 @@ def analyze_nba_points_value(predictions_file, api_key=None, min_odds=-200):
     
     # Get sportsbook odds
     print("\n📡 Fetching sportsbook odds...")
-    odds_api = NBAOddsAPI(api_key=api_key)
-    odds_df = odds_api.get_all_points_odds()
+    odds_api = OddsAPIScraper(api_key=api_key)
+    odds_df = odds_api.get_all_nba_points_odds()
     
     if odds_df.empty:
         print("\n⚠️  No sportsbook odds available")
